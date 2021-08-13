@@ -1,0 +1,11 @@
+{
+  "name": "datatable",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:crossroadscx/datatable.git",
+  "author": "Chris Birk <cmbirk@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "storybook": "^6.3.7"
+  }
+}
