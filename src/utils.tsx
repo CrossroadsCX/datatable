@@ -1,4 +1,3 @@
-/* eslint react/jsx-props-no-spreading: 'warn' */
 import React from 'react';
 import { CellProps, HeaderProps, Hooks } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';

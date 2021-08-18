@@ -1,4 +1,3 @@
-/* eslint react/jsx-props-no-spreading: 'warn' */
 import React, { ReactElement, useState } from 'react';
 import { Row } from 'react-table';
 
