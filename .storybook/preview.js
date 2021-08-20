@@ -1,3 +1,7 @@
+import '@storybook/addon-console'
+import "../src/index.css"
+// import StoryRouter from 'storybook-react-router'
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -7,3 +11,7 @@ export const parameters = {
     },
   },
 }
+
+export const decorators = [
+  // StoryRouter(),
+]

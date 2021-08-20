@@ -1,4 +1,3 @@
-/* eslint react/jsx-props-no-spreading: 'warn', @typescript-eslint/no-use-before-define: 'warn' */
 import React, {
   PropsWithChildren, ReactElement, useEffect, useMemo, useState,
 } from 'react';
