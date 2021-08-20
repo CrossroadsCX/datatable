@@ -29,7 +29,7 @@ const defaultSale = {
 
 const originalData: Sale[] = [
   {
-    date: format(new Date(), 'MM-DD-YYYY'),
+    date: format(new Date(), 'MM-dd-yyyy'),
     seller: 'Holland Oats',
     product: 'Tulips',
     quantity: 100,
@@ -37,7 +37,7 @@ const originalData: Sale[] = [
     client: 'Colorful Clogs',
   },
   {
-    date: format(new Date(), 'MM-DD-YYYY'),
+    date: format(new Date(), 'MM-dd-yyyy'),
     seller: 'Seller Name',
     product: 'Dandelions',
     quantity: 20,
