@@ -13,7 +13,6 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TableRow = void 0;
 var jsx_runtime_1 = require("react/jsx-runtime");
-/* eslint react/jsx-props-no-spreading: 'warn' */
 var react_1 = require("react");
 var TableRow = function (props) {
     var row = props.row, editing = props.editing, saveRow = props.saveRow;
