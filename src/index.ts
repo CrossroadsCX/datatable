@@ -10,6 +10,7 @@ export {
   TableToolbar,
 }
 
+export type { Column } from 'react-table'
 export type { DataTableProps } from './DataTable'
 export type { EditableCellProps } from './TableCell'
 export type { TableRowProps } from './TableRow'
