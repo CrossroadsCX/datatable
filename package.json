@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/crossroadscx-datatable.cjs.js",
   "module": "dist/crossroadscx-datatable.esm.js",
-  "types": "dist/datatable.cjs.d.ts",
+  "types": "dist/crossroadscx-datatable.cjs.d.ts",
   "files": [
     "src",
     "dist"
