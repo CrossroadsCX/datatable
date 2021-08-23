@@ -4,7 +4,9 @@
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/datatable.cjs.js",
+  "module": "dist/datatable.esm.js",
+  "types": "dist/datatable.cjs.d.ts",
   "files": [
     "src",
     "dist"
@@ -13,6 +15,7 @@
     "@babel/core": "^7.15.0",
     "@changesets/cli": "^2.16.0",
     "@heroicons/react": "^1.0.3",
+    "@preconstruct/cli": "^2.1.1",
     "@storybook/addon-actions": "^6.3.7",
     "@storybook/addon-console": "^1.2.3",
     "@storybook/addon-essentials": "^6.3.7",
@@ -29,7 +32,6 @@
     "chromatic": "^5.9.2",
     "eslint": "^7.32.0",
     "postcss": "^8.3.6",
-    "preconstruct": "^1.0.0",
     "storybook": "^6.3.7",
     "tailwindcss": "^2.2.7",
     "ttypescript": "^1.5.12"
@@ -44,9 +46,14 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "build": "ttsc",
+    "build": "preconstruct build",
     "lint": "eslint ./src --ext .ts,tsx",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "preconstruct": {
+    "entrypoints": [
+      ".",
+    ]
   }
 }
