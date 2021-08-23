@@ -6,10 +6,10 @@ import {
 } from 'react-table';
 import filter from 'lodash/filter';
 
-import { TableToolbar } from './TableToolbar';
-import { TableRow } from './TableRow';
-import { EditableCell } from './TableCell';
-import { selectionHook } from './utils';
+import { TableToolbar } from '../TableToolbar';
+import { TableRow } from '../TableRow';
+import { EditableCell } from '../TableCell';
+import { selectionHook } from '../utils';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
