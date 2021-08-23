@@ -11,6 +11,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.15.0",
+    "@changesets/cli": "^2.16.0",
     "@heroicons/react": "^1.0.3",
     "@storybook/addon-actions": "^6.3.7",
     "@storybook/addon-console": "^1.2.3",
@@ -28,6 +29,7 @@
     "chromatic": "^5.9.2",
     "eslint": "^7.32.0",
     "postcss": "^8.3.6",
+    "preconstruct": "^1.0.0",
     "storybook": "^6.3.7",
     "tailwindcss": "^2.2.7",
     "ttypescript": "^1.5.12"
