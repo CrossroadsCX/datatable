@@ -4,6 +4,7 @@
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
+  "main": "dist/index.js",
   "files": [
     "src",
     "dist"
