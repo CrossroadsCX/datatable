@@ -1,12 +1,9 @@
-import { EditableCell, EditableCellProps } from './TableCell'
-import { TableRow, TableRowProps } from './TableRow'
-import { TableToolbar, TableToolbarProps } from './TableToolbar'
+import { EditableCell } from './TableCell'
+import { TableRow } from './TableRow'
+import { TableToolbar } from './TableToolbar'
 
 export {
   EditableCell,
-  EditableCellProps,
   TableRow,
-  TableRowProps,
   TableToolbar,
-  TableToolbarProps,
 }

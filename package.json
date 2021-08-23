@@ -4,8 +4,8 @@
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
-  "main": "dist/datatable.cjs.js",
-  "module": "dist/datatable.esm.js",
+  "main": "dist/crossroadscx-datatable.cjs.js",
+  "module": "dist/crossroadscx-datatable.esm.js",
   "types": "dist/datatable.cjs.d.ts",
   "files": [
     "src",
@@ -13,8 +13,11 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
     "@changesets/cli": "^2.16.0",
-    "@heroicons/react": "^1.0.3",
     "@preconstruct/cli": "^2.1.1",
     "@storybook/addon-actions": "^6.3.7",
     "@storybook/addon-console": "^1.2.3",
@@ -37,6 +40,9 @@
     "ttypescript": "^1.5.12"
   },
   "dependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/preset-env": "^7.15.0",
+    "@heroicons/react": "^1.0.3",
     "date-fns": "^2.23.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
@@ -50,10 +56,5 @@
     "lint": "eslint ./src --ext .ts,tsx",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
-  },
-  "preconstruct": {
-    "entrypoints": [
-      ".",
-    ]
   }
 }
