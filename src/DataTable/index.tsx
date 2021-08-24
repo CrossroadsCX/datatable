@@ -11,7 +11,7 @@ import { TableRow } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
 
-import '../index.css';
+// import '../index.css';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
