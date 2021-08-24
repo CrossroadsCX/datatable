@@ -3,7 +3,6 @@ import { DataTable } from './DataTable'
 import { EditableCell } from './TableCell'
 import { TableRow } from './TableRow'
 import { TableToolbar } from './TableToolbar'
-import { Column } from 'react-table'
 
 export {
   DataTable,
@@ -12,7 +11,7 @@ export {
   TableToolbar,
 }
 
-export type { Column }
+export type { Column } from 'react-table'
 export type { DataTableProps } from './DataTable'
 export type { EditableCellProps } from './TableCell'
 export type { TableRowProps } from './TableRow'
