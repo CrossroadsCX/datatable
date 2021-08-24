@@ -8,3 +8,4 @@ export type { DataTableProps } from './DataTable';
 export type { EditableCellProps } from './TableCell';
 export type { TableRowProps } from './TableRow';
 export type { TableToolbarProps } from './TableToolbar';
+export * from '../index.d';
