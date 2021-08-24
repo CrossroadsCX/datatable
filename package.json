@@ -55,7 +55,8 @@
     "build": "preconstruct build",
     "lint": "eslint ./src --ext .ts,tsx",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "publish": "yarn build && npm version patch && npm publish"
   },
   "peerDependencies": {
     "@types/react-table": "^7.7.2"
