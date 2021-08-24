@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, ReactElement } from 'react';
-import { TableOptions } from 'react-table';
+import { Column, TableOptions } from 'react-table';
 export interface DataTableProps<T extends Record<string, unknown>> extends TableOptions<T> {
+    columns: Column<T>[];
     defaultItem?: T;
     name?: string;
     handleChange: (data: T[]) => void;
