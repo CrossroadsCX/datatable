@@ -16,6 +16,7 @@ import { selectionHook } from '../utils';
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
     columns: Column<T>[],
+    data: T[]
     defaultItem?: T
     name?: string
     handleChange: (data: T[]) => void
