@@ -1,13 +1,25 @@
 {
-  "name": "datatable",
-  "version": "0.0.1",
-  "main": "index.js",
+  "name": "@crossroadscx/datatable",
+  "version": "0.0.18",
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
+  "main": "dist/crossroadscx-datatable.cjs.js",
+  "module": "dist/crossroadscx-datatable.esm.js",
+  "types": "dist/crossroadscx-datatable.cjs.d.ts",
+  "files": [
+    "src",
+    "dist",
+    "types"
+  ],
   "devDependencies": {
     "@babel/core": "^7.15.0",
-    "@heroicons/react": "^1.0.3",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
+    "@changesets/cli": "^2.16.0",
+    "@preconstruct/cli": "^2.1.1",
     "@storybook/addon-actions": "^6.3.7",
     "@storybook/addon-console": "^1.2.3",
     "@storybook/addon-essentials": "^6.3.7",
@@ -16,7 +28,6 @@
     "@storybook/react": "^6.3.7",
     "@types/lodash": "^4.14.172",
     "@types/react-select": "^4.0.17",
-    "@types/react-table": "^7.7.2",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
     "autoprefixer": "^10.3.1",
@@ -29,6 +40,9 @@
     "ttypescript": "^1.5.12"
   },
   "dependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/preset-env": "^7.15.0",
+    "@heroicons/react": "^1.0.3",
     "date-fns": "^2.23.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
@@ -38,9 +52,13 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "build": "ttsc",
+    "build": "preconstruct build",
     "lint": "eslint ./src --ext .ts,tsx",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build-publish": "yarn build && npm version patch && npm publish"
+  },
+  "peerDependencies": {
+    "@types/react-table": "^7.7.2"
   }
 }

@@ -2,17 +2,21 @@ import React, {
   PropsWithChildren, ReactElement, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Hooks, Row, TableOptions, useRowSelect, useTable,
+  Column, Hooks, Row, TableOptions, useRowSelect, useTable,
 } from 'react-table';
 import filter from 'lodash/filter';
 
-import { TableToolbar } from './TableToolbar';
-import { TableRow } from './TableRow';
-import { EditableCell } from './TableCell';
-import { selectionHook } from './utils';
+import { TableToolbar } from '../TableToolbar';
+import { TableRow } from '../TableRow';
+import { EditableCell } from '../TableCell';
+import { selectionHook } from '../utils';
+
+// import '../index.css';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
+    columns: Column<T>[],
+    data: T[]
     defaultItem?: T
     name?: string
     handleChange: (data: T[]) => void

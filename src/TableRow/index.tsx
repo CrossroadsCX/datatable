@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import { Row } from 'react-table';
 
-type TableRowProps<T extends Record<string, unknown>> = {
+export type TableRowProps<T extends Record<string, unknown>> = {
   row: Row<T>,
   editing: number | null
   saveRow: (row: Row<T>) => void
