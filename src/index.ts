@@ -133,8 +133,10 @@ declare module 'react-table' {
       UseFlexLayoutColumnProps<D>,
       UseSortByColumnProps<D> {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface Cell<D extends Record<string, unknown> = Record<string, unknown>> extends UseGroupByCellProps<D> {}
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   export interface Row<D extends object = {}>
     extends UseExpandedRowProps<D>,
       UseGroupByRowProps<D>,
