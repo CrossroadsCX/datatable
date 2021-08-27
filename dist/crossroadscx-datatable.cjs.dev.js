@@ -162,7 +162,7 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
 
-var FlexColumn = styled__default['default'].div.withConfig({
+styled__default['default'].div.withConfig({
   displayName: "wrappers__FlexColumn",
   componentId: "sc-1pzcc2n-0"
 })(["display:flex;flex-direction:column;"]);
@@ -172,6 +172,18 @@ var theme = {
     lightGray: 'rgba(229, 231, 235, 1)',
     gray: 'rgba(156, 163, 175, 1)',
     darkGray: 'rgba(55, 65, 81, 1)'
+  },
+  screens: {
+    sm: '640px',
+    // => @media (min-width: 640px) { ... }
+    md: '768px',
+    // => @media (min-width: 768px) { ... }
+    lg: '1024px',
+    // => @media (min-width: 1024px) { ... }
+    xl: '1280px',
+    // => @media (min-width: 1280px) { ... }
+    '2xl': '1536px' // => @media (min-width: 1536px) { ... }
+
   }
 };
 var TableThemeProvider = function TableThemeProvider(_ref) {
@@ -180,6 +192,15 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
     theme: theme
   }, children);
 };
+
+var StyledDataTable = styled__default['default'].div.withConfig({
+  displayName: "styled__StyledDataTable",
+  componentId: "sc-smya6t-0"
+})(["display:flex;flex-direction:column;& > div{margin-top:-.5rem;margin-bottom:-.5rem;overflow-x:auto;@media (min-width:", "){margin-left:-1.5rem;margin-right:-1.5rem;}@media (min-width:", "){margin-left:-2rem;margin-right:-2rem;}& > div{padding-top:.5rem;padding-bottom:.5rem;& > div{}}}"], function (props) {
+  return props.theme.screens.sm;
+}, function (props) {
+  return props.theme.screens.lg;
+});
 
 var StyledTableToolbar = styled__default['default'].div.withConfig({
   displayName: "styled__StyledTableToolbar",
@@ -507,9 +528,7 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }), /*#__PURE__*/React__default['default'].createElement(FlexColumn, null, /*#__PURE__*/React__default['default'].createElement("div", {
-    className: "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }), /*#__PURE__*/React__default['default'].createElement(StyledDataTable, null, /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
   }, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"

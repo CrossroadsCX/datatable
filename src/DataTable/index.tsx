@@ -6,7 +6,8 @@ import {
 } from 'react-table';
 import filter from 'lodash/filter';
 
-import { FlexColumn, TableThemeProvider } from '../Theme'
+import { TableThemeProvider } from '../Theme'
+import { StyledDataTable } from './styled'
 
 import { TableToolbar } from '../TableToolbar';
 import { TableRow } from '../TableRow';
@@ -150,9 +151,8 @@ export const DataTable = <T extends Record<string, unknown>>(
         handleEdit={handleEdit}
         handleReset={handleReset}
       />
-      <FlexColumn>
-      {/* <div className="flex flex-col"> */}
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <StyledDataTable>
+        <div>
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200" {...getTableProps()}>
@@ -193,9 +193,8 @@ export const DataTable = <T extends Record<string, unknown>>(
             </div>
           </div>
         </div>
-        {/* </div> */}
-      </FlexColumn>
+      </StyledDataTable>
       </TableThemeProvider>
-      </>
+    </>
   );
 };
