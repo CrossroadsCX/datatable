@@ -25,9 +25,24 @@ export const StyledDataTable = styled.div`
     & > div {
       padding-top:.5rem;
       padding-bottom: .5rem;
+      vertical-align:middle;
+      display: inline-block;
+      min-width:100%;
+
+      @media(min-width: ${props => props.theme.screens.sm}) {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+
+      @media(min-width: ${props => props.theme.screens.lg}) {
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
 
       & > div {
-
+        ${props => props.theme.shadow}
+        ${props => props.theme['border-b']}
+        overflow:hidden;
       }
     }
   }

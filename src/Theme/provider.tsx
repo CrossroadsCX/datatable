@@ -2,6 +2,7 @@ import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
 const theme = {
+  'border-b': 'border-bottom-width: 1px;',
   colors: {
     lightGray: 'rgba(229, 231, 235, 1)',
     gray: 'rgba(156, 163, 175, 1)',
@@ -22,7 +23,11 @@ const theme = {
 
     '2xl': '1536px',
     // => @media (min-width: 1536px) { ... }
-  }
+  },
+  shadow: `
+    --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  `
 }
 
 export const TableThemeProvider = ({ children }) => (
