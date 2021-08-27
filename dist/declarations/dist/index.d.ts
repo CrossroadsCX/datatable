@@ -9,7 +9,7 @@ export type { EditableCellProps } from './TableCell';
 export type { TableRowProps } from './TableRow';
 export type { TableToolbarProps } from './TableToolbar';
 import { MouseEventHandler } from 'react';
-import { TableInstance } from 'react-table';
+import { TableInstance, UseColumnOrderInstanceProps, UseColumnOrderState, UseExpandedHooks, UseExpandedInstanceProps, UseExpandedOptions, UseExpandedRowProps, UseExpandedState, UseFiltersColumnOptions, UseFiltersColumnProps, UseFiltersInstanceProps, UseFiltersOptions, UseFiltersState, UseGlobalFiltersInstanceProps, UseGlobalFiltersOptions, UseGlobalFiltersState, UseGroupByCellProps, UseGroupByColumnOptions, UseGroupByColumnProps, UseGroupByHooks, UseGroupByInstanceProps, UseGroupByOptions, UseGroupByRowProps, UseGroupByState, UsePaginationInstanceProps, UsePaginationOptions, UsePaginationState, UseResizeColumnsColumnOptions, UseResizeColumnsColumnProps, UseResizeColumnsOptions, UseResizeColumnsState, UseRowSelectHooks, UseRowSelectInstanceProps, UseRowSelectOptions, UseRowSelectRowProps, UseRowSelectState, UseSortByColumnOptions, UseSortByColumnProps, UseSortByHooks, UseSortByInstanceProps, UseSortByOptions, UseSortByState } from 'react-table';
 declare module 'react-table' {
     interface UseFlexLayoutInstanceProps<D extends Record<string, unknown>> {
         totalColumnsMinWidth: number;

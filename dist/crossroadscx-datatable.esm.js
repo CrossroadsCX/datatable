@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTable, useRowSelect } from 'react-table';
 import filter from 'lodash/filter';
+import styled, { ThemeProvider } from 'styled-components';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, CheckIcon } from '@heroicons/react/outline';
 import Select from 'react-select';
 
@@ -150,6 +151,36 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
 
+var FlexColumn = styled.div.withConfig({
+  displayName: "wrappers__FlexColumn",
+  componentId: "sc-1pzcc2n-0"
+})(["display:flex;flex-direction:column;"]);
+
+var theme = {
+  colors: {
+    lightGray: 'rgba(229, 231, 235, 1)',
+    gray: 'rgba(156, 163, 175, 1)',
+    darkGray: 'rgba(55, 65, 81, 1)'
+  }
+};
+var TableThemeProvider = function TableThemeProvider(_ref) {
+  var children = _ref.children;
+  return /*#__PURE__*/React.createElement(ThemeProvider, {
+    theme: theme
+  }, children);
+};
+
+var StyledTableToolbar = styled.div.withConfig({
+  displayName: "styled__StyledTableToolbar",
+  componentId: "sc-bz7lb6-0"
+})(["display:flex;width:100%;margin:1rem;svg{height:1.5rem;width:1.5rem;margin-left:.5rem;margin-right:.5rem;color:", ";&.enabled{color:", ";cursor:pointer;&:hover{color:", ";}}}"], function (props) {
+  return props.theme.colors.lightGray;
+}, function (props) {
+  return props.theme.colors.gray;
+}, function (props) {
+  return props.theme.colors.darkGray;
+});
+
 var TableToolbar = function TableToolbar(_ref) {
   var _ref$canAdd = _ref.canAdd,
       canAdd = _ref$canAdd === void 0 ? true : _ref$canAdd,
@@ -163,28 +194,26 @@ var TableToolbar = function TableToolbar(_ref) {
       handleDelete = _ref.handleDelete,
       handleEdit = _ref.handleEdit,
       handleReset = _ref.handleReset;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "flex w-full m-4"
-  }, handleAdd && /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(StyledTableToolbar, null, handleAdd && /*#__PURE__*/React.createElement("div", {
     title: "Add Row"
   }, /*#__PURE__*/React.createElement(PlusIcon, {
-    className: "w-6 ".concat(canAdd ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', " mx-2"),
+    className: "".concat(canAdd ? 'enabled' : ''),
     onClick: handleAdd
   })), handleEdit && /*#__PURE__*/React.createElement("div", {
     title: "Edit Row"
   }, /*#__PURE__*/React.createElement(PencilIcon, {
-    className: "w-6 ".concat(canEdit ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', " mx-2"),
+    className: "".concat(canEdit ? 'enabled' : ''),
     onClick: handleEdit
   })), handleDelete && /*#__PURE__*/React.createElement("div", {
     title: "Delete Row(s)"
   }, /*#__PURE__*/React.createElement(TrashIcon, {
-    className: "w-6 ".concat(canDelete ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', "  mx-2"),
+    className: "".concat(canDelete ? 'enabled' : ''),
     onClick: handleDelete
   })), handleReset && /*#__PURE__*/React.createElement("div", {
     title: "Reset Table"
   }, /*#__PURE__*/React.createElement(ReplyIcon, {
     "aria-disabled": !canReset,
-    className: "w-6 ".concat(canReset ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', " mx-2"),
+    className: "".concat(canReset ? 'enabled' : ''),
     onClick: canReset ? handleReset : undefined
   })));
 };
@@ -458,7 +487,7 @@ var DataTable = function DataTable(props) {
 
     setInitialRender(false);
   }, [data, editing]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableToolbar, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableThemeProvider, null, /*#__PURE__*/React.createElement(TableToolbar, {
     canAdd: editing === null,
     canDelete: selectedFlatRows.length > 0,
     canEdit: selectedFlatRows.length === 1,
@@ -467,9 +496,7 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col"
-  }, /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement(FlexColumn, null, /*#__PURE__*/React.createElement("div", {
     className: "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
   }, /*#__PURE__*/React.createElement("div", {
     className: "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
@@ -498,7 +525,7 @@ var DataTable = function DataTable(props) {
       editing: editing,
       saveRow: saveRow
     });
-  }))))))));
+  })))))))));
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar };
