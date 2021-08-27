@@ -13,14 +13,14 @@ export const StyledTableToolbar = styled.div`
     margin-left: .5rem;
     margin-right: .5rem;
 
-    color: rgba(229, 231, 235, 1);
+    color: ${props => props.theme.colors.lightGray};
 
     &.enabled {
-      color: rgba(156, 163, 175, 1);
+      color: ${props => props.theme.colors.gray};
       cursor: pointer;
 
       &:hover {
-        color: rgba(55, 65, 81, 1);
+        color: ${props => props.theme.colors.darkGray};
       }
     }
   }

@@ -6,7 +6,7 @@ import {
 } from 'react-table';
 import filter from 'lodash/filter';
 
-import { FlexColumn } from '../Theme'
+import { FlexColumn, TableThemeProvider } from '../Theme'
 
 import { TableToolbar } from '../TableToolbar';
 import { TableRow } from '../TableRow';
@@ -139,6 +139,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   return (
     <>
+    <TableThemeProvider>
       <TableToolbar
         canAdd={editing === null}
         canDelete={selectedFlatRows.length > 0}
@@ -194,6 +195,7 @@ export const DataTable = <T extends Record<string, unknown>>(
         </div>
         {/* </div> */}
       </FlexColumn>
-    </>
+      </TableThemeProvider>
+      </>
   );
 };
