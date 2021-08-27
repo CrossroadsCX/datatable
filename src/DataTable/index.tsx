@@ -151,19 +151,19 @@ export const DataTable = <T extends Record<string, unknown>>(
         handleEdit={handleEdit}
         handleReset={handleReset}
       />
-      <StyledDataTable>
+        <StyledDataTable>
+          {/* The following divs are styled in DataTable/styled.tsx  */}
         <div>
           <div>
-            <div className="border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200" {...getTableProps()}>
-                <thead className="bg-gray-50">
+            <div>
+              <table {...getTableProps()}>
+                <thead>
                   {headerGroups.map((headerGroup, rowIndex) => (
-                    <tr className="border-b border-gray-200" {...headerGroup.getHeaderGroupProps()}>
+                    <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
                         <th
                           {...column.getHeaderProps()}
                           scope="col"
-                          className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${rowIndex === 0 ? 'text-center border-l border-r border-gray-200' : ''}`}
                         >
                           {column.render('Header')}
                         </th>
@@ -173,7 +173,6 @@ export const DataTable = <T extends Record<string, unknown>>(
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="bg-white divide-y divide-gray-200"
                 >
                   {
                     rows.map((row) => {
