@@ -157,6 +157,7 @@ styled.div.withConfig({
 })(["display:flex;flex-direction:column;"]);
 
 var theme = {
+  'border-b': 'border-bottom-width: 1px;',
   colors: {
     lightGray: 'rgba(229, 231, 235, 1)',
     gray: 'rgba(156, 163, 175, 1)',
@@ -173,7 +174,8 @@ var theme = {
     // => @media (min-width: 1280px) { ... }
     '2xl': '1536px' // => @media (min-width: 1536px) { ... }
 
-  }
+  },
+  shadow: "\n    --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);\n    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n  "
 };
 var TableThemeProvider = function TableThemeProvider(_ref) {
   var children = _ref.children;
@@ -185,10 +187,20 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
 var StyledDataTable = styled.div.withConfig({
   displayName: "styled__StyledDataTable",
   componentId: "sc-smya6t-0"
-})(["display:flex;flex-direction:column;& > div{margin-top:-.5rem;margin-bottom:-.5rem;overflow-x:auto;@media (min-width:", "){margin-left:-1.5rem;margin-right:-1.5rem;}@media (min-width:", "){margin-left:-2rem;margin-right:-2rem;}& > div{padding-top:.5rem;padding-bottom:.5rem;& > div{}}}"], function (props) {
+})(["display:flex;flex-direction:column;& > div{margin-top:-.5rem;margin-bottom:-.5rem;overflow-x:auto;@media (min-width:", "){margin-left:-1.5rem;margin-right:-1.5rem;}@media (min-width:", "){margin-left:-2rem;margin-right:-2rem;}& > div{padding-top:.5rem;padding-bottom:.5rem;vertical-align:middle;display:inline-block;min-width:100%;@media(min-width:", "){padding-left:1.5rem;padding-right:1.5rem;}@media(min-width:", "){padding-left:2rem;padding-right:2rem;}& > div{", " ", " overflow:hidden;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));@media(min-width:", "){border-radius:0.5rem;}}}}table{min-width:100%;& > * + *{--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse));--tw-divide-opacity:1;border-color:rgba(229,231,235,var(--tw-divide-opacity));}thead{--tw-bg-opacity:1;background-color:rgba(249,250,251,var(--tw-bg-opacity));}tbody{background:white;& > * + *{--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse));--tw-divide-opacity:1;border-color:rgba(229,231,235,var(--tw-divide-opacity));}}tr{--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse));--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));}th{padding-left:1.5rem;padding-right:1.5rem;padding-top:0.75rem;padding-bottom:0.75rem;text-align:left;font-size:0.75rem;line-height:1rem;font-weight:500;--tw-text-opacity:1;color:rgba(107,114,128,var(--tw-text-opacity));text-transform:uppercase;letter-spacing:0.05em;&:first-child{text-align:center;border-left-width:1px;border-right-width:1px;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));}}td{padding-left:1.5rem;padding-right:1.5rem;padding-top:.75rem;padding-bottom:.75rem;font-size:0.75rem;line-height:1rem;font-weight:500;&:first-child{width:2rem;text-align:center;}}}"], function (props) {
   return props.theme.screens.sm;
 }, function (props) {
   return props.theme.screens.lg;
+}, function (props) {
+  return props.theme.screens.sm;
+}, function (props) {
+  return props.theme.screens.lg;
+}, function (props) {
+  return props.theme.shadow;
+}, function (props) {
+  return props.theme['border-b'];
+}, function (props) {
+  return props.theme.screens.sm;
 });
 
 var StyledTableToolbar = styled.div.withConfig({
@@ -517,26 +529,13 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }), /*#__PURE__*/React.createElement(StyledDataTable, null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
-  }, /*#__PURE__*/React.createElement("table", _extends({
-    className: "min-w-full divide-y divide-gray-200"
-  }, getTableProps()), /*#__PURE__*/React.createElement("thead", {
-    className: "bg-gray-50"
-  }, headerGroups.map(function (headerGroup, rowIndex) {
-    return /*#__PURE__*/React.createElement("tr", _extends({
-      className: "border-b border-gray-200"
-    }, headerGroup.getHeaderGroupProps()), headerGroup.headers.map(function (column) {
+  }), /*#__PURE__*/React.createElement(StyledDataTable, null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
+    return /*#__PURE__*/React.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
       return /*#__PURE__*/React.createElement("th", _extends({}, column.getHeaderProps(), {
-        scope: "col",
-        className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ".concat(rowIndex === 0 ? 'text-center border-l border-r border-gray-200' : '')
+        scope: "col"
       }), column.render('Header'));
     }));
-  })), /*#__PURE__*/React.createElement("tbody", _extends({}, getTableBodyProps(), {
-    className: "bg-white divide-y divide-gray-200"
-  }), rows.map(function (row) {
+  })), /*#__PURE__*/React.createElement("tbody", getTableBodyProps(), rows.map(function (row) {
     prepareRow(row);
     return /*#__PURE__*/React.createElement(TableRow, {
       key: row.index,
