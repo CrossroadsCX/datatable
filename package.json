@@ -1,6 +1,6 @@
 {
   "name": "@crossroadscx/datatable",
-  "version": "0.0.18",
+  "version": "0.0.22",
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
@@ -28,10 +28,12 @@
     "@storybook/react": "^6.3.7",
     "@types/lodash": "^4.14.172",
     "@types/react-select": "^4.0.17",
+    "@types/styled-components": "^5.1.13",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
     "autoprefixer": "^10.3.1",
     "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.13.2",
     "chromatic": "^5.9.2",
     "eslint": "^7.32.0",
     "postcss": "^8.3.6",
@@ -47,8 +49,10 @@
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
     "react-select": "^4.3.1",
     "react-table": "^7.7.0",
+    "styled-components": "^5.3.1",
     "typescript": "^4.3.5"
   },
   "scripts": {

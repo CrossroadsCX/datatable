@@ -6,6 +6,9 @@ import {
 } from 'react-table';
 import filter from 'lodash/filter';
 
+import { TableThemeProvider } from '../Theme'
+import { StyledDataTable } from './styled'
+
 import { TableToolbar } from '../TableToolbar';
 import { TableRow } from '../TableRow';
 import { EditableCell } from '../TableCell';
@@ -15,7 +18,7 @@ import { selectionHook } from '../utils';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
-    columns: Column<T>[],
+    columns: Column<T>[]
     data: T[]
     defaultItem?: T
     name?: string
@@ -137,6 +140,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   return (
     <>
+    <TableThemeProvider>
       <TableToolbar
         canAdd={editing === null}
         canDelete={selectedFlatRows.length > 0}
@@ -147,19 +151,19 @@ export const DataTable = <T extends Record<string, unknown>>(
         handleEdit={handleEdit}
         handleReset={handleReset}
       />
-      <div className="flex flex-col">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200" {...getTableProps()}>
-                <thead className="bg-gray-50">
+        <StyledDataTable>
+          {/* The following divs are styled in DataTable/styled.tsx  */}
+        <div>
+          <div>
+            <div>
+              <table {...getTableProps()}>
+                <thead>
                   {headerGroups.map((headerGroup, rowIndex) => (
-                    <tr className="border-b border-gray-200" {...headerGroup.getHeaderGroupProps()}>
+                    <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
                         <th
                           {...column.getHeaderProps()}
                           scope="col"
-                          className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${rowIndex === 0 ? 'text-center border-l border-r border-gray-200' : ''}`}
                         >
                           {column.render('Header')}
                         </th>
@@ -169,7 +173,6 @@ export const DataTable = <T extends Record<string, unknown>>(
                 </thead>
                 <tbody
                   {...getTableBodyProps()}
-                  className="bg-white divide-y divide-gray-200"
                 >
                   {
                     rows.map((row) => {
@@ -189,7 +192,8 @@ export const DataTable = <T extends Record<string, unknown>>(
             </div>
           </div>
         </div>
-      </div>
+      </StyledDataTable>
+      </TableThemeProvider>
     </>
   );
 };

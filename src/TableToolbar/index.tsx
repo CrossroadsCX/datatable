@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { StyledTableToolbar } from './styled'
+
 import {
   PencilIcon, PlusIcon, ReplyIcon, TrashIcon,
 } from '@heroicons/react/outline';
@@ -25,11 +27,11 @@ export const TableToolbar: React.FC<TableToolbarProps> = ({
   handleEdit,
   handleReset,
 }) => (
-  <div className="flex w-full m-4">
+  <StyledTableToolbar>
     {handleAdd && (
       <div title="Add Row">
         <PlusIcon
-          className={`w-6 ${canAdd ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200'} mx-2`}
+          className={`${canAdd ? 'enabled' : ''}`}
           onClick={handleAdd}
         />
       </div>
@@ -37,7 +39,7 @@ export const TableToolbar: React.FC<TableToolbarProps> = ({
     {handleEdit && (
       <div title="Edit Row">
         <PencilIcon
-          className={`w-6 ${canEdit ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200'} mx-2`}
+          className={`${canEdit ? 'enabled': ''}`}
           onClick={handleEdit}
         />
       </div>
@@ -45,7 +47,7 @@ export const TableToolbar: React.FC<TableToolbarProps> = ({
     {handleDelete && (
       <div title="Delete Row(s)">
         <TrashIcon
-          className={`w-6 ${canDelete ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200'}  mx-2`}
+          className={`${canDelete ? 'enabled': ''}`}
           onClick={handleDelete}
         />
       </div>
@@ -54,10 +56,10 @@ export const TableToolbar: React.FC<TableToolbarProps> = ({
       <div title="Reset Table">
         <ReplyIcon
           aria-disabled={!canReset}
-          className={`w-6 ${canReset ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200'} mx-2`}
+          className={`${canReset ? 'enabled': ''}`}
           onClick={canReset ? handleReset : undefined}
         />
       </div>
     )}
-  </div>
+    </StyledTableToolbar>
 );

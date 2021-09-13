@@ -21,7 +21,8 @@ export const selectionHook = (hooks: Hooks<any>) => {
       ),
       Cell: ({
         row,
-        editing, handleSaveRow,
+        editing,
+        handleSaveRow,
       }: CellProps<any> & {
         editing: number | null,
         handleSaveRow: () => void

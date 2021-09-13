@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useTable, useRowSelect } from 'react-table';
 import filter from 'lodash/filter';
+import styled, { ThemeProvider } from 'styled-components';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, CheckIcon } from '@heroicons/react/outline';
 import Select from 'react-select';
 
@@ -150,6 +151,69 @@ function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
 
+styled.div.withConfig({
+  displayName: "wrappers__FlexColumn",
+  componentId: "sc-1pzcc2n-0"
+})(["display:flex;flex-direction:column;"]);
+
+var theme = {
+  'border-b': 'border-bottom-width: 1px;',
+  colors: {
+    lightGray: 'rgba(229, 231, 235, 1)',
+    gray: 'rgba(156, 163, 175, 1)',
+    darkGray: 'rgba(55, 65, 81, 1)'
+  },
+  screens: {
+    sm: '640px',
+    // => @media (min-width: 640px) { ... }
+    md: '768px',
+    // => @media (min-width: 768px) { ... }
+    lg: '1024px',
+    // => @media (min-width: 1024px) { ... }
+    xl: '1280px',
+    // => @media (min-width: 1280px) { ... }
+    '2xl': '1536px' // => @media (min-width: 1536px) { ... }
+
+  },
+  shadow: "\n    --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);\n    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);\n  "
+};
+var TableThemeProvider = function TableThemeProvider(_ref) {
+  var children = _ref.children;
+  return /*#__PURE__*/React.createElement(ThemeProvider, {
+    theme: theme
+  }, children);
+};
+
+var StyledDataTable = styled.div.withConfig({
+  displayName: "styled__StyledDataTable",
+  componentId: "sc-smya6t-0"
+})(["display:flex;flex-direction:column;& > div{margin-top:-.5rem;margin-bottom:-.5rem;overflow-x:auto;@media (min-width:", "){margin-left:-1.5rem;margin-right:-1.5rem;}@media (min-width:", "){margin-left:-2rem;margin-right:-2rem;}& > div{padding-top:.5rem;padding-bottom:.5rem;vertical-align:middle;display:inline-block;min-width:100%;@media(min-width:", "){padding-left:1.5rem;padding-right:1.5rem;}@media(min-width:", "){padding-left:2rem;padding-right:2rem;}& > div{", " ", " overflow:hidden;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));@media(min-width:", "){border-radius:0.5rem;}}}}table{min-width:100%;& > * + *{--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse));--tw-divide-opacity:1;border-color:rgba(229,231,235,var(--tw-divide-opacity));}thead{--tw-bg-opacity:1;background-color:rgba(249,250,251,var(--tw-bg-opacity));}tbody{background:white;& > * + *{--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse));--tw-divide-opacity:1;border-color:rgba(229,231,235,var(--tw-divide-opacity));}}tr{--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse));--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));}th{padding-left:1.5rem;padding-right:1.5rem;padding-top:0.75rem;padding-bottom:0.75rem;text-align:left;font-size:0.75rem;line-height:1rem;font-weight:500;--tw-text-opacity:1;color:rgba(107,114,128,var(--tw-text-opacity));text-transform:uppercase;letter-spacing:0.05em;&:first-child{text-align:center;border-left-width:1px;border-right-width:1px;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));}}td{padding-left:1.5rem;padding-right:1.5rem;padding-top:.75rem;padding-bottom:.75rem;font-size:0.75rem;line-height:1rem;font-weight:500;&:first-child{width:2rem;text-align:center;}}}"], function (props) {
+  return props.theme.screens.sm;
+}, function (props) {
+  return props.theme.screens.lg;
+}, function (props) {
+  return props.theme.screens.sm;
+}, function (props) {
+  return props.theme.screens.lg;
+}, function (props) {
+  return props.theme.shadow;
+}, function (props) {
+  return props.theme['border-b'];
+}, function (props) {
+  return props.theme.screens.sm;
+});
+
+var StyledTableToolbar = styled.div.withConfig({
+  displayName: "styled__StyledTableToolbar",
+  componentId: "sc-bz7lb6-0"
+})(["display:flex;width:100%;margin:1rem;svg{height:1.5rem;width:1.5rem;margin-left:.5rem;margin-right:.5rem;color:", ";&.enabled{color:", ";cursor:pointer;&:hover{color:", ";}}}"], function (props) {
+  return props.theme.colors.lightGray;
+}, function (props) {
+  return props.theme.colors.gray;
+}, function (props) {
+  return props.theme.colors.darkGray;
+});
+
 var TableToolbar = function TableToolbar(_ref) {
   var _ref$canAdd = _ref.canAdd,
       canAdd = _ref$canAdd === void 0 ? true : _ref$canAdd,
@@ -163,28 +227,26 @@ var TableToolbar = function TableToolbar(_ref) {
       handleDelete = _ref.handleDelete,
       handleEdit = _ref.handleEdit,
       handleReset = _ref.handleReset;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "flex w-full m-4"
-  }, handleAdd && /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(StyledTableToolbar, null, handleAdd && /*#__PURE__*/React.createElement("div", {
     title: "Add Row"
   }, /*#__PURE__*/React.createElement(PlusIcon, {
-    className: "w-6 ".concat(canAdd ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', " mx-2"),
+    className: "".concat(canAdd ? 'enabled' : ''),
     onClick: handleAdd
   })), handleEdit && /*#__PURE__*/React.createElement("div", {
     title: "Edit Row"
   }, /*#__PURE__*/React.createElement(PencilIcon, {
-    className: "w-6 ".concat(canEdit ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', " mx-2"),
+    className: "".concat(canEdit ? 'enabled' : ''),
     onClick: handleEdit
   })), handleDelete && /*#__PURE__*/React.createElement("div", {
     title: "Delete Row(s)"
   }, /*#__PURE__*/React.createElement(TrashIcon, {
-    className: "w-6 ".concat(canDelete ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', "  mx-2"),
+    className: "".concat(canDelete ? 'enabled' : ''),
     onClick: handleDelete
   })), handleReset && /*#__PURE__*/React.createElement("div", {
     title: "Reset Table"
   }, /*#__PURE__*/React.createElement(ReplyIcon, {
     "aria-disabled": !canReset,
-    className: "w-6 ".concat(canReset ? 'text-gray-400 hover:text-gray-700 cursor-pointer' : 'text-gray-200', " mx-2"),
+    className: "".concat(canReset ? 'enabled' : ''),
     onClick: canReset ? handleReset : undefined
   })));
 };
@@ -458,7 +520,7 @@ var DataTable = function DataTable(props) {
 
     setInitialRender(false);
   }, [data, editing]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableToolbar, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableThemeProvider, null, /*#__PURE__*/React.createElement(TableToolbar, {
     canAdd: editing === null,
     canDelete: selectedFlatRows.length > 0,
     canEdit: selectedFlatRows.length === 1,
@@ -467,30 +529,13 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
-  }, /*#__PURE__*/React.createElement("table", _extends({
-    className: "min-w-full divide-y divide-gray-200"
-  }, getTableProps()), /*#__PURE__*/React.createElement("thead", {
-    className: "bg-gray-50"
-  }, headerGroups.map(function (headerGroup, rowIndex) {
-    return /*#__PURE__*/React.createElement("tr", _extends({
-      className: "border-b border-gray-200"
-    }, headerGroup.getHeaderGroupProps()), headerGroup.headers.map(function (column) {
+  }), /*#__PURE__*/React.createElement(StyledDataTable, null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
+    return /*#__PURE__*/React.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
       return /*#__PURE__*/React.createElement("th", _extends({}, column.getHeaderProps(), {
-        scope: "col",
-        className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ".concat(rowIndex === 0 ? 'text-center border-l border-r border-gray-200' : '')
+        scope: "col"
       }), column.render('Header'));
     }));
-  })), /*#__PURE__*/React.createElement("tbody", _extends({}, getTableBodyProps(), {
-    className: "bg-white divide-y divide-gray-200"
-  }), rows.map(function (row) {
+  })), /*#__PURE__*/React.createElement("tbody", getTableBodyProps(), rows.map(function (row) {
     prepareRow(row);
     return /*#__PURE__*/React.createElement(TableRow, {
       key: row.index,
@@ -498,7 +543,7 @@ var DataTable = function DataTable(props) {
       editing: editing,
       saveRow: saveRow
     });
-  }))))))));
+  })))))))));
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar };
