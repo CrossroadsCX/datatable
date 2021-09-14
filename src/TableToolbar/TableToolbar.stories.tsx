@@ -1,6 +1,8 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
 
+import { TableThemeProvider } from '../Theme';
+
 import { TableToolbar, TableToolbarProps } from '.';
 
 const handleAdd = () => {
@@ -24,7 +26,7 @@ export default {
   component: TableToolbar,
 } as Meta;
 
-const Template: Story<TableToolbarProps> = (args) => <TableToolbar {...args} />;
+const Template: Story<TableToolbarProps> = (args) => <TableThemeProvider><TableToolbar {...args} /></TableThemeProvider>;
 
 export const Basic = Template.bind({});
 Basic.args = {
