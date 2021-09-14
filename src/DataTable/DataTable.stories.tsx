@@ -29,19 +29,19 @@ const defaultSale = {
 
 const originalData: Sale[] = [
   {
-    date: format(new Date(), 'MM-dd-yyyy'),
+    date: format(new Date('08-27-2021'), 'MM-dd-yyyy'),
     seller: 'Holland Oats',
     product: 'Tulips',
     quantity: 100,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date('08-25-2021').toISOString(),
     client: 'Colorful Clogs',
   },
   {
-    date: format(new Date(), 'MM-dd-yyyy'),
+    date: format(new Date('08-27-2021'), 'MM-dd-yyyy'),
     seller: 'Seller Name',
     product: 'Dandelions',
     quantity: 20,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date('08-25-2021').toISOString(),
     client: 'Client Name',
   },
 ];
