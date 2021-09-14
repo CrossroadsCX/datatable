@@ -6,6 +6,10 @@ This project layers a UI on top of the every popular [React Table](https://react
 
 [Chromatic Storybook Demo](https://611fe2acceeaf1004a5cef13-ccyodchjma.chromatic.com)
 
+![Selectable](./docs/images/Selectable.png)
+
+![Non-Selectable](./docs/images/Non-Selectable.png)
+
 ## Usage
 
 ```
@@ -62,7 +66,19 @@ React.render(<DataTable columns={columns} data={data} defaultItem={defaultPerson
 ```
 
 ## Props
-_Coming soon_
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| data | Array<any> | Yes | - | The incoming data for the table. This borrows from [react-table](https://react-table.tanstack.com/docs/api/useTable#table-options) It should also be annotated with a typescript type as the generic is used throughout the table |
+| columns | Array<Column> | Yes | - | This type is the same structure required by [react-table](https://react-table.tanstack.com/docs/api/useTable#table-options) and determines the headers / accessors in the table |
+| handleChange | function | Yes | - | This handler is called any time the data in the table changes. This may include edits to a row data or row additions / deletions. |
+| defaultItem | Object<T> | No | undefined | The default item object is used to add new rows to the table. This functionality will be disabled if defaultItem is not passed |
+| selectable | Boolean | No | false | This prop enables row selection via checkbox inputs in the table |
+
+## Styling
+The default UI uses the [TailwindCSS](https://tailwindcss.com/) library for styling, and we use [Styled Components](https://styled-components.com/) as the styling implementation.
+
+Future versions will allow individual style or entire theme overrides.
 
 ## License
 
