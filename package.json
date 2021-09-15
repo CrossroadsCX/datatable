@@ -7,6 +7,14 @@
   "main": "dist/crossroadscx-datatable.cjs.js",
   "module": "dist/crossroadscx-datatable.esm.js",
   "types": "dist/crossroadscx-datatable.cjs.d.ts",
+  "keywords": [
+    "react",
+    "react-table",
+    "datatable",
+    "table",
+    "ui",
+    "component"
+  ],
   "files": [
     "src",
     "dist",
