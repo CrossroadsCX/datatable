@@ -18,7 +18,7 @@ declare module 'react-table' {
         totalMinWidth: number;
     }
     interface TableOptions<D extends Record<string, unknown>> extends UseExpandedOptions<D>, UseFiltersOptions<D>, UseFiltersOptions<D>, UseGlobalFiltersOptions<D>, UseGroupByOptions<D>, UsePaginationOptions<D>, UseResizeColumnsOptions<D>, UseRowSelectOptions<D>, UseSortByOptions<D> {
-        saveRow: (row: Row<D>) => void;
+        saveRow?: (row: Row<D>) => void;
     }
     interface Hooks<D extends Record<string, unknown> = Record<string, unknown>> extends UseExpandedHooks<D>, UseGroupByHooks<D>, UseRowSelectHooks<D>, UseSortByHooks<D> {
     }
