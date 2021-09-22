@@ -83,7 +83,7 @@ declare module 'react-table' {
       UseResizeColumnsOptions<D>,
       UseRowSelectOptions<D>,
       UseSortByOptions<D> {
-        saveRow: (row: Row<D>) => void
+        saveRow?: (row: Row<D>) => void
       }
 
   export interface Hooks<D extends Record<string, unknown> = Record<string, unknown>>
