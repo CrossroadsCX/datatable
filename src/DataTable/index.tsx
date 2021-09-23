@@ -10,7 +10,7 @@ import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
 import { TableToolbar } from '../TableToolbar';
-import { TableRow } from '../TableRow';
+import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
 
@@ -24,6 +24,9 @@ export interface DataTableProps<T extends Record<string, unknown>>
     name?: string
     handleChange: (data: T[]) => void
     selectable?: boolean
+    tableRow?: <T extends Record<string, unknown>>(
+      props: TableRowProps<T>,
+    ) => ReactElement,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -42,6 +45,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     defaultItem,
     handleChange,
     selectable = true,
+    tableRow,
   } = props;
 
   /** Table State */
@@ -138,6 +142,8 @@ export const DataTable = <T extends Record<string, unknown>>(
     setInitialRender(false);
   }, [data, editing]);
 
+  const TableRowRender = tableRow ? tableRow : TableRow
+
   return (
     <>
     <TableThemeProvider>
@@ -175,8 +181,18 @@ export const DataTable = <T extends Record<string, unknown>>(
                   {...getTableBodyProps()}
                 >
                   {
-                    rows.map((row) => {
+                    rows.map((row: Row<T>) => {
                       prepareRow(row);
+
+                      return (
+                        <TableRowRender<T>
+                          key={row.index}
+                          row={row}
+                          editing={editing}
+                          saveRow={saveRow}
+                        />
+                      )
+
                       return (
                         <TableRow<T>
                           key={row.index}
