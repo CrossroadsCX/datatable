@@ -9,7 +9,7 @@ export const Stars: React.FC<StarsProps> = ({ stars }) => {
   return (
     <>
       <div style={{ maxWidth: '6rem', display: 'flex' }}>
-        {Array(stars).fill(<StarIcon />)}
+        {Array.from({ length: stars }, (_, i) => (<StarIcon key={i} />))}
       </div>
     </>
   )
