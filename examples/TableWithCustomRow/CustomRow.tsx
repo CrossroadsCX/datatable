@@ -3,14 +3,17 @@ import { Row } from 'react-table';
 
 import { TableRowProps } from '../../src/TableRow'
 
+interface CustomRowProps<T> extends TableRowProps<T> {
+  className: string,
+}
+
 export const CustomRow = <T extends Record<string, unknown>>(
-  props: TableRowProps<T>
+  props: CustomRowProps<T>
 ): ReactElement => {
-  const { row, editing, saveRow } = props;
-  const [data, setData] = useState(row);
+  const { className, row } = props;
 
   return (
-    <tr {...row.getRowProps()}>
+    <tr {...row.getRowProps()} className={className}>
       {row.cells.map((cell, index) => (
         <td {...cell.getCellProps()} style={{ borderStyle: 'dotted', maxWidth: '100%', boxSizing: 'border-box'}}>
           {cell.render('Cell')}

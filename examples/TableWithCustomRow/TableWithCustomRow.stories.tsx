@@ -4,7 +4,7 @@ import { Column } from 'react-table'
 
 import { DataTable, DataTableProps } from '../../src/DataTable'
 import { Stars } from './Stars'
-import { CustomRow } from './CustomRow'
+import { StyledCustomRow } from './StyledCustomRow'
 
 export default {
   title: 'examples/MoviesTable',
@@ -51,6 +51,6 @@ export const Basic = Template.bind({})
 Basic.args = {
   data: movieData,
   columns,
-  tableRow: CustomRow,
+  tableRow: StyledCustomRow,
   selectable: false,
 }
