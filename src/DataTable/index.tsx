@@ -2,7 +2,7 @@ import React, {
   PropsWithChildren, ReactElement, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Column, Hooks, Row, TableOptions, useRowSelect, useTable,
+  Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable,
 } from 'react-table';
 import filter from 'lodash/filter';
 
@@ -10,7 +10,7 @@ import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
 import { TableToolbar } from '../TableToolbar';
-import { TableRow } from '../TableRow';
+import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
 
@@ -24,6 +24,10 @@ export interface DataTableProps<T extends Record<string, unknown>>
     name?: string
     handleChange: (data: T[]) => void
     selectable?: boolean
+    tableRow?: <T extends Record<string, unknown>>(
+      props: TableRowProps<T>,
+    ) => ReactElement,
+    disableToolbar: boolean,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -42,6 +46,8 @@ export const DataTable = <T extends Record<string, unknown>>(
     defaultItem,
     handleChange,
     selectable = true,
+    tableRow,
+    disableToolbar = false,
   } = props;
 
   /** Table State */
@@ -138,30 +144,36 @@ export const DataTable = <T extends Record<string, unknown>>(
     setInitialRender(false);
   }, [data, editing]);
 
+  const TableRowRender = tableRow ? tableRow : TableRow
+
   return (
     <>
-    <TableThemeProvider>
-      <TableToolbar
-        canAdd={editing === null}
-        canDelete={selectedFlatRows.length > 0}
-        canEdit={selectedFlatRows.length === 1}
-        canReset={data.length !== initialData.length}
-        handleAdd={handleAdd}
-        handleDelete={handleDelete}
-        handleEdit={handleEdit}
-        handleReset={handleReset}
-      />
-        <StyledDataTable>
-          {/* The following divs are styled in DataTable/styled.tsx  */}
+      <TableThemeProvider>
+        {disableToolbar ? (
+          <TableToolbar
+          canAdd={editing === null}
+          canDelete={selectedFlatRows.length > 0}
+          canEdit={selectedFlatRows.length === 1}
+          canReset={data.length !== initialData.length}
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          handleReset={handleReset}
+        />
+      ): null}
+
+      <StyledDataTable>
+        {/* The following divs are styled in DataTable/styled.tsx  */}
         <div>
           <div>
             <div>
               <table {...getTableProps()}>
                 <thead>
-                  {headerGroups.map((headerGroup, rowIndex) => (
+                  {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
+                      {headerGroup.headers.map((column: Column<T>) => (
                         <th
+                          key={rowIndex}
                           {...column.getHeaderProps()}
                           scope="col"
                         >
@@ -175,16 +187,17 @@ export const DataTable = <T extends Record<string, unknown>>(
                   {...getTableBodyProps()}
                 >
                   {
-                    rows.map((row) => {
+                    rows.map((row: Row<T>) => {
                       prepareRow(row);
+
                       return (
-                        <TableRow<T>
+                        <TableRowRender<T>
                           key={row.index}
                           row={row}
                           editing={editing}
                           saveRow={saveRow}
                         />
-                      );
+                      )
                     })
                   }
                 </tbody>
