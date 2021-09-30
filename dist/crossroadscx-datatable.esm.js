@@ -4,6 +4,7 @@ import filter from 'lodash/filter';
 import styled, { ThemeProvider } from 'styled-components';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, CheckIcon } from '@heroicons/react/outline';
 import Select from 'react-select';
+import { isEqual, unionWith } from 'lodash';
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -402,28 +403,30 @@ var DataTable = function DataTable(props) {
   var hooks = [useRowSelect]; // Only set this value if we're able to delete rows
 
   var handleDelete;
-  var initialData = props.data,
+  var data = props.data,
       columns = props.columns,
       defaultItem = props.defaultItem,
       handleChange = props.handleChange,
       _props$selectable = props.selectable,
-      selectable = _props$selectable === void 0 ? true : _props$selectable;
+      selectable = _props$selectable === void 0 ? true : _props$selectable,
+      tableRow = props.tableRow,
+      _props$disableToolbar = props.disableToolbar,
+      disableToolbar = _props$disableToolbar === void 0 ? false : _props$disableToolbar;
   /** Table State */
 
-  var _useState = useState({}),
-      _useState2 = _slicedToArray(_useState, 1),
-      initialState
-  /* , setInitialState */
-  = _useState2[0];
+  var _useState = useState(data),
+      _useState2 = _slicedToArray(_useState, 2),
+      incomingState = _useState2[0],
+      setIncomingState = _useState2[1];
 
   var _useState3 = useState(null),
       _useState4 = _slicedToArray(_useState3, 2),
       editing = _useState4[0],
       setEditing = _useState4[1];
 
-  var _useState5 = useState(initialData),
+  var _useState5 = useState(data),
       _useState6 = _slicedToArray(_useState5, 2),
-      data = _useState6[0],
+      tableData = _useState6[0],
       setData = _useState6[1];
 
   var _useState7 = useState(true),
@@ -463,7 +466,7 @@ var DataTable = function DataTable(props) {
     var index = row.index,
         values = row.values;
 
-    var newData = _toConsumableArray(data);
+    var newData = _toConsumableArray(tableData);
 
     newData[index] = values;
     setData(newData);
@@ -472,10 +475,10 @@ var DataTable = function DataTable(props) {
   };
 
   var _useTable = useTable.apply(void 0, [_objectSpread2(_objectSpread2({}, props), {}, {
-    data: data,
+    data: tableData,
     defaultColumn: defaultColumn,
     columns: columns,
-    initialState: initialState,
+    initialState: incomingState,
     saveRow: saveRow
   })].concat(hooks)),
       rows = _useTable.rows,
@@ -492,13 +495,13 @@ var DataTable = function DataTable(props) {
       return;
     }
 
-    var updatedData = [].concat(_toConsumableArray(data), [defaultItem]);
+    var updatedData = [].concat(_toConsumableArray(tableData), [defaultItem]);
     setData(updatedData);
     setEditing(updatedData.length - 1);
   };
 
   var handleReset = function handleReset() {
-    setData(initialData);
+    setData(data);
   };
 
   var handleEdit = function handleEdit() {
@@ -515,29 +518,40 @@ var DataTable = function DataTable(props) {
 
   useEffect(function () {
     if (!editing && !initialRender && handleChange) {
-      handleChange(data);
+      handleChange(tableData);
+    } // If our incoming data prop is different than previous incoming data
+
+
+    if (!isEqual(data, incomingState)) {
+      // Merge the new data with what's in the table
+      var newTableData = unionWith(data, tableData, isEqual);
+      setData(newTableData);
+      setIncomingState(data);
     }
 
     setInitialRender(false);
   }, [data, editing]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableThemeProvider, null, /*#__PURE__*/React.createElement(TableToolbar, {
+  var TableRowRender = tableRow ? tableRow : TableRow;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableThemeProvider, null, !disableToolbar ? /*#__PURE__*/React.createElement(TableToolbar, {
     canAdd: editing === null,
     canDelete: selectedFlatRows.length > 0,
     canEdit: selectedFlatRows.length === 1,
-    canReset: data.length !== initialData.length,
+    canReset: tableData.length !== data.length,
     handleAdd: handleAdd,
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }), /*#__PURE__*/React.createElement(StyledDataTable, null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
+  }) : null, /*#__PURE__*/React.createElement(StyledDataTable, null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
     return /*#__PURE__*/React.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-      return /*#__PURE__*/React.createElement("th", _extends({}, column.getHeaderProps(), {
+      return /*#__PURE__*/React.createElement("th", _extends({
+        key: rowIndex
+      }, column.getHeaderProps(), {
         scope: "col"
       }), column.render('Header'));
     }));
   })), /*#__PURE__*/React.createElement("tbody", getTableBodyProps(), rows.map(function (row) {
     prepareRow(row);
-    return /*#__PURE__*/React.createElement(TableRow, {
+    return /*#__PURE__*/React.createElement(TableRowRender, {
       key: row.index,
       row: row,
       editing: editing,
