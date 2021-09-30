@@ -13,8 +13,7 @@ import { TableToolbar } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
-
-// import '../index.css';
+import { isEqual, unionWith } from 'lodash';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
@@ -41,7 +40,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   let handleDelete;
 
   const {
-    data: initialData,
+    data,
     columns,
     defaultItem,
     handleChange,
@@ -51,9 +50,9 @@ export const DataTable = <T extends Record<string, unknown>>(
   } = props;
 
   /** Table State */
-  const [initialState/* , setInitialState */] = useState({});
+  const [incomingState, setIncomingState] = useState(data);
   const [editing, setEditing] = useState<number | null>(null);
-  const [data, setData] = useState<T[]>(initialData);
+  const [tableData, setData] = useState<T[]>(data);
   const [initialRender, setInitialRender] = useState(true);
 
   /*
@@ -81,7 +80,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   const saveRow = (row: Row<T>) => {
     if (editing === null) return;
     const { index, values } = row;
-    const newData: T[] = [...data];
+    const newData: T[] = [...tableData];
     newData[index] = values as T;
 
     setData(newData);
@@ -100,10 +99,10 @@ export const DataTable = <T extends Record<string, unknown>>(
   } = useTable<T>(
     {
       ...props,
-      data,
+      data: tableData,
       defaultColumn,
       columns,
-      initialState,
+      initialState: incomingState,
       saveRow,
     },
     ...hooks,
@@ -115,14 +114,14 @@ export const DataTable = <T extends Record<string, unknown>>(
       return;
     }
 
-    const updatedData = [...data, defaultItem];
+    const updatedData = [...tableData, defaultItem];
 
     setData(updatedData);
     setEditing(updatedData.length - 1);
   };
 
   const handleReset = () => {
-    setData(initialData);
+    setData(data);
   };
 
   const handleEdit = () => {
@@ -138,7 +137,16 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   useEffect(() => {
     if (!editing && !initialRender && handleChange) {
-      handleChange(data);
+      handleChange(tableData);
+    }
+
+    // If our incoming data prop is different than previous incoming data
+    if (!isEqual(data, incomingState)) {
+      // Merge the new data with what's in the table
+      const newTableData: T[] = unionWith(data, tableData, isEqual)
+
+      setData(newTableData)
+      setIncomingState(data)
     }
 
     setInitialRender(false);
@@ -149,12 +157,12 @@ export const DataTable = <T extends Record<string, unknown>>(
   return (
     <>
       <TableThemeProvider>
-        {disableToolbar ? (
+        {!disableToolbar ? (
           <TableToolbar
           canAdd={editing === null}
           canDelete={selectedFlatRows.length > 0}
           canEdit={selectedFlatRows.length === 1}
-          canReset={data.length !== initialData.length}
+          canReset={tableData.length !== data.length}
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleEdit={handleEdit}
