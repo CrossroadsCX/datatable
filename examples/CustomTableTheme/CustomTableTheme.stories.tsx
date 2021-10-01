@@ -5,7 +5,9 @@ import faker from 'faker'
 
 import { DataTable, DataTableProps } from '../../src/DataTable'
 
-import { defaultTheme, Theme } from '../../src/Theme'
+import { defaultTheme } from '../../src/Theme'
+
+import type { DefaultTheme } from '../../src/Theme'
 
 export default {
   title: 'examples/CustomTableTheme',
@@ -56,8 +58,12 @@ const columns: Column<PersonData>[] = [
   }
 ]
 
-const theme = {
+const theme: DefaultTheme = {
   ...defaultTheme,
+  colors: {
+    ...defaultTheme.colors,
+    header: '#f5f5f5',
+  },
   shadow: null,
 }
 
