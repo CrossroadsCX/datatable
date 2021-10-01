@@ -49,6 +49,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     selectable = true,
     tableRow,
     disableToolbar = false,
+    theme = defaultTheme
   } = props;
 
   /** Table State */
@@ -158,7 +159,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   return (
     <>
-      <TableThemeProvider>
+      <TableThemeProvider theme={theme}>
         {!disableToolbar ? (
           <TableToolbar
           canAdd={editing === null}
@@ -172,11 +173,11 @@ export const DataTable = <T extends Record<string, unknown>>(
         />
       ): null}
 
-      <StyledDataTable theme={defaultTheme ? defaultTheme : defaultTheme}>
+      <StyledDataTable>
         {/* The following divs are styled in DataTable/styled.tsx  */}
-        <div>
-          <div>
-            <div>
+        <div className="table-wrapper">
+          <div className="table-wrapper-inner">
+            <div className="table-wrapper-border">
               <table {...getTableProps()}>
                 <thead>
                   {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
