@@ -13,6 +13,7 @@ import { TableToolbar } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
+import { Theme, defaultTheme } from '../Theme'
 import { isEqual, unionWith } from 'lodash';
 
 export interface DataTableProps<T extends Record<string, unknown>>
@@ -27,6 +28,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
       props: TableRowProps<T>,
     ) => ReactElement,
     disableToolbar: boolean,
+    theme?: Theme
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -170,7 +172,7 @@ export const DataTable = <T extends Record<string, unknown>>(
         />
       ): null}
 
-      <StyledDataTable>
+      <StyledDataTable theme={defaultTheme ? defaultTheme : defaultTheme}>
         {/* The following divs are styled in DataTable/styled.tsx  */}
         <div>
           <div>

@@ -1,7 +1,23 @@
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider, ThemeProviderComponent } from 'styled-components'
 
-const theme = {
+export interface Theme extends Record<string, unknown> {
+  colors?: {
+    lightGray: string
+    gray: string
+    darkGray: string
+  }
+  shadow?: string,
+  screens?: {
+    sm: string
+    md: string
+    lg: string
+    xl: string
+    '2xl': string
+  }
+}
+
+export const defaultTheme: Theme = {
   'border-b': 'border-bottom-width: 1px;',
   colors: {
     lightGray: 'rgba(229, 231, 235, 1)',
@@ -30,7 +46,7 @@ const theme = {
   `
 }
 
-export const TableThemeProvider = ({ children }) => (
+export const TableThemeProvider = ({ children, theme = defaultTheme }): ThemeProviderComponent => (
   <ThemeProvider theme={theme}>
     {children}
   </ThemeProvider>
