@@ -27,7 +27,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
     ) => ReactElement,
-    disableToolbar: boolean,
+    disableToolbar?: boolean,
     theme?: Theme
 }
 

@@ -9,6 +9,6 @@ export interface DataTableProps<T extends Record<string, unknown>> extends Table
     handleChange: (data: T[]) => void;
     selectable?: boolean;
     tableRow?: <T extends Record<string, unknown>>(props: TableRowProps<T>) => ReactElement;
-    disableToolbar: boolean;
+    disableToolbar?: boolean;
 }
 export declare const DataTable: <T extends Record<string, unknown>>(props: React.PropsWithChildren<DataTableProps<T>>) => ReactElement;
