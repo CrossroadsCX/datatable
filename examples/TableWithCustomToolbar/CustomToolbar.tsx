@@ -1,36 +1,31 @@
 import React, { ReactElement } from 'react';
-import { StyledTableToolbar } from './styled'
-
+import { TableToolbarProps } from '../../src/TableToolbar'
 import {
-  PencilIcon, PlusIcon, ReplyIcon, TrashIcon,
-} from '@heroicons/react/outline';
+    PencilIcon, PlusIcon, ReplyIcon, TrashIcon,
+  } from '@heroicons/react/outline';
 
-export type TableToolbarProps<T extends Record<string, unknown>> = {
-  canAdd: boolean
-  canDelete: boolean
-  canEdit: boolean
-  canReset: boolean
-  handleAdd?: () => void,
-  handleDelete?: () => void,
-  handleEdit?: () => void,
-  handleReset?: () => void,
+import { StyledCustomToolbar } from './StyledCustomToolbar'
+
+interface CustomToolbarProps<T> extends TableToolbarProps<T> {
+  className: string,
 }
 
-export const TableToolbar = <T extends Record<string, unknown>> (
-  props: TableToolbarProps<T>, 
+export const CustomToolbar = <T extends Record<string, unknown>>(
+  props: CustomToolbarProps<T>
 ): ReactElement => {
-  const { canAdd, 
+const { canAdd, 
     canDelete,
     canEdit, 
     canReset, 
     handleAdd, 
     handleDelete, 
     handleEdit, 
-    handleReset 
-  } = props
+    handleReset,
+    className 
+    } = props
 
-  return(
-  <StyledTableToolbar>
+  return (
+    <StyledCustomToolbar className={className}>
     {handleAdd && (
       <div title="Add Row">
         <PlusIcon
@@ -64,6 +59,7 @@ export const TableToolbar = <T extends Record<string, unknown>> (
         />
       </div>
     )}
-  </StyledTableToolbar>
+    </StyledCustomToolbar>
   )
+
 }
