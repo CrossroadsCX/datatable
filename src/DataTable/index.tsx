@@ -2,16 +2,17 @@ import React, {
   PropsWithChildren, ReactElement, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable,
+  Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable, usePagination
 } from 'react-table';
 import filter from 'lodash/filter';
 
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
-import { TableToolbar } from '../TableToolbar';
+import { TableToolbar, TableToolbarProps } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
+import { Pagination } from '../Pagination';
 import { selectionHook } from '../utils';
 import { isEqual, unionWith } from 'lodash';
 
@@ -30,12 +31,14 @@ export interface DataTableProps<T extends Record<string, unknown>>
       props: TableToolbarProps<T>,
     ) => ReactElement,
     disableToolbar?: boolean,
+    addPagination?: boolean,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
   props: PropsWithChildren<DataTableProps<T>>,
 ): ReactElement => {
-  const hooks: (((hooks: Hooks<any>) => void) | typeof useRowSelect)[] = [
+  const hooks: (((hooks: Hooks<any>) => void) | typeof useRowSelect | typeof usePagination)[] = [
+    usePagination,
     useRowSelect,
   ];
 
@@ -51,14 +54,16 @@ export const DataTable = <T extends Record<string, unknown>>(
     tableRow,
     tableToolbar,
     disableToolbar = false,
+    addPagination = false,
   } = props;
 
-  /** Table State */
-  const [incomingState, setIncomingState] = useState(data);
-  const [editing, setEditing] = useState<number | null>(null);
-  const [tableData, setData] = useState<T[]>(data);
-  const [initialRender, setInitialRender] = useState(true);
 
+  /** Table State */
+  const [incomingState, setIncomingState] = useState(data)
+  const [editing, setEditing] = useState<number | null>(null)
+  const [tableData, setData] = useState<T[]>(data)
+  const [initialRender, setInitialRender] = useState(true)
+ 
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -100,6 +105,16 @@ export const DataTable = <T extends Record<string, unknown>>(
     prepareRow,
     selectedFlatRows,
     toggleAllRowsSelected,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
   } = useTable<T>(
     {
       ...props,
@@ -109,8 +124,8 @@ export const DataTable = <T extends Record<string, unknown>>(
       initialState: incomingState,
       saveRow,
     },
-    ...hooks,
-  );
+    ...hooks
+  )
 
   const handleAdd = () => {
     if (!defaultItem) {
@@ -156,6 +171,19 @@ export const DataTable = <T extends Record<string, unknown>>(
     setInitialRender(false);
   }, [data, editing]);
 
+  const paginationProps = {
+    pageIndex,
+    pageSize,
+    pageCount,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize
+  }
+
   const TableRowRender = tableRow ? tableRow : TableRow
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
@@ -199,8 +227,21 @@ export const DataTable = <T extends Record<string, unknown>>(
                 <tbody
                   {...getTableBodyProps()}
                 >
-                  {
+                  {!addPagination ?  
                     rows.map((row: Row<T>) => {
+                      prepareRow(row);
+
+                      return (
+                        <TableRowRender<T>
+                          key={row.index}
+                          row={row}
+                          editing={editing}
+                          saveRow={saveRow}
+                        />
+                      )
+                    })
+                  :
+                    page.map((row: Row<T>) => {
                       prepareRow(row);
 
                       return (
@@ -219,6 +260,7 @@ export const DataTable = <T extends Record<string, unknown>>(
           </div>
         </div>
       </StyledDataTable>
+      {addPagination ?  <Pagination {...paginationProps} /> : null}
       </TableThemeProvider>
     </>
   );
