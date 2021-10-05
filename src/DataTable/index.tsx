@@ -5,6 +5,7 @@ import {
   Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable,
 } from 'react-table';
 import filter from 'lodash/filter';
+import { DefaultTheme } from 'styled-components'
 
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
@@ -13,7 +14,7 @@ import { TableToolbar } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
-import { Theme, defaultTheme } from '../Theme'
+import { defaultTheme } from '../Theme'
 import { isEqual, unionWith } from 'lodash';
 
 export interface DataTableProps<T extends Record<string, unknown>>
@@ -28,7 +29,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
       props: TableRowProps<T>,
     ) => ReactElement,
     disableToolbar?: boolean,
-    theme?: Theme
+    theme?: DefaultTheme,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
