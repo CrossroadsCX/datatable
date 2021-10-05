@@ -47,8 +47,10 @@ export const StyledDataTable = styled.div`
         border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 
         @media(min-width: ${props => props.theme.screens.sm}) {
-          border-radius: 0.5rem;
+          ${props => props.theme.overrides && props.theme.overrides['.table-wrapper-border'] }
         }
+
+        ${props => props.theme.overrides && props.theme.overrides['.table-wrapper-border'] }
       }
     }
   }

@@ -33,7 +33,7 @@ const originalData: Sale[] = [
     seller: 'Holland Oats',
     product: 'Tulips',
     quantity: 100,
-    createdAt: new Date('08-25-2021').toISOString(),
+    createdAt: format(new Date('08-25-2021'), 'P'),
     client: 'Colorful Clogs',
   },
   {
@@ -41,7 +41,7 @@ const originalData: Sale[] = [
     seller: 'Seller Name',
     product: 'Dandelions',
     quantity: 20,
-    createdAt: new Date('08-25-2021').toISOString(),
+    createdAt: format(new Date('08-25-2021'), 'P'),
     client: 'Client Name',
   },
 ];

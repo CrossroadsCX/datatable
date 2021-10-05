@@ -1,15 +1,25 @@
 import 'styled-components'
 
 declare module 'styled-components' {
+
+  type ElementType = Record<string, Record<string, string> | string>
   export interface DefaultTheme extends Record<string, unknown> {
+    'border-b': string
     colors: {
       lightGray: string
       gray: string
       darkGray: string
-      header: string
     },
-    components: {
-      DataTableStyles: Record<string, unknown>
+    elements?: {
+      table?: ElementType
+      tbody?: ElementType
+      thead?: ElementType
+      tr?: ElementType
+      th?: ElementType
+      td?: ElementType
+    },
+    overrides?: {
+      '.table-wrapper-border': ElementType
     },
     shadow?: string,
     screens: {

@@ -62,9 +62,35 @@ const theme: DefaultTheme = {
   ...defaultTheme,
   colors: {
     ...defaultTheme.colors,
-    header: '#f5f5f5',
   },
   shadow: null,
+  elements: {
+    ...defaultTheme.elements,
+    table: {
+      ...defaultTheme.elements?.table,
+      borderCollapse: 'collapse',
+      fontFamily: 'Fira Sane, sans-serif',
+    },
+    thead: {
+      backgroundColor: 'rgb(245, 245, 245)',
+      borderBottom: '1px solid #e0e0e1',
+    },
+    th: {
+      ...defaultTheme.elements?.th,
+      letterSpacing: '.05em',
+    },
+    td: {
+      ...defaultTheme.elements?.td,
+      borderBottom: '1px solid #e0e0e1',
+      color: '#828288',
+      fontWeight: 400,
+    }
+  },
+  overrides: {
+    '.table-wrapper-border': {
+      borderRadius: 0,
+    }
+  }
 }
 
 const Template: Story<DataTableProps<PersonData>> = (args) => <DataTable<PersonData> { ...args } />

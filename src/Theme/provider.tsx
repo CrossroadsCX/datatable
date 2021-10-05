@@ -1,5 +1,7 @@
 import React from 'react'
-import { createGlobalStyle, DefaultTheme, ThemeProvider } from 'styled-components'
+import { DefaultTheme, ThemeProvider } from 'styled-components'
+
+import { GlobalStyle } from './global'
 
 type TableThemeProviderProps = {
   children: React.ReactNode,
@@ -12,7 +14,60 @@ export const defaultTheme: DefaultTheme = {
     lightGray: 'rgba(229, 231, 235, 1)',
     gray: 'rgba(156, 163, 175, 1)',
     darkGray: 'rgba(55, 65, 81, 1)',
-    header: 'rgba(249, 250, 251)',
+  },
+  elements: {
+    table: {
+      minWidth: '100%',
+      '& > * + *': {
+        borderTopWidth: '1px',
+        borderBottomWidth: '1px',
+        borderColor: 'rgba(229, 231, 235)',
+      }
+    },
+    tbody: {
+      background: 'white',
+      '& > * + *': {
+        borderTopWidth: '1px',
+        borderBottomWidth: '1px',
+        // borderColor: 'rgba(229, 231, 235)'
+        borderColor: "green",
+      }
+    },
+    thead: {
+      backgroundColor: 'rgba(249, 250, 251)',
+    },
+    tr: {
+      borderTopWidth: '1px',
+      borderBottomWidth: '1px',
+      borderColor: 'rgba(245, 231, 235)'
+    },
+    th: {
+      padding: '.75rem 1.5rem .75rem 1.5rem',
+      textAlign: 'left',
+      fontSize: '.75rem',
+      lineHeight: '1rem',
+      fontWeight: '500',
+      color: 'rgba(107, 114, 128)',
+      textTransform: 'uppercase',
+      letterSpacing: '.1em',
+      '&:first-child': {
+        textAlign: 'center',
+        borderLeftWidth: '1px',
+        borderRightWidth: '1px',
+        borderColor: 'rgba(229, 231, 235)',
+
+      }
+    },
+    td: {
+      padding: '.75rem 1.5rem .75rem 1.5rem',
+      fontSize: '.75rem',
+      lineHeight: '1rem',
+      fontWeight: '500',
+      '&:first-child': {
+        width: '2rem',
+        textAlign: 'center',
+      }
+    },
   },
   screens: {
     sm: '640px',
@@ -35,89 +90,6 @@ export const defaultTheme: DefaultTheme = {
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   `,
 }
-
-export const GlobalStyle = createGlobalStyle`
-  // Table Element Styling
-  table {
-    min-width: 100%;
-
-    & > * + * {
-      --tw-divide-y-reverse: 0;
-      border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-      border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
-
-      --tw-divide-opacity: 1;
-      border-color: rgba(229, 231, 235, var(--tw-divide-opacity));
-    }
-
-    thead {
-      --tw-bg-opacity: 1;
-      background-color: ${props => props.theme.colors.header};
-    }
-
-    tbody {
-      background: white;
-
-      & > * + * {
-        // Divide-Y
-        --tw-divide-y-reverse: 0;
-        border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-        border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
-
-        // Divide Gray 200
-        --tw-divide-opacity: 1;
-        border-color: rgba(229, 231, 235, var(--tw-divide-opacity));
-      }
-    }
-
-    tr {
-      --tw-divide-y-reverse: 0;
-      border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-      border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
-
-      --tw-border-opacity: 1;
-      border-color: rgba(229, 231, 235, var(--tw-border-opacity));
-    }
-
-    th {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-      text-align: left;
-      font-size: 0.75rem;
-      line-height: 1rem;
-      font-weight: 500;
-      --tw-text-opacity: 1;
-      color: rgba(107, 114, 128, var(--tw-text-opacity));
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-
-      &:first-child {
-        text-align:center;
-        border-left-width: 1px;
-        border-right-width: 1px;
-        --tw-border-opacity: 1;
-        border-color: rgba(229, 231, 235, var(--tw-border-opacity));
-      }
-    }
-
-    td {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      padding-top: .75rem;
-      padding-bottom: .75rem;
-      font-size: 0.75rem;
-      line-height: 1rem;
-      font-weight: 500;
-
-      &:first-child {
-        width: 2rem;
-        text-align:center;
-      }
-    }
-  }
-`
 
 export const TableThemeProvider= ({ children, theme = defaultTheme }: TableThemeProviderProps): JSX.Element => (
   <ThemeProvider theme={theme}>
