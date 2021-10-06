@@ -3,6 +3,7 @@ import { Story, Meta } from '@storybook/react'
 import { Column } from 'react-table'
 
 import { DataTable, DataTableProps } from '../../src/DataTable'
+import { Stars } from '../TableWithCustomRow/Stars'
 import { CustomToolbar } from './CustomToolbar'
 
 export default {
@@ -10,92 +11,52 @@ export default {
   component: DataTable,
 } as Meta;
 
-type Person = {
-  firstName: string
-  lastName: string
-  age: number
+type Movie = {
+  title: string
+  year: string
+  stars: React.ReactNode
 }
 
-type PersonData = Person & {
-  subRows?: PersonData[]
+type MovieData = Movie & {
+  subRows?: MovieData[]
 }
 
-const data = [
+const defaultMovie = {
+  title: null,
+  year: null,
+  stars: null,
+};
+
+const movieData = [
   {
-    firstName: 'Bill',
-    lastName: 'Murray',
-    age: 25,
+    title: 'Tombstone',
+    year: '1993',
+    stars: <Stars stars={5} />
   },
-  {
-    firstName: 'Dan',
-    lastName: 'Aykroyd',
-    age: 25
-  }
 ]
 
-const defaultItem = {
-  firstName: null,
-  lastName: null,
-  age: null,
-}
-
-const columns: Column<PersonData>[] = [
+const columns: Column<MovieData>[] = [
   {
-    Header: 'First Name',
-    accessor: 'firstName'
+    Header: 'Title',
+    accessor: 'title',
   },
   {
-    Header: 'Last Name',
-    accessor: 'lastName'
+    Header: 'Year Released',
+    accessor: 'year',
   },
   {
-    Header: 'Age',
-    accessor: 'age'
-  }
+    Header: 'Rating',
+    accessor: 'stars',
+  },
 ]
 
-const Template: Story<DataTableProps<PersonData>> = (args) => {
-  const { data: initialData } = args
-
-  const [data, setData] = React.useState(initialData)
-
-  const handleChange = (updatedData: PersonData[]) => {
-    console.log("Handle Change")
-    console.log(data)
-    // We can either set the new data on the parent here
-    setData(updatedData)
-
-    // Or call an API to make an update mutation
-    // ... GraphQL call goes here
-  }
-
-  // This is an example of an external data append
-  // This could also pull new data from an API
-  const addPerson = () => {
-    const firstName = faker.name.firstName()
-    const lastName = faker.name.lastName()
-    const age = faker.datatype.number(100)
-    const person: Person = {
-      firstName,
-      lastName,
-      age,
-    }
-
-    setData([...data, person])
-  }
-
-  return (
-    <>
-      <DataTable<PersonData> {...args} data={data} handleChange={handleChange} />
-    </>
-  )
-}
+const Template: Story<DataTableProps<MovieData>> = (args) => <DataTable<MovieData> {...args} />
 
 export const Basic = Template.bind({})
 
 Basic.args = {
-  data,
+  data: movieData,
   columns,
-  defaultItem,
   tableToolbar: CustomToolbar,
+  defaultItem: defaultMovie,
 }

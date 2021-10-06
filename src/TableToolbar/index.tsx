@@ -5,7 +5,7 @@ import {
   PencilIcon, PlusIcon, ReplyIcon, TrashIcon,
 } from '@heroicons/react/outline';
 
-export type TableToolbarProps<T extends Record<string, unknown>> = {
+export type TableToolbarProps = {
   canAdd: boolean
   canDelete: boolean
   canEdit: boolean
@@ -16,8 +16,8 @@ export type TableToolbarProps<T extends Record<string, unknown>> = {
   handleReset?: () => void,
 }
 
-export const TableToolbar = <T extends Record<string, unknown>> (
-  props: TableToolbarProps<T>, 
+export const TableToolbar = (
+  props: TableToolbarProps, 
 ): ReactElement => {
   const { canAdd, 
     canDelete,

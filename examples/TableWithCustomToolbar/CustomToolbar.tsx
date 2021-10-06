@@ -6,12 +6,12 @@ import {
 
 import { StyledCustomToolbar } from './StyledCustomToolbar'
 
-interface CustomToolbarProps<T> extends TableToolbarProps<T> {
+interface CustomToolbarProps extends TableToolbarProps {
   className: string,
 }
 
-export const CustomToolbar = <T extends Record<string, unknown>>(
-  props: CustomToolbarProps<T>
+export const CustomToolbar = (
+  props: CustomToolbarProps
 ): ReactElement => {
 const { canAdd, 
     canDelete,
