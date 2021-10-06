@@ -5,6 +5,7 @@ import {
   Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable,
 } from 'react-table';
 import filter from 'lodash/filter';
+import { DefaultTheme } from 'styled-components'
 
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
@@ -13,6 +14,7 @@ import { TableToolbar } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
+import { defaultTheme } from '../Theme'
 import { isEqual, unionWith } from 'lodash';
 
 export interface DataTableProps<T extends Record<string, unknown>>
@@ -27,6 +29,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
       props: TableRowProps<T>,
     ) => ReactElement,
     disableToolbar?: boolean,
+    theme?: DefaultTheme,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -47,6 +50,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     selectable = true,
     tableRow,
     disableToolbar = false,
+    theme = defaultTheme
   } = props;
 
   /** Table State */
@@ -156,7 +160,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   return (
     <>
-      <TableThemeProvider>
+      <TableThemeProvider theme={theme}>
         {!disableToolbar ? (
           <TableToolbar
           canAdd={editing === null}
@@ -172,9 +176,9 @@ export const DataTable = <T extends Record<string, unknown>>(
 
       <StyledDataTable>
         {/* The following divs are styled in DataTable/styled.tsx  */}
-        <div>
-          <div>
-            <div>
+        <div className="table-wrapper">
+          <div className="table-wrapper-inner">
+            <div className="table-wrapper-border">
               <table {...getTableProps()}>
                 <thead>
                   {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
