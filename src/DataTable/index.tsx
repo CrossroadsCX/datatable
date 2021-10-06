@@ -57,7 +57,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     tableRow,
     tableToolbar,
     disableToolbar = false,
-    theme = defaultTheme
+    theme = defaultTheme,
     addPagination = false,
   } = props;
 
