@@ -28,8 +28,8 @@ export interface DataTableProps<T extends Record<string, unknown>>
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
     ) => ReactElement,
-    tableToolbar?: <T extends Record<string, unknown>>(
-      props: TableToolbarProps<T>,
+    tableToolbar?: (
+      props: TableToolbarProps,
     ) => ReactElement,
     disableToolbar?: boolean,
     theme?: DefaultTheme,
@@ -167,7 +167,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     <>
       <TableThemeProvider theme={theme}>
         {(!disableToolbar || tableToolbar) ? (
-          <ToolbarRender<T>
+          <ToolbarRender
           canAdd={editing === null}
           canDelete={selectedFlatRows.length > 0}
           canEdit={selectedFlatRows.length === 1}

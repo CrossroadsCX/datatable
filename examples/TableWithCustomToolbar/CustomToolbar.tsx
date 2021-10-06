@@ -1,9 +1,5 @@
 import React, { ReactElement, useState } from 'react';
 import { TableToolbarProps } from '../../src/TableToolbar'
-import {
-    PencilIcon, PlusIcon, ReplyIcon, TrashIcon,
-  } from '@heroicons/react/outline';
-
 import { StyledCustomToolbar } from './StyledCustomToolbar'
 
 interface CustomToolbarProps extends TableToolbarProps {
