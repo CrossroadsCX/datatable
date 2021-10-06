@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { TableToolbarProps } from '../../src/TableToolbar'
 import {
     PencilIcon, PlusIcon, ReplyIcon, TrashIcon,
@@ -24,41 +24,37 @@ const { canAdd,
     className 
     } = props
 
+    const [eventToChange, setEventToChange] = useState<() => void>();
+    
+    const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = event.target.value
+      if( value == 'Edit'){
+        setEventToChange(handleEdit)
+      } else if (value == 'Delete'){
+        setEventToChange(handleDelete)
+      } else if( value == 'Reset'){
+        setEventToChange(handleReset)
+      } else {
+        setEventToChange(handleAdd)
+      }
+      return eventToChange
+    };
+
   return (
     <StyledCustomToolbar className={className}>
-    {handleAdd && (
-      <div title="Add Row">
-        <PlusIcon
-          className={`${canAdd ? 'enabled' : ''}`}
-          onClick={handleAdd}
-        />
-      </div>
-    )}
-    {handleEdit && (
-      <div title="Edit Row">
-        <PencilIcon
-          className={`${canEdit ? 'enabled': ''}`}
-          onClick={handleEdit}
-        />
-      </div>
-    )}
-    {handleDelete && (
-      <div title="Delete Row(s)">
-        <TrashIcon
-          className={`${canDelete ? 'enabled': ''}`}
-          onClick={handleDelete}
-        />
-      </div>
-    )}
-    {handleReset && (
-      <div title="Reset Table">
-        <ReplyIcon
-          aria-disabled={!canReset}
-          className={`${canReset ? 'enabled': ''}`}
-          onClick={canReset ? handleReset : undefined}
-        />
-      </div>
-    )}
+      <div>
+      <select
+        id="actions"
+        name="actions"
+        onChange={selectChange}
+      >
+        <option> Actions </option>
+        {canAdd ? <option> Add New </option> : null }
+        {canEdit ? <option> Edit </option> : null }
+        {canDelete ? <option> Delete </option> : null }
+        {canReset ? <option> Reset </option> : null }
+      </select>
+    </div>
     </StyledCustomToolbar>
   )
 
