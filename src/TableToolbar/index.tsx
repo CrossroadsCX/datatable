@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React, { ReactElement } from 'react';
 import { StyledTableToolbar } from './styled'
 
 import {
@@ -17,16 +16,20 @@ export type TableToolbarProps = {
   handleReset?: () => void,
 }
 
-export const TableToolbar: React.FC<TableToolbarProps> = ({
-  canAdd = true,
-  canDelete = true,
-  canEdit = false,
-  canReset = true,
-  handleAdd,
-  handleDelete,
-  handleEdit,
-  handleReset,
-}) => (
+export const TableToolbar = (
+  props: TableToolbarProps, 
+): ReactElement => {
+  const { canAdd, 
+    canDelete,
+    canEdit, 
+    canReset, 
+    handleAdd, 
+    handleDelete, 
+    handleEdit, 
+    handleReset 
+  } = props
+
+  return(
   <StyledTableToolbar>
     {handleAdd && (
       <div title="Add Row">
@@ -61,5 +64,6 @@ export const TableToolbar: React.FC<TableToolbarProps> = ({
         />
       </div>
     )}
-    </StyledTableToolbar>
-);
+  </StyledTableToolbar>
+  )
+}

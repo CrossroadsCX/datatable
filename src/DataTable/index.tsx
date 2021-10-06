@@ -10,7 +10,7 @@ import { DefaultTheme } from 'styled-components'
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
-import { TableToolbar } from '../TableToolbar';
+import { TableToolbar, TableToolbarProps } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { selectionHook } from '../utils';
@@ -27,6 +27,9 @@ export interface DataTableProps<T extends Record<string, unknown>>
     selectable?: boolean
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
+    ) => ReactElement,
+    tableToolbar?: (
+      props: TableToolbarProps,
     ) => ReactElement,
     disableToolbar?: boolean,
     theme?: DefaultTheme,
@@ -49,6 +52,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     handleChange,
     selectable = true,
     tableRow,
+    tableToolbar,
     disableToolbar = false,
     theme = defaultTheme
   } = props;
@@ -157,12 +161,13 @@ export const DataTable = <T extends Record<string, unknown>>(
   }, [data, editing]);
 
   const TableRowRender = tableRow ? tableRow : TableRow
+  const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
   return (
     <>
       <TableThemeProvider theme={theme}>
-        {!disableToolbar ? (
-          <TableToolbar
+        {(!disableToolbar || tableToolbar) ? (
+          <ToolbarRender
           canAdd={editing === null}
           canDelete={selectedFlatRows.length > 0}
           canEdit={selectedFlatRows.length === 1}
