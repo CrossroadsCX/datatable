@@ -15,5 +15,4 @@ select {
   border: 1px solid ${props => props.theme.colors.lightGray};
   border-radius: 5px;
 }
-
 `
