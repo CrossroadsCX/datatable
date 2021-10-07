@@ -2,7 +2,7 @@ import React, {
   PropsWithChildren, ReactElement, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable,
+  Column, HeaderGroup, Hooks, Row, TableOptions, useRowSelect, useTable,
 } from 'react-table';
 import filter from 'lodash/filter';
 import { DefaultTheme } from 'styled-components'
@@ -19,20 +19,21 @@ import { isEqual, unionWith } from 'lodash';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
-    columns: Column<T>[]
-    data: T[]
-    defaultItem?: T
-    name?: string
-    handleChange: (data: T[]) => void
-    selectable?: boolean
-    tableRow?: <T extends Record<string, unknown>>(
-      props: TableRowProps<T>,
-    ) => ReactElement,
-    tableToolbar?: (
-      props: TableToolbarProps,
-    ) => ReactElement,
-    disableToolbar?: boolean,
-    theme?: DefaultTheme,
+  columns: Column<T>[]
+  data: T[]
+  defaultItem?: T
+  name?: string
+  handleChange: (data: T[]) => void
+  hiddenColumns?: Record<string, unknown>
+  selectable?: boolean
+  tableRow?: <T extends Record<string, unknown>>(
+    props: TableRowProps<T>,
+  ) => ReactElement,
+  tableToolbar?: (
+    props: TableToolbarProps,
+  ) => ReactElement,
+  disableToolbar?: boolean,
+  theme?: DefaultTheme,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -50,6 +51,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     columns,
     defaultItem,
     handleChange,
+    hiddenColumns,
     selectable = true,
     tableRow,
     tableToolbar,
@@ -62,7 +64,6 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [editing, setEditing] = useState<number | null>(null);
   const [tableData, setData] = useState<T[]>(data);
   const [initialRender, setInitialRender] = useState(true);
-
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -103,6 +104,8 @@ export const DataTable = <T extends Record<string, unknown>>(
     getTableBodyProps,
     prepareRow,
     selectedFlatRows,
+    setHiddenColumns,
+    toggleHideAllColumns,
     toggleAllRowsSelected,
   } = useTable<T>(
     {
@@ -110,7 +113,7 @@ export const DataTable = <T extends Record<string, unknown>>(
       data: tableData,
       defaultColumn,
       columns,
-      initialState: incomingState,
+      initialState: { incomingState },
       saveRow,
     },
     ...hooks,
@@ -144,6 +147,17 @@ export const DataTable = <T extends Record<string, unknown>>(
   };
 
   useEffect(() => {
+    toggleHideAllColumns()
+    if (hiddenColumns) {
+      const hiddenColumnsArray: string[] = []
+      Object.entries(hiddenColumns).forEach(
+        ([key, value]) => { if (!value) hiddenColumnsArray.push(key) }
+      )
+      console.log(hiddenColumnsArray)
+      setHiddenColumns(hiddenColumnsArray)
+    }
+    
+    
     if (!editing && !initialRender && handleChange) {
       handleChange(tableData);
     }
@@ -168,61 +182,61 @@ export const DataTable = <T extends Record<string, unknown>>(
       <TableThemeProvider theme={theme}>
         {(!disableToolbar || tableToolbar) ? (
           <ToolbarRender
-          canAdd={editing === null}
-          canDelete={selectedFlatRows.length > 0}
-          canEdit={selectedFlatRows.length === 1}
-          canReset={tableData.length !== data.length}
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          handleReset={handleReset}
-        />
-      ): null}
+            canAdd={editing === null}
+            canDelete={selectedFlatRows.length > 0}
+            canEdit={selectedFlatRows.length === 1}
+            canReset={tableData.length !== data.length}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            handleReset={handleReset}
+          />
+        ) : null}
 
-      <StyledDataTable>
-        {/* The following divs are styled in DataTable/styled.tsx  */}
-        <div className="table-wrapper">
-          <div className="table-wrapper-inner">
-            <div className="table-wrapper-border">
-              <table {...getTableProps()}>
-                <thead>
-                  {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column: Column<T>) => (
-                        <th
-                          key={rowIndex}
-                          {...column.getHeaderProps()}
-                          scope="col"
-                        >
-                          {column.render('Header')}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody
-                  {...getTableBodyProps()}
-                >
-                  {
-                    rows.map((row: Row<T>) => {
-                      prepareRow(row);
+        <StyledDataTable>
+          {/* The following divs are styled in DataTable/styled.tsx  */}
+          <div className="table-wrapper">
+            <div className="table-wrapper-inner">
+              <div className="table-wrapper-border">
+                <table {...getTableProps()}>
+                  <thead>
+                    {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column: Column<T>) => (
+                          <th
+                            key={rowIndex}
+                            {...column.getHeaderProps()}
+                            scope="col"
+                          >
+                            {column.render('Header')}
+                          </th>
+                        ))}
+                      </tr>
+                    ))}
+                  </thead>
+                  <tbody
+                    {...getTableBodyProps()}
+                  >
+                    {
+                      rows.map((row: Row<T>) => {
+                        prepareRow(row);
 
-                      return (
-                        <TableRowRender<T>
-                          key={row.index}
-                          row={row}
-                          editing={editing}
-                          saveRow={saveRow}
-                        />
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
+                        return (
+                          <TableRowRender<T>
+                            key={row.index}
+                            row={row}
+                            editing={editing}
+                            saveRow={saveRow}
+                          />
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </StyledDataTable>
+        </StyledDataTable>
       </TableThemeProvider>
     </>
   );
