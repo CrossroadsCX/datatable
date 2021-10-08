@@ -5,7 +5,7 @@ import { Column } from 'react-table'
 import { DataTable, DataTableProps } from '../../src/DataTable'
 
 export default {
-  title: 'examples/DatableWithColumnFilter',
+  title: 'examples/TableWithExternalFilter',
   component: DataTable,
 } as Meta;
 
@@ -62,12 +62,23 @@ const hiddenColumns =
 }
 
 const Template: Story<DataTableProps<PersonData>> = (args) => (
-  <>   
-    <button type="button" onClick={() => {hiddenColumns.firstName = !hiddenColumns.firstName}}>Hide/Show FirstName</button>
-    <button type="button" onClick={() => {hiddenColumns.lastName = !hiddenColumns.lastName}}>Hide/Show FirstName</button>
-    <button type="button" onClick={() => {hiddenColumns.age = !hiddenColumns.age}}>Hide/Show Age</button>
-    <DataTable<PersonData> {...args} />
-  </>
+  <div>
+    <div className="m-4">
+      <button type="button" onClick={() => { hiddenColumns.firstName = !hiddenColumns.firstName }}>Hide/Show First Name</button>
+    </div>
+    <div className="m-4">
+      <button type="button" onClick={() => { hiddenColumns.lastName = !hiddenColumns.lastName }}>Hide/Show Last Name</button>
+    </div>
+    <div className="m-4">
+      <button type="button" onClick={() => { hiddenColumns.age = !hiddenColumns.age }}>Hide/Show Age</button>
+    </div>
+
+    <div className="m-4">
+      <p>Refresh component afeter click</p>
+      <DataTable<PersonData> {...args} />
+    </div>
+
+  </div>
 )
 
 export const ColumnFilter = Template.bind({})
