@@ -6,10 +6,9 @@ import {
 } from 'react-table';
 import filter from 'lodash/filter';
 import { DefaultTheme } from 'styled-components'
-
+import { HotKeys, GlobalHotKeys, configure} from "react-hotkeys"
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
-
 import { TableToolbar, TableToolbarProps } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
@@ -138,7 +137,6 @@ export const DataTable = <T extends Record<string, unknown>>(
     }
 
     const updatedData = [...tableData, defaultItem];
-
     setData(updatedData);
     setEditing(updatedData.length - 1);
   };
@@ -190,6 +188,20 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   const TableRowRender = tableRow ? tableRow : TableRow
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
+  
+  configure({
+    ignoreTags: [],
+  });
+
+  const keyMap = {
+    NEW_RECORD: "Control+n",
+    //DELETE_RECORD: ["del", "backspace"],
+  }
+  
+  const handlers = {
+    //DELETE_RECORD: handleDelete ? handleDelete : deleteDefault,
+    NEW_RECORD: handleAdd,
+  };
 
   return (
     <>
@@ -209,6 +221,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
       <StyledDataTable>
         {/* The following divs are styled in DataTable/styled.tsx  */}
+        <GlobalHotKeys keyMap={keyMap} handlers={handlers} className='hotkeys' />
         <div className="table-wrapper">
           <div className="table-wrapper-inner">
             <div className="table-wrapper-border">
