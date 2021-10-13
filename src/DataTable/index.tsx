@@ -18,13 +18,19 @@ import { selectionHook } from '../utils';
 import { defaultTheme } from '../Theme'
 import { isEqual, unionWith } from 'lodash';
 
+export interface onFetchDataArgs {
+  pageIndex: number
+  pageSize: number
+  sortBy: string
+  filters: unknown
+}
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
     columns: Column<T>[]
     data: T[]
     defaultItem?: T
-    name?: string
     handleChange: (data: T[]) => void
+    onFetchData?: (args: onFetchDataArgs) => void
     selectable?: boolean
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
@@ -53,6 +59,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     columns,
     defaultItem,
     handleChange,
+    onFetchData,
     selectable = true,
     tableRow,
     tableToolbar,
@@ -67,7 +74,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
   const [initialRender, setInitialRender] = useState(true)
- 
+
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -118,7 +125,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, sortBy, filters },
   } = useTable<T>(
     {
       ...props,
@@ -157,6 +164,12 @@ export const DataTable = <T extends Record<string, unknown>>(
 
     setEditing(selectedRow.index);
   };
+
+  useEffect(() => {
+    if (onFetchData) {
+      onFetchData({ pageIndex, pageSize, sortBy, filters })
+    }
+  }, [onFetchData, pageIndex, pageSize, sortBy, filters])
 
   useEffect(() => {
     if (!editing && !initialRender && handleChange) {
@@ -231,7 +244,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 <tbody
                   {...getTableBodyProps()}
                 >
-                  {!addPagination ?  
+                  {!addPagination ?
                     rows.map((row: Row<T>) => {
                       prepareRow(row);
 
