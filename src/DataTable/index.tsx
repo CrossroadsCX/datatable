@@ -1,10 +1,21 @@
 import React, {
-  PropsWithChildren, ReactElement, useEffect, useMemo, useState,
+  PropsWithChildren, ReactElement, useEffect, useMemo, useRef, useState,
 } from 'react';
+
 import {
-  Column, HeaderGroup,  Hooks, Row, TableOptions, useRowSelect, useTable, usePagination
+  Column,
+  HeaderGroup,
+  Hooks,
+  Row,
+  TableOptions,
+  useRowSelect,
+  useTable,
+  usePagination,
 } from 'react-table';
-import filter from 'lodash/filter';
+
+import filter from 'lodash/filter'
+import isEqual from 'lodash/isEqual'
+import unionWith from 'lodash/unionWith'
 import { DefaultTheme } from 'styled-components'
 
 import { TableThemeProvider } from '../Theme'
@@ -16,31 +27,36 @@ import { EditableCell } from '../TableCell';
 import { Pagination } from '../Pagination';
 import { selectionHook } from '../utils';
 import { defaultTheme } from '../Theme'
-import { isEqual, unionWith } from 'lodash';
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
+    // Required props
     columns: Column<T>[]
     data: T[]
-    defaultItem?: T
-    name?: string
+    disableToolbar: boolean
     handleChange: (data: T[]) => void
-    selectable?: boolean
+    paginated: boolean
+    selectable: boolean
+
+    // Optional props
+    defaultItem?: T
+    theme?: DefaultTheme,
+
+    // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
     ) => ReactElement,
     tableToolbar?: (
       props: TableToolbarProps,
     ) => ReactElement,
-    disableToolbar?: boolean,
-    theme?: DefaultTheme,
-    addPagination?: boolean,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
   props: PropsWithChildren<DataTableProps<T>>,
 ): ReactElement => {
-  const hooks: (((hooks: Hooks<any>) => void) | typeof useRowSelect | typeof usePagination)[] = [
+
+  // Set up internal react-table hooks to be used by useTable
+  const hooks: (((hooks: Hooks<T>) => void) | typeof useRowSelect | typeof usePagination)[] = [
     usePagination,
     useRowSelect,
   ];
@@ -52,13 +68,13 @@ export const DataTable = <T extends Record<string, unknown>>(
     data,
     columns,
     defaultItem,
+    disableToolbar = false,
     handleChange,
-    selectable = true,
+    paginated = false,
+    selectable = false,
     tableRow,
     tableToolbar,
-    disableToolbar = false,
     theme = defaultTheme,
-    addPagination = false,
   } = props;
 
 
@@ -66,8 +82,9 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [incomingState, setIncomingState] = useState(data)
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
-  const [initialRender, setInitialRender] = useState(true)
- 
+  const initialRenderRef = useRef(true)
+  const overrideDataRef = useRef(false)
+
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -79,17 +96,22 @@ export const DataTable = <T extends Record<string, unknown>>(
 
     handleDelete = () => {
       const indices = selectedFlatRows.map((item) => item.index);
+      console.log(indices)
 
       const updatedData = filter(data, (item, index) => !indices.includes(index));
+
+      console.log(updatedData)
 
       setData(updatedData);
     };
   }
 
+  // Set up the default column for useTable
   const defaultColumn = useMemo(() => ({
     Cell: EditableCell,
   }), []);
 
+  // Local function passed to useTable and can be used in other components
   const saveRow = (row: Row<T>) => {
     if (editing === null) return;
     const { index, values } = row;
@@ -100,36 +122,6 @@ export const DataTable = <T extends Record<string, unknown>>(
     setEditing(null);
     toggleAllRowsSelected(false);
   };
-
-  const {
-    rows,
-    headerGroups,
-    getTableProps,
-    getTableBodyProps,
-    prepareRow,
-    selectedFlatRows,
-    toggleAllRowsSelected,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable<T>(
-    {
-      ...props,
-      data: tableData,
-      defaultColumn,
-      columns,
-      initialState: incomingState,
-      saveRow,
-    },
-    ...hooks
-  )
 
   const handleAdd = () => {
     if (!defaultItem) {
@@ -158,22 +150,58 @@ export const DataTable = <T extends Record<string, unknown>>(
     setEditing(selectedRow.index);
   };
 
+  const {
+    rows,
+    headerGroups,
+    getTableProps,
+    getTableBodyProps,
+    prepareRow,
+    selectedFlatRows,
+    toggleAllRowsSelected,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable<T>(
+    {
+      ...props,
+      data: tableData,
+      defaultColumn,
+      columns,
+      saveRow,
+    },
+    ...hooks
+  )
+
+  // Watch the table data for changes & report back to parent
   useEffect(() => {
-    if (!editing && !initialRender && handleChange) {
+    if (
+      !editing &&
+      !initialRenderRef.current &&
+      !overrideDataRef.current &&
+      handleChange
+    ) {
       handleChange(tableData);
     }
 
-    // If our incoming data prop is different than previous incoming data
-    if (!isEqual(data, incomingState)) {
-      // Merge the new data with what's in the table
-      const newTableData: T[] = unionWith(data, tableData, isEqual)
+    initialRenderRef.current = false;
+  }, [tableData, editing]);
 
-      setData(newTableData)
-      setIncomingState(data)
+  // If the incoming data changes, override the table data
+  useEffect(() => {
+    if (!initialRenderRef.current) {
+      overrideDataRef.current = true
+      setData(data)
     }
 
-    setInitialRender(false);
-  }, [data, editing]);
+    overrideDataRef.current = false
+  }, [data])
 
   const paginationProps = {
     pageIndex,
@@ -231,7 +259,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 <tbody
                   {...getTableBodyProps()}
                 >
-                  {!addPagination ?  
+                  {!paginated ?
                     rows.map((row: Row<T>) => {
                       prepareRow(row);
 
@@ -264,7 +292,7 @@ export const DataTable = <T extends Record<string, unknown>>(
           </div>
         </div>
       </StyledDataTable>
-      {addPagination ?  <Pagination {...paginationProps} /> : null}
+      {paginated ?  <Pagination {...paginationProps} /> : null}
       </TableThemeProvider>
     </>
   );
