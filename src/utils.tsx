@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CellProps, HeaderProps, Hooks } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
@@ -46,3 +46,12 @@ export const selectionHook = (hooks: Hooks<any>) => {
     ...columns,
   ]);
 };
+
+export function usePrevious<T> (value: T): T {
+  const ref = useRef(value)
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+
+}

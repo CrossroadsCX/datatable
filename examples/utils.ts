@@ -7,7 +7,12 @@ export type Person = {
 }
 
 export const createPeople = (count: number): Person[] => {
-  return new Array(count).fill(createPerson)
+  const people: Person[] = []
+  for (let i = 0; i < count; i++) {
+    people.push(createPerson())
+  }
+
+  return people
 }
 
 export const createPerson = (): Person => {

@@ -14,8 +14,6 @@ import {
 } from 'react-table';
 
 import filter from 'lodash/filter'
-import isEqual from 'lodash/isEqual'
-import unionWith from 'lodash/unionWith'
 import { DefaultTheme } from 'styled-components'
 
 import { TableThemeProvider } from '../Theme'
@@ -25,8 +23,13 @@ import { TableToolbar, TableToolbarProps } from '../TableToolbar';
 import { TableRow, TableRowProps } from '../TableRow';
 import { EditableCell } from '../TableCell';
 import { Pagination } from '../Pagination';
-import { selectionHook } from '../utils';
+import { selectionHook, usePrevious } from '../utils';
 import { defaultTheme } from '../Theme'
+
+export interface OnFetchDataArgs {
+  pageIndex: number
+  pageSize: number
+}
 
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
@@ -40,6 +43,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
 
     // Optional props
     defaultItem?: T
+    handleFetchData: (args: OnFetchDataArgs) => void
     theme?: DefaultTheme,
 
     // Component overrides
@@ -70,6 +74,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     defaultItem,
     disableToolbar = false,
     handleChange,
+    handleFetchData = undefined,
     paginated = false,
     selectable = false,
     tableRow,
@@ -77,12 +82,12 @@ export const DataTable = <T extends Record<string, unknown>>(
     theme = defaultTheme,
   } = props;
 
-
   /** Table State */
   const [incomingState, setIncomingState] = useState(data)
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
   const initialRenderRef = useRef(true)
+  const initialPageLoadingRef = useRef(true)
   const overrideDataRef = useRef(false)
 
   /*
@@ -96,11 +101,8 @@ export const DataTable = <T extends Record<string, unknown>>(
 
     handleDelete = () => {
       const indices = selectedFlatRows.map((item) => item.index);
-      console.log(indices)
 
       const updatedData = filter(data, (item, index) => !indices.includes(index));
-
-      console.log(updatedData)
 
       setData(updatedData);
     };
@@ -177,7 +179,9 @@ export const DataTable = <T extends Record<string, unknown>>(
       saveRow,
     },
     ...hooks
-  )
+    )
+
+  const prevPageProps = usePrevious({ pageIndex, pageSize })
 
   // Watch the table data for changes & report back to parent
   useEffect(() => {
@@ -203,6 +207,15 @@ export const DataTable = <T extends Record<string, unknown>>(
     overrideDataRef.current = false
   }, [data])
 
+  // If an onFetchData handler is passed, use it to pull new data on page change
+  useEffect(() => {
+    if (handleFetchData && pageSize !== prevPageProps?.pageSize) {
+      handleFetchData({ pageIndex, pageSize })
+    }
+
+    initialPageLoadingRef.current = false
+  }, [handleFetchData, pageIndex, pageSize ])
+
   const paginationProps = {
     pageIndex,
     pageSize,
@@ -213,7 +226,8 @@ export const DataTable = <T extends Record<string, unknown>>(
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize
+    setPageSize,
+    async: handleFetchData ? true : false,
   }
 
   const TableRowRender = tableRow ? tableRow : TableRow
