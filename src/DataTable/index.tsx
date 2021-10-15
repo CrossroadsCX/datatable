@@ -87,7 +87,6 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
   const initialRenderRef = useRef(true)
-  const initialPageLoadingRef = useRef(true)
   const overrideDataRef = useRef(false)
 
   /*
@@ -211,15 +210,12 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   // If an onFetchData handler is passed, use it to pull new data on page change
   useEffect(() => {
-    console.log(pageSize, pageIndex, prevPageProps)
     if (
       handleFetchData &&
       (pageSize !== prevPageProps?.pageSize || pageIndex !== prevPageProps?.pageIndex)
     ) {
       handleFetchData({ pageIndex, pageSize })
     }
-
-    initialPageLoadingRef.current = false
   }, [handleFetchData, pageIndex, pageSize ])
 
   const paginationProps = {
