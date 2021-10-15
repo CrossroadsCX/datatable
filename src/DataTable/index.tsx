@@ -177,6 +177,8 @@ export const DataTable = <T extends Record<string, unknown>>(
       defaultColumn,
       columns,
       saveRow,
+      pageCount: -1,
+      manualPagination: handleFetchData ? true : false,
     },
     ...hooks
     )
@@ -209,7 +211,11 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   // If an onFetchData handler is passed, use it to pull new data on page change
   useEffect(() => {
-    if (handleFetchData && pageSize !== prevPageProps?.pageSize) {
+    console.log(pageSize, pageIndex, prevPageProps)
+    if (
+      handleFetchData &&
+      (pageSize !== prevPageProps?.pageSize || pageIndex !== prevPageProps?.pageIndex)
+    ) {
       handleFetchData({ pageIndex, pageSize })
     }
 
