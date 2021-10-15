@@ -32,7 +32,7 @@ const Template: Story<DataTableProps<Person>> = (args) => {
 
   const initialData = useMemo(() => people, [people])
 
-  const handleFetchData = ({ pageIndex, pageSize }: OnFetchDataArgs) => {
+  const handleFetchData = async ({ pageIndex, pageSize }: OnFetchDataArgs) => {
     console.log('Paging:')
     console.log(pageIndex, pageSize)
     const newPeople = createPeople(pageSize)

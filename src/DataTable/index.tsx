@@ -43,7 +43,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
 
     // Optional props
     defaultItem?: T
-    handleFetchData: (args: OnFetchDataArgs) => void
+    handleFetchData: (args: OnFetchDataArgs) => Promise<void>
     theme?: DefaultTheme,
 
     // Component overrides
