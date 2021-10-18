@@ -36,15 +36,15 @@ export interface DataTableProps<T extends Record<string, unknown>>
     // Required props
     columns: Column<T>[]
     data: T[]
-    disableToolbar: boolean
-    handleChange: (data: T[]) => void
     paginated: boolean
     selectable: boolean
+    handleChange: (data: T[]) => void
 
     // Optional props
     defaultItem?: T
-    handleFetchData: (args: OnFetchDataArgs) => Promise<void>
+    disableToolbar?: boolean
     theme?: DefaultTheme,
+    handleFetchData?: (args: OnFetchDataArgs) => Promise<void>
 
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
