@@ -134,7 +134,7 @@ const columns: Column<Person>[] = [
 ]
 
 const Template: Story<DataTableProps<Person>> = (args) => {
-  
+
   return (
     <>
       <DataTable<Person> {...args} />
@@ -147,5 +147,5 @@ export const PaginationTable = Template.bind({})
 PaginationTable.args = {
   data,
   columns,
-  addPagination: true,
+  paginated: true,
 }

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CellProps, HeaderProps, Hooks } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';
+import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 
 export const selectionHook = (hooks: Hooks<any>) => {
   hooks.allColumns.push((columns) => [
@@ -13,8 +14,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
       maxWidth: 45,
       Aggregated: undefined,
       Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
-        <input
-          type="checkbox"
+        <IndeterminateCheckbox
           className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-400 rounded"
           {...getToggleAllRowsSelectedProps()}
         />
@@ -36,8 +36,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
           );
         }
         return (
-          <input
-            type="checkbox"
+          <IndeterminateCheckbox
             className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
             {...row.getToggleRowSelectedProps()}
           />
@@ -47,3 +46,12 @@ export const selectionHook = (hooks: Hooks<any>) => {
     ...columns,
   ]);
 };
+
+export function usePrevious<T> (value: T): T {
+  const ref = useRef(value)
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+
+}

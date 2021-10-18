@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Story, Meta } from '@storybook/react'
 import { Column } from 'react-table'
 import faker from 'faker'
@@ -34,9 +34,9 @@ const data = [
 ]
 
 const defaultItem = {
-  firstName: null,
-  lastName: null,
-  age: null,
+  firstName: '',
+  lastName: '',
+  age: '',
 }
 
 const columns: Column<PersonData>[] = [
@@ -59,9 +59,15 @@ const Template: Story<DataTableProps<PersonData>> = (args) => {
 
   const [data, setData] = React.useState(initialData)
 
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
+  const tableData = useMemo(() => data, [data])
+
   const handleChange = (updatedData: PersonData[]) => {
     console.log("Handle Change")
-    console.log(data)
+    console.log(updatedData)
     // We can either set the new data on the parent here
     setData(updatedData)
 
@@ -87,7 +93,7 @@ const Template: Story<DataTableProps<PersonData>> = (args) => {
   return (
     <>
       <button onClick={() => addPerson()}>Add Person</button>
-      <DataTable<PersonData> {...args} data={data} handleChange={handleChange} />
+      <DataTable<PersonData> {...args} data={tableData} handleChange={handleChange} selectable/>
     </>
   )
 }
