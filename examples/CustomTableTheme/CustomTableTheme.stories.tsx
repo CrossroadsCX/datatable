@@ -8,6 +8,7 @@ import { DataTable, DataTableProps } from '../../src/DataTable'
 import { defaultTheme } from '../../src/Theme'
 
 import type { DefaultTheme } from '../../src/Theme'
+import { createPeople } from '../utils'
 
 export default {
   title: 'examples/CustomTableTheme',
@@ -24,18 +25,7 @@ type PersonData = Person & {
   subRows?: PersonData[]
 }
 
-const data = [
-  {
-    firstName: 'Bill',
-    lastName: 'Murray',
-    age: 25,
-  },
-  {
-    firstName: 'Dan',
-    lastName: 'Aykroyd',
-    age: 25
-  }
-]
+const data = createPeople(30)
 
 const defaultItem = {
   firstName: null,
