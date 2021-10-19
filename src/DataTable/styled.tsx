@@ -5,6 +5,10 @@ export const StyledDataTable = styled.div`
   display: flex;
   flex-direction: column;
 
+  .sort-indicator {
+    height: 2rem;
+  }
+
   // Table Wrapper Styling
   .table-wrapper {
     margin-top: -.5rem;

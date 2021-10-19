@@ -7,14 +7,19 @@ import {
   HeaderGroup,
   Hooks,
   Row,
+  SortingRule,
   TableOptions,
+  useAsyncDebounce,
   useRowSelect,
+  useSortBy,
   useTable,
   usePagination,
 } from 'react-table';
 
 import filter from 'lodash/filter'
+import isEqual from 'lodash/isEqual'
 import { DefaultTheme } from 'styled-components'
+import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
@@ -26,9 +31,10 @@ import { Pagination } from '../Pagination';
 import { selectionHook, usePrevious } from '../utils';
 import { defaultTheme } from '../Theme'
 
-export interface OnFetchDataArgs {
+export interface HandleFetchDataArgs<T> {
   pageIndex: number
   pageSize: number
+  sortBy: Array<SortingRule<T>>,
 }
 
 export interface DataTableProps<T extends Record<string, unknown>>
@@ -44,7 +50,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     defaultItem?: T
     disableToolbar?: boolean
     theme?: DefaultTheme,
-    handleFetchData?: (args: OnFetchDataArgs) => Promise<void>
+    handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
 
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
@@ -61,6 +67,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   // Set up internal react-table hooks to be used by useTable
   const hooks: (((hooks: Hooks<T>) => void) | typeof useRowSelect | typeof usePagination)[] = [
+    useSortBy,
     usePagination,
     useRowSelect,
   ];
@@ -168,7 +175,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    state: { pageIndex, pageSize, sortBy },
   } = useTable<T>(
     {
       ...props,
@@ -182,7 +189,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     ...hooks
     )
 
-  const prevPageProps = usePrevious({ pageIndex, pageSize })
+  const prevPageProps = usePrevious({ pageIndex, pageSize, sortBy })
 
   // Watch the table data for changes & report back to parent
   useEffect(() => {
@@ -208,15 +215,20 @@ export const DataTable = <T extends Record<string, unknown>>(
     overrideDataRef.current = false
   }, [data])
 
-  // If an onFetchData handler is passed, use it to pull new data on page change
+  const handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200)
+
+  // If an handleFetchData handler is passed, use it to pull new data on page change
   useEffect(() => {
     if (
       handleFetchData &&
-      (pageSize !== prevPageProps?.pageSize || pageIndex !== prevPageProps?.pageIndex)
+      (
+        (pageSize !== prevPageProps?.pageSize && pageSize > 0) ||
+        pageIndex !== prevPageProps?.pageIndex
+      )
     ) {
-      handleFetchData({ pageIndex, pageSize })
+      handleFetchDataDebounced({ pageIndex, pageSize, sortBy })
     }
-  }, [handleFetchData, pageIndex, pageSize ])
+  }, [useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy])
 
   const paginationProps = {
     pageIndex,
@@ -263,10 +275,18 @@ export const DataTable = <T extends Record<string, unknown>>(
                       {headerGroup.headers.map((column: Column<T>) => (
                         <th
                           key={rowIndex}
-                          {...column.getHeaderProps()}
+                          {...column.getHeaderProps(column.getSortByToggleProps())}
                           scope="col"
                         >
                           {column.render('Header')}
+                          <span>
+                            {column.isSorted
+                              ? column.isSortedDesc
+                                ? <ArrowSmDownIcon className="sort-indicator" />
+                                : <ArrowSmUpIcon className="sort-indicator" />
+                              : ''
+                            }
+                          </span>
                         </th>
                       ))}
                     </tr>

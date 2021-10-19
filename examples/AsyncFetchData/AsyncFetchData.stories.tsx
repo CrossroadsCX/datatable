@@ -5,7 +5,8 @@ import { Column } from 'react-table'
 import { createPeople } from '../utils'
 import type { Person } from '../utils'
 
-import { DataTable, DataTableProps, OnFetchDataArgs } from '../../src/DataTable'
+import { DataTable, DataTableProps, HandleFetchDataArgs } from '../../src/DataTable'
+import { isEmpty, sortBy } from 'lodash'
 
 export default {
   title: 'examples/AsyncFetchData',
@@ -32,10 +33,18 @@ const Template: Story<DataTableProps<Person>> = (args) => {
 
   const initialData = useMemo(() => people, [people])
 
-  const handleFetchData = async ({ pageIndex, pageSize }: OnFetchDataArgs) => {
+  const handleFetchData = async ({ pageIndex, pageSize, sortBy: sortByInput }: HandleFetchDataArgs<Person>) => {
     console.log('Paging:')
-    console.log(pageIndex, pageSize)
+    console.log(pageIndex, pageSize, sortBy)
     const newPeople = createPeople(pageSize)
+
+    if (!isEmpty(sortByInput)) {
+      const [sortObject] = sortByInput
+      const { id: sortKey } = sortObject
+
+      sortBy(newPeople as Array<Person>, [sortKey])
+    }
+
     setPeople(newPeople)
   }
 
