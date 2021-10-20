@@ -21,6 +21,8 @@ import isEqual from 'lodash/isEqual'
 import { DefaultTheme } from 'styled-components'
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
@@ -42,7 +44,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     // Required props
     columns: Column<T>[]
     data: T[]
-    paginated: boolean
+    paginated: boolean | 'scroll'
     selectable: boolean
     handleChange: (data: T[]) => void
 
@@ -247,6 +249,83 @@ export const DataTable = <T extends Record<string, unknown>>(
   const TableRowRender = tableRow ? tableRow : TableRow
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
+  const Table = () => (
+    <table {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column: Column<T>) => (
+              <th
+                key={rowIndex}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                scope="col"
+              >
+                {column.render('Header')}
+                <span>
+                  {column.isSorted
+                    ? column.isSortedDesc
+                      ? <ArrowSmDownIcon className="sort-indicator" />
+                      : <ArrowSmUpIcon className="sort-indicator" />
+                    : ''
+                  }
+                </span>
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody
+        {...getTableBodyProps()}
+      >
+        {!paginated ?
+          rows.map((row: Row<T>) => {
+            prepareRow(row);
+
+            return (
+              <TableRowRender<T>
+                key={row.index}
+                row={row}
+                editing={editing}
+                saveRow={saveRow}
+              />
+            )
+          })
+        :
+          page.map((row: Row<T>) => {
+            prepareRow(row);
+
+            return (
+              <TableRowRender<T>
+                key={row.index}
+                row={row}
+                editing={editing}
+                saveRow={saveRow}
+              />
+            )
+          })
+        }
+      </tbody>
+    </table>
+  )
+
+  const InfiniteScrollTable = () => (
+    <InfiniteScroll
+      dataLength={rows.length}
+      next={() => handleFetchDataDebounced({ pageSize: (pageSize * 2), pageIndex: pageIndex + 1, sortBy })}
+      hasMore={true}
+      loader={<p>Loading more items...</p>}
+    >
+      <Table />
+    </InfiniteScroll>
+  )
+
+  const PaginatedTable = () => (
+    <>
+      <Table />
+      <Pagination {...paginationProps} />
+    </>
+  )
+
   return (
     <>
       <TableThemeProvider theme={theme}>
@@ -263,72 +342,20 @@ export const DataTable = <T extends Record<string, unknown>>(
         />
       ): null}
 
-      <StyledDataTable>
-        {/* The following divs are styled in DataTable/styled.tsx  */}
-        <div className="table-wrapper">
-          <div className="table-wrapper-inner">
-            <div className="table-wrapper-border">
-              <table {...getTableProps()}>
-                <thead>
-                  {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column: Column<T>) => (
-                        <th
-                          key={rowIndex}
-                          {...column.getHeaderProps(column.getSortByToggleProps())}
-                          scope="col"
-                        >
-                          {column.render('Header')}
-                          <span>
-                            {column.isSorted
-                              ? column.isSortedDesc
-                                ? <ArrowSmDownIcon className="sort-indicator" />
-                                : <ArrowSmUpIcon className="sort-indicator" />
-                              : ''
-                            }
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody
-                  {...getTableBodyProps()}
-                >
-                  {!paginated ?
-                    rows.map((row: Row<T>) => {
-                      prepareRow(row);
-
-                      return (
-                        <TableRowRender<T>
-                          key={row.index}
-                          row={row}
-                          editing={editing}
-                          saveRow={saveRow}
-                        />
-                      )
-                    })
-                  :
-                    page.map((row: Row<T>) => {
-                      prepareRow(row);
-
-                      return (
-                        <TableRowRender<T>
-                          key={row.index}
-                          row={row}
-                          editing={editing}
-                          saveRow={saveRow}
-                        />
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
+        <StyledDataTable>
+            <div className="table-wrapper">
+              <div className="table-wrapper-inner">
+                <div className="table-wrapper-border">
+                {paginated ?
+                  paginated === 'scroll' ?
+                    (<InfiniteScrollTable />) :
+                    (<PaginatedTable />)
+                  : (<Table />)
+                }
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </StyledDataTable>
-      {paginated ?  <Pagination {...paginationProps} /> : null}
+        </StyledDataTable>
       </TableThemeProvider>
     </>
   );
