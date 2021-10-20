@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactElement } from 'react';
 export declare type TableToolbarProps = {
     canAdd: boolean;
     canDelete: boolean;
@@ -9,4 +9,4 @@ export declare type TableToolbarProps = {
     handleEdit?: () => void;
     handleReset?: () => void;
 };
-export declare const TableToolbar: React.FC<TableToolbarProps>;
+export declare const TableToolbar: (props: TableToolbarProps) => ReactElement;

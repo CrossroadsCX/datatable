@@ -1,1 +1,1 @@
-export declare const StyledTableToolbar: import("styled-components").StyledComponent<"div", any, {}, never>;
+export declare const StyledTableToolbar: import("styled-components").StyledComponent<"div", import("styled-components").DefaultTheme, {}, never>;
