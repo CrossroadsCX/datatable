@@ -62,6 +62,7 @@ const theme: DefaultTheme = {
       fontFamily: 'Fira Sane, sans-serif',
     },
     thead: {
+      ...defaultTheme.elements?.thead,
       backgroundColor: 'rgb(245, 245, 245)',
       borderBottom: '1px solid #e0e0e1',
     },
