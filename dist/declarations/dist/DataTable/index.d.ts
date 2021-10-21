@@ -11,7 +11,7 @@ export interface HandleFetchDataArgs<T> {
 export interface DataTableProps<T extends Record<string, unknown>> extends TableOptions<T> {
     columns: Column<T>[];
     data: T[];
-    paginated: boolean;
+    paginated: boolean | 'scroll';
     selectable: boolean;
     handleChange: (data: T[]) => void;
     defaultItem?: T;

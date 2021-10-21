@@ -6,6 +6,7 @@ var React = require('react');
 var reactTable = require('react-table');
 var filter = require('lodash/filter');
 var outline = require('@heroicons/react/outline');
+var InfiniteScroll = require('react-infinite-scroll-component');
 var styled = require('styled-components');
 var Select = require('react-select');
 
@@ -13,6 +14,7 @@ function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; 
 
 var React__default = /*#__PURE__*/_interopDefault(React);
 var filter__default = /*#__PURE__*/_interopDefault(filter);
+var InfiniteScroll__default = /*#__PURE__*/_interopDefault(InfiniteScroll);
 var styled__default = /*#__PURE__*/_interopDefault(styled);
 var Select__default = /*#__PURE__*/_interopDefault(Select);
 
@@ -829,6 +831,58 @@ var DataTable = function DataTable(props) {
   };
   var TableRowRender = tableRow ? tableRow : TableRow;
   var ToolbarRender = tableToolbar ? tableToolbar : TableToolbar;
+
+  var Table = function Table() {
+    return /*#__PURE__*/React__default['default'].createElement("table", getTableProps(), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
+      return /*#__PURE__*/React__default['default'].createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
+        return /*#__PURE__*/React__default['default'].createElement("th", _extends({
+          key: rowIndex
+        }, column.getHeaderProps(column.getSortByToggleProps()), {
+          scope: "col"
+        }), column.render('Header'), /*#__PURE__*/React__default['default'].createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmDownIcon, {
+          className: "sort-indicator"
+        }) : /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmUpIcon, {
+          className: "sort-indicator"
+        }) : ''));
+      }));
+    })), /*#__PURE__*/React__default['default'].createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
+      prepareRow(row);
+      return /*#__PURE__*/React__default['default'].createElement(TableRowRender, {
+        key: row.index,
+        row: row,
+        editing: editing,
+        saveRow: saveRow
+      });
+    }) : page.map(function (row) {
+      prepareRow(row);
+      return /*#__PURE__*/React__default['default'].createElement(TableRowRender, {
+        key: row.index,
+        row: row,
+        editing: editing,
+        saveRow: saveRow
+      });
+    })));
+  };
+
+  var InfiniteScrollTable = function InfiniteScrollTable() {
+    return /*#__PURE__*/React__default['default'].createElement(InfiniteScroll__default['default'], {
+      dataLength: rows.length,
+      next: function next() {
+        return handleFetchDataDebounced({
+          pageSize: pageSize,
+          pageCount: pageCount,
+          sortBy: sortBy
+        });
+      },
+      hasMore: true,
+      loader: /*#__PURE__*/React__default['default'].createElement("p", null, "Loading more items...")
+    }, /*#__PURE__*/React__default['default'].createElement(Table, null));
+  };
+
+  var PaginatedTable = function PaginatedTable() {
+    return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(Table, null), /*#__PURE__*/React__default['default'].createElement(Pagination, paginationProps));
+  };
+
   return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(TableThemeProvider, {
     theme: theme
   }, !disableToolbar || tableToolbar ? /*#__PURE__*/React__default['default'].createElement(ToolbarRender, {
@@ -846,35 +900,7 @@ var DataTable = function DataTable(props) {
     className: "table-wrapper-inner"
   }, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "table-wrapper-border"
-  }, /*#__PURE__*/React__default['default'].createElement("table", getTableProps(), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
-    return /*#__PURE__*/React__default['default'].createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-      return /*#__PURE__*/React__default['default'].createElement("th", _extends({
-        key: rowIndex
-      }, column.getHeaderProps(column.getSortByToggleProps()), {
-        scope: "col"
-      }), column.render('Header'), /*#__PURE__*/React__default['default'].createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmDownIcon, {
-        className: "sort-indicator"
-      }) : /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmUpIcon, {
-        className: "sort-indicator"
-      }) : ''));
-    }));
-  })), /*#__PURE__*/React__default['default'].createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
-    prepareRow(row);
-    return /*#__PURE__*/React__default['default'].createElement(TableRowRender, {
-      key: row.index,
-      row: row,
-      editing: editing,
-      saveRow: saveRow
-    });
-  }) : page.map(function (row) {
-    prepareRow(row);
-    return /*#__PURE__*/React__default['default'].createElement(TableRowRender, {
-      key: row.index,
-      row: row,
-      editing: editing,
-      saveRow: saveRow
-    });
-  }))))))), paginated ? /*#__PURE__*/React__default['default'].createElement(Pagination, paginationProps) : null));
+  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React__default['default'].createElement(InfiniteScrollTable, null) : /*#__PURE__*/React__default['default'].createElement(PaginatedTable, null) : /*#__PURE__*/React__default['default'].createElement(Table, null)))))));
 };
 
 exports.DataTable = DataTable;

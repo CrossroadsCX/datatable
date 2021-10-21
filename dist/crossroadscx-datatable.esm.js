@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTable, useAsyncDebounce, useSortBy, usePagination, useRowSelect } from 'react-table';
 import filter from 'lodash/filter';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, ChevronDoubleLeftIcon, ArrowSmLeftIcon, ArrowSmRightIcon, ChevronDoubleRightIcon, CheckIcon, ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Select from 'react-select';
 
@@ -818,6 +819,58 @@ var DataTable = function DataTable(props) {
   };
   var TableRowRender = tableRow ? tableRow : TableRow;
   var ToolbarRender = tableToolbar ? tableToolbar : TableToolbar;
+
+  var Table = function Table() {
+    return /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
+      return /*#__PURE__*/React.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
+        return /*#__PURE__*/React.createElement("th", _extends({
+          key: rowIndex
+        }, column.getHeaderProps(column.getSortByToggleProps()), {
+          scope: "col"
+        }), column.render('Header'), /*#__PURE__*/React.createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React.createElement(ArrowSmDownIcon, {
+          className: "sort-indicator"
+        }) : /*#__PURE__*/React.createElement(ArrowSmUpIcon, {
+          className: "sort-indicator"
+        }) : ''));
+      }));
+    })), /*#__PURE__*/React.createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
+      prepareRow(row);
+      return /*#__PURE__*/React.createElement(TableRowRender, {
+        key: row.index,
+        row: row,
+        editing: editing,
+        saveRow: saveRow
+      });
+    }) : page.map(function (row) {
+      prepareRow(row);
+      return /*#__PURE__*/React.createElement(TableRowRender, {
+        key: row.index,
+        row: row,
+        editing: editing,
+        saveRow: saveRow
+      });
+    })));
+  };
+
+  var InfiniteScrollTable = function InfiniteScrollTable() {
+    return /*#__PURE__*/React.createElement(InfiniteScroll, {
+      dataLength: rows.length,
+      next: function next() {
+        return handleFetchDataDebounced({
+          pageSize: pageSize,
+          pageCount: pageCount,
+          sortBy: sortBy
+        });
+      },
+      hasMore: true,
+      loader: /*#__PURE__*/React.createElement("p", null, "Loading more items...")
+    }, /*#__PURE__*/React.createElement(Table, null));
+  };
+
+  var PaginatedTable = function PaginatedTable() {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Table, null), /*#__PURE__*/React.createElement(Pagination, paginationProps));
+  };
+
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableThemeProvider, {
     theme: theme
   }, !disableToolbar || tableToolbar ? /*#__PURE__*/React.createElement(ToolbarRender, {
@@ -835,35 +888,7 @@ var DataTable = function DataTable(props) {
     className: "table-wrapper-inner"
   }, /*#__PURE__*/React.createElement("div", {
     className: "table-wrapper-border"
-  }, /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
-    return /*#__PURE__*/React.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-      return /*#__PURE__*/React.createElement("th", _extends({
-        key: rowIndex
-      }, column.getHeaderProps(column.getSortByToggleProps()), {
-        scope: "col"
-      }), column.render('Header'), /*#__PURE__*/React.createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React.createElement(ArrowSmDownIcon, {
-        className: "sort-indicator"
-      }) : /*#__PURE__*/React.createElement(ArrowSmUpIcon, {
-        className: "sort-indicator"
-      }) : ''));
-    }));
-  })), /*#__PURE__*/React.createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
-    prepareRow(row);
-    return /*#__PURE__*/React.createElement(TableRowRender, {
-      key: row.index,
-      row: row,
-      editing: editing,
-      saveRow: saveRow
-    });
-  }) : page.map(function (row) {
-    prepareRow(row);
-    return /*#__PURE__*/React.createElement(TableRowRender, {
-      key: row.index,
-      row: row,
-      editing: editing,
-      saveRow: saveRow
-    });
-  }))))))), paginated ? /*#__PURE__*/React.createElement(Pagination, paginationProps) : null));
+  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React.createElement(PaginatedTable, null) : /*#__PURE__*/React.createElement(Table, null)))))));
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar };
