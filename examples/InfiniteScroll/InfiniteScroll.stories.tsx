@@ -29,24 +29,18 @@ const columns: Column<Person>[] = [
 ]
 
 const Template: Story<DataTableProps<Person>> = (args) => {
-  const [people, setPeople] = useState(createPeople(10))
+  const [people, setPeople] = useState<Person[]>(createPeople(10))
 
   const initialData = useMemo(() => people, [people])
 
   // We will append new data on fetching
-  const handleFetchData = async ({ pageIndex, pageSize, sortBy: sortByInput }: HandleFetchDataArgs<Person>) => {
-    console.log('Paging:')
-    console.log(pageIndex, pageSize, sortBy)
+  const handleFetchData = async ({ pageSize }: HandleFetchDataArgs<Person>) => {
+
     const newPeople = createPeople(pageSize)
+    const updatedPeople = people.concat(newPeople)
 
-    if (!isEmpty(sortByInput)) {
-      const [sortObject] = sortByInput
-      const { id: sortKey } = sortObject
-
-      sortBy(newPeople as Array<Person>, [sortKey])
-    }
-
-    setPeople(newPeople)
+    console.log(updatedPeople)
+    setPeople(updatedPeople)
   }
 
   return (<DataTable<Person> data={initialData} handleFetchData={handleFetchData} {...args} />)

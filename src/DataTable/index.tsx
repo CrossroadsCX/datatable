@@ -311,7 +311,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   const InfiniteScrollTable = () => (
     <InfiniteScroll
       dataLength={rows.length}
-      next={() => handleFetchDataDebounced({ pageSize: (pageSize * 2), pageIndex: pageIndex + 1, sortBy })}
+      next={() => handleFetchDataDebounced({ pageSize, pageCount, sortBy })}
       hasMore={true}
       loader={<p>Loading more items...</p>}
     >
