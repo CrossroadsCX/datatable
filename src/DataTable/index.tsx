@@ -44,8 +44,8 @@ export interface DataTableProps<T extends Record<string, unknown>>
     // Required props
     columns: Column<T>[]
     data: T[]
-    paginated: boolean | 'scroll'
-    selectable: boolean
+    paginated?: boolean | 'scroll'
+    selectable?: boolean
     handleChange: (data: T[]) => void
 
     // Optional props
