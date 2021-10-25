@@ -18,9 +18,7 @@ declare module 'styled-components' {
       th?: ElementType
       td?: ElementType
     },
-    overrides?: {
-      '.table-wrapper-border': ElementType
-    },
+    overrides?: {},
     shadow?: string,
     screens: {
       sm: string

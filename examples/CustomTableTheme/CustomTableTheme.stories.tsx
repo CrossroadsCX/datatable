@@ -77,11 +77,7 @@ const theme: DefaultTheme = {
       fontWeight: 400,
     }
   },
-  overrides: {
-    '.table-wrapper-border': {
-      borderRadius: 0,
-    }
-  }
+  overrides: {}
 }
 
 const Template: Story<DataTableProps<PersonData>> = (args) => <DataTable<PersonData> { ...args } />

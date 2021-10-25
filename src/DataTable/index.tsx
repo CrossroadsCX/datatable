@@ -343,18 +343,12 @@ export const DataTable = <T extends Record<string, unknown>>(
       ): null}
 
         <StyledDataTable>
-            <div className="table-wrapper">
-              <div className="table-wrapper-inner">
-                <div className="table-wrapper-border">
-                {paginated ?
-                  paginated === 'scroll' ?
-                    (<InfiniteScrollTable />) :
-                    (<PaginatedTable />)
-                  : (<Table />)
-                }
-                </div>
-              </div>
-            </div>
+          {paginated ?
+            paginated === 'scroll' ?
+              (<InfiniteScrollTable />) :
+              (<PaginatedTable />)
+            : (<Table />)
+          }
         </StyledDataTable>
       </TableThemeProvider>
     </>
