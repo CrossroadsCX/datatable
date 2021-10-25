@@ -58,8 +58,6 @@
     "@heroicons/react": "^1.0.3",
     "date-fns": "^2.23.0",
     "lodash": "^4.17.21",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-is": "^17.0.2",
     "react-select": "^4.3.1",
@@ -75,6 +73,7 @@
     "build-publish": "yarn build && npm version patch && npm publish"
   },
   "peerDependencies": {
-    "@types/react-table": "^7.7.2"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   }
 }
