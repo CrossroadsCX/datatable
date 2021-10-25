@@ -282,11 +282,7 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
 var StyledDataTable = styled.div.withConfig({
   displayName: "styled__StyledDataTable",
   componentId: "sc-smya6t-0"
-})(["display:flex;flex-direction:column;.sort-indicator{height:2rem;}.table-wrapper{margin-top:-.5rem;margin-bottom:-.5rem;overflow-x:auto;@media (min-width:", "){margin-left:-1.5rem;margin-right:-1.5rem;}@media (min-width:", "){margin-left:-2rem;margin-right:-2rem;}.table-wrapper-inner{padding-top:.5rem;padding-bottom:.5rem;vertical-align:middle;display:inline-block;min-width:100%;@media(min-width:", "){padding-left:1.5rem;padding-right:1.5rem;}@media(min-width:", "){padding-left:2rem;padding-right:2rem;}.table-wrapper-border{", " ", " overflow:hidden;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));@media(min-width:", "){", "}", "}}}"], function (props) {
-  return props.theme.screens.sm;
-}, function (props) {
-  return props.theme.screens.lg;
-}, function (props) {
+})(["overflow-x:auto;padding-top:.5rem;padding-bottom:.5rem;@media(min-width:", "){padding-left:1rem;padding-right:1rem;}@media(min-width:", "){padding-left:1.5rem;padding-right:1.5rem;}.sort-indicator{height:2rem;}table{padding-bottom:.5rem;vertical-align:middle;min-width:100%;", " ", " overflow:hidden;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));@media(min-width:", "){", "}", " th{position:sticky;}}"], function (props) {
   return props.theme.screens.sm;
 }, function (props) {
   return props.theme.screens.lg;
@@ -297,9 +293,9 @@ var StyledDataTable = styled.div.withConfig({
 }, function (props) {
   return props.theme.screens.sm;
 }, function (props) {
-  return props.theme.overrides && props.theme.overrides['.table-wrapper-border'];
+  return props.theme.overrides;
 }, function (props) {
-  return props.theme.overrides && props.theme.overrides['.table-wrapper-border'];
+  return props.theme.overrides;
 });
 
 var StyledTableToolbar = styled.div.withConfig({
@@ -896,13 +892,7 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }) : null, /*#__PURE__*/React.createElement(StyledDataTable, null, /*#__PURE__*/React.createElement("div", {
-    className: "table-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "table-wrapper-inner"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "table-wrapper-border"
-  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React.createElement(PaginatedTable, null) : /*#__PURE__*/React.createElement(Table, null)))))));
+  }) : null, /*#__PURE__*/React.createElement(StyledDataTable, null, paginated ? paginated === 'scroll' ? /*#__PURE__*/React.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React.createElement(PaginatedTable, null) : /*#__PURE__*/React.createElement(Table, null))));
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar };
