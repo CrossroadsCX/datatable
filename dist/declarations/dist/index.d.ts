@@ -10,6 +10,7 @@ export type { TableRowProps } from './TableRow';
 export type { TableToolbarProps } from './TableToolbar';
 import { MouseEventHandler } from 'react';
 import { TableInstance } from 'react-table';
+import { OptionTypeBase } from 'react-select';
 declare module 'react-table' {
     interface UseFlexLayoutInstanceProps<D extends Record<string, unknown>> {
         totalColumnsMinWidth: number;
@@ -29,7 +30,7 @@ declare module 'react-table' {
     }
     interface ColumnInterface<D extends Record<string, unknown> = Record<string, unknown>> extends UseFiltersColumnOptions<D>, UseGroupByColumnOptions<D>, UseResizeColumnsColumnOptions<D>, UseSortByColumnOptions<D> {
         align?: string;
-        options?: string[];
+        options?: OptionTypeBase[];
     }
     interface ColumnInstance<D extends Record<string, unknown> = Record<string, unknown>> extends UseFiltersColumnProps<D>, UseGroupByColumnProps<D>, UseResizeColumnsColumnProps<D>, UseFlexLayoutColumnProps<D>, UseSortByColumnProps<D> {
     }

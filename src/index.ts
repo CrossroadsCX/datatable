@@ -64,6 +64,8 @@ import {
   UseSortByState,
 } from 'react-table'
 
+import { OptionTypeBase } from 'react-select'
+
 declare module 'react-table' {
   export interface UseFlexLayoutInstanceProps<D extends Record<string, unknown>> {
     totalColumnsMinWidth: number
@@ -121,9 +123,9 @@ declare module 'react-table' {
     extends UseFiltersColumnOptions<D>,
       UseGroupByColumnOptions<D>,
       UseResizeColumnsColumnOptions<D>,
-      UseSortByColumnOptions<D> {
+    UseSortByColumnOptions<D> {
     align?: string,
-    options?: string[]
+    options?: OptionTypeBase[]
   }
 
   export interface ColumnInstance<D extends Record<string, unknown> = Record<string, unknown>>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Column } from 'react-table';
 import { OptionTypeBase } from 'react-select';
+import { find } from 'lodash'
 
 import { SelectCell } from './SelectCell';
 
@@ -10,6 +11,18 @@ export type EditableCellProps = {
   column: Column,
   isEditable: boolean,
   onChange: (columnId: string, value: any) => void
+}
+
+const getOptionLabel = (value: any, options: OptionTypeBase[]): string => {
+  const option = find(options, { value })
+  return option?.label
+}
+
+// Select option typeguard
+const isSelectOption = (value: OptionTypeBase | string | number): value is OptionTypeBase => {
+  if (typeof value === 'object' && value?.label) return true
+
+  return false
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
@@ -31,6 +44,10 @@ export const EditableCell: React.FC<EditableCellProps> = ({
     const { value: newValue } = selectOption;
 
     setValue(newValue);
+    if (id) {
+      onChange(id, newValue)
+    }
+
   };
 
   useEffect(() => {
@@ -41,18 +58,24 @@ export const EditableCell: React.FC<EditableCellProps> = ({
     setInitialRender(false);
   }, [value, id]);
 
-  if (!isEditable) return (<>{initialValue}</>);
+  if (!isEditable) {
+    // If this is a selectable cell
+    if (options) {
+      return (
+        <>{getOptionLabel(value, options)}</>
+      )
+    }
+
+    return (
+      <>{value}</>
+    );
+  }
 
   if (options && options.length > 0) {
-    const selectOptions = options.map((option) => ({
-      value: option,
-      label: option,
-    }));
-
     return (
       <div>
         <SelectCell
-          options={selectOptions}
+          options={options}
           handleChange={onSelectChange}
         />
       </div>
@@ -63,7 +86,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
     <div>
       <input
         className="border-b border-blue-400"
-        value={value}
+        value={value || ''}
         onChange={onLocalChange}
       />
     </div>

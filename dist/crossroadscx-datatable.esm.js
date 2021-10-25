@@ -4,6 +4,7 @@ import filter from 'lodash/filter';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, ChevronDoubleLeftIcon, ArrowSmLeftIcon, ArrowSmRightIcon, ChevronDoubleRightIcon, CheckIcon, ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { find } from 'lodash';
 import Select from 'react-select';
 
 function _extends() {
@@ -405,6 +406,13 @@ var SelectCell = function SelectCell(_ref) {
   });
 };
 
+var getOptionLabel = function getOptionLabel(value, options) {
+  var option = find(options, {
+    value: value
+  });
+  return option === null || option === void 0 ? void 0 : option.label;
+}; // Select option typeguard
+
 var EditableCell = function EditableCell(_ref) {
   var initialValue = _ref.value,
       _ref$column = _ref.column,
@@ -431,6 +439,10 @@ var EditableCell = function EditableCell(_ref) {
   var onSelectChange = function onSelectChange(selectOption) {
     var newValue = selectOption.value;
     setValue(newValue);
+
+    if (id) {
+      onChange(id, newValue);
+    }
   };
 
   useEffect(function () {
@@ -440,24 +452,26 @@ var EditableCell = function EditableCell(_ref) {
 
     setInitialRender(false);
   }, [value, id]);
-  if (!isEditable) return /*#__PURE__*/React.createElement(React.Fragment, null, initialValue);
+
+  if (!isEditable) {
+    // If this is a selectable cell
+    if (options) {
+      return /*#__PURE__*/React.createElement(React.Fragment, null, getOptionLabel(value, options));
+    }
+
+    return /*#__PURE__*/React.createElement(React.Fragment, null, value);
+  }
 
   if (options && options.length > 0) {
-    var selectOptions = options.map(function (option) {
-      return {
-        value: option,
-        label: option
-      };
-    });
     return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SelectCell, {
-      options: selectOptions,
+      options: options,
       handleChange: onSelectChange
     }));
   }
 
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
     className: "border-b border-blue-400",
-    value: value,
+    value: value || '',
     onChange: onLocalChange
   }));
 };
