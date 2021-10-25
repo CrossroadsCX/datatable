@@ -18,7 +18,7 @@ declare module 'styled-components' {
       th?: ElementType
       td?: ElementType
     },
-    overrides?: {},
+    overrides?: ElementType,
     shadow?: string,
     screens: {
       sm: string
