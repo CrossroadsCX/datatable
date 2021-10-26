@@ -67,8 +67,8 @@ const columns: Column<SaleData>[] = [
         Header: 'Product Name',
         accessor: 'product',
         options: [
-          'Roses ( Red )',
-          'Roses ( White )',
+          { label: 'Roses', value: '1' },
+          { label: 'Sunflowers', value: '2' },
         ],
       },
       {
