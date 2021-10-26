@@ -22,7 +22,7 @@ import { DefaultTheme } from 'styled-components'
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { GlobalHotKeys, configure, HotKeys } from 'react-hotkeys';
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
@@ -141,7 +141,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     }
 
     const updatedData = [...tableData, defaultItem];
-
+    console.log('handleAdd')
     setData(updatedData);
     setEditing(updatedData.length - 1);
   };
@@ -250,7 +250,27 @@ export const DataTable = <T extends Record<string, unknown>>(
   const TableRowRender = tableRow ? tableRow : TableRow
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
+  configure({
+    ignoreTags: [],
+  });
+
+  const keyMap = {
+    NEW_RECORD: "Control+n",
+    SAVE_ITEM: "Control+s",
+    CANCEL_ITEM: "esc",
+  }
+  
+  // const handleDefaultDelete = () => {
+  //   console.log('deleting');
+  // };
+
+  const handlers = {
+    NEW_RECORD: handleAdd,
+  //  CANCEL_ITEM: handleDelete ? handleDelete : handleDefaultDelete
+  };
+
   const Table = () => (
+    <HotKeys handlers={handlers}>
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
@@ -307,6 +327,7 @@ export const DataTable = <T extends Record<string, unknown>>(
         }
       </tbody>
     </table>
+    </HotKeys>
   )
 
   const InfiniteScrollTable = () => (
@@ -329,6 +350,7 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   return (
     <>
+    <HotKeys keyMap={keyMap}>
       <TableThemeProvider theme={theme}>
         {(!disableToolbar || tableToolbar) ? (
           <ToolbarRender
@@ -352,6 +374,7 @@ export const DataTable = <T extends Record<string, unknown>>(
           }
         </StyledDataTable>
       </TableThemeProvider>
+      </HotKeys>
     </>
   );
 };
