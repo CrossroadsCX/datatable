@@ -386,6 +386,45 @@ styled(TableRow).withConfig({
   componentId: "sc-1dh9xw2-0"
 })(["td{padding-left:1.5rem;padding-right:1.5rem;padding-top:.75rem;padding-bottom:.7rem;font-size:.75rem;line-height:1rem;font-weight:500;&:first-child{}}"]);
 
+var customStyles = {
+  menu: function menu() {
+    return {
+      width: 150,
+      color: '#000',
+      padding: 1,
+      background: '#fff',
+      fontSize: 12
+    };
+  },
+  control: function control() {
+    return {
+      width: 150,
+      height: 25,
+      display: 'flex',
+      color: '#000'
+    };
+  },
+  indicatorSeparator: function indicatorSeparator() {
+    return {
+      display: 'none'
+    };
+  },
+  indicatorsContainer: function indicatorsContainer() {
+    return {
+      display: 'none'
+    };
+  },
+  singleValue: function singleValue() {
+    var color = '#000';
+    var opacity = 1;
+    var transition = 'opacity 300ms';
+    return {
+      opacity: opacity,
+      transition: transition,
+      color: color
+    };
+  }
+};
 var SelectCell = function SelectCell(_ref) {
   var handleChange = _ref.handleChange,
       options = _ref.options;
@@ -398,7 +437,9 @@ var SelectCell = function SelectCell(_ref) {
     options: options,
     onChange: onChange,
     menuPortalTarget: document.body,
-    menuPosition: "fixed"
+    menuPosition: "fixed",
+    styles: customStyles,
+    className: "border-0 border-b border-blue-400 border-solid"
   });
 };
 
