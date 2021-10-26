@@ -53,7 +53,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     disableToolbar?: boolean
     theme?: DefaultTheme,
     handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
-
+    stickyHeader?: boolean,
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
@@ -89,6 +89,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     tableRow,
     tableToolbar,
     theme = defaultTheme,
+    stickyHeader = false,
   } = props;
 
   /** Table State */
@@ -342,7 +343,7 @@ export const DataTable = <T extends Record<string, unknown>>(
         />
       ): null}
 
-        <StyledDataTable>
+        <StyledDataTable className={stickyHeader ? 'sticky' : ''}>
           {paginated ?
             paginated === 'scroll' ?
               (<InfiniteScrollTable />) :

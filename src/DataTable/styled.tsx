@@ -6,6 +6,16 @@ export const StyledDataTable = styled.div`
   padding-top:.5rem;
   padding-bottom: .5rem;
 
+  &.sticky{
+    max-height: 600px;
+
+    th{
+      position: sticky; 
+      top: -10px;
+      z-index: 1;
+      background-color: rgb(245,245,245);
+    }
+  }
   @media(min-width: ${props => props.theme.screens.sm}) {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -26,7 +36,6 @@ export const StyledDataTable = styled.div`
     min-width:100%;
     ${props => props.theme.shadow}
     ${props => props.theme['border-b']}
-    overflow: hidden;
     --tw-border-opacity: 1;
     border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 
@@ -34,9 +43,5 @@ export const StyledDataTable = styled.div`
       ${props => props.theme.overrides }
     }
     ${props => props.theme.overrides }
-
-    th{
-      position: sticky;
-    }
   }
 `;
