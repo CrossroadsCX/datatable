@@ -17,12 +17,11 @@ import {
 } from 'react-table';
 
 import filter from 'lodash/filter'
-import isEqual from 'lodash/isEqual'
 import { DefaultTheme } from 'styled-components'
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { GlobalHotKeys, configure, HotKeys } from 'react-hotkeys';
+import { useHotkeys, Options } from 'react-hotkeys-hook';
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
@@ -161,6 +160,15 @@ export const DataTable = <T extends Record<string, unknown>>(
     setEditing(selectedRow.index);
   };
 
+  const handleCancel = () => {
+    const currentRow = tableData.length - 1
+    if( editing == currentRow){
+      const updatedData = filter(tableData, (item, index) => index != tableData.length - 1);
+      setData(updatedData);
+      setEditing(updatedData.length);
+    } 
+  }
+
   const {
     rows,
     headerGroups,
@@ -250,27 +258,16 @@ export const DataTable = <T extends Record<string, unknown>>(
   const TableRowRender = tableRow ? tableRow : TableRow
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
-  configure({
-    ignoreTags: [],
-  });
-
-  const keyMap = {
-    NEW_RECORD: "Control+n",
-    SAVE_ITEM: "Control+s",
-    CANCEL_ITEM: "esc",
-  }
+  const Table = () =>  {
+    useHotkeys('ctrl+n', () => handleAdd());
+    
+    const optionsHot: Options = {
+      enableOnTags: ['INPUT'],
+    }
   
-  // const handleDefaultDelete = () => {
-  //   console.log('deleting');
-  // };
+    useHotkeys('esc', () => handleCancel(), optionsHot);
 
-  const handlers = {
-    NEW_RECORD: handleAdd,
-  //  CANCEL_ITEM: handleDelete ? handleDelete : handleDefaultDelete
-  };
-
-  const Table = () => (
-    <HotKeys handlers={handlers}>
+    return (
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
@@ -327,8 +324,8 @@ export const DataTable = <T extends Record<string, unknown>>(
         }
       </tbody>
     </table>
-    </HotKeys>
   )
+}
 
   const InfiniteScrollTable = () => (
     <InfiniteScroll
@@ -350,7 +347,6 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   return (
     <>
-    <HotKeys keyMap={keyMap}>
       <TableThemeProvider theme={theme}>
         {(!disableToolbar || tableToolbar) ? (
           <ToolbarRender
@@ -374,7 +370,6 @@ export const DataTable = <T extends Record<string, unknown>>(
           }
         </StyledDataTable>
       </TableThemeProvider>
-      </HotKeys>
     </>
   );
 };
