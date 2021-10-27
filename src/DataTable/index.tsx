@@ -305,6 +305,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 row={row}
                 editing={editing}
                 saveRow={saveRow}
+                selectable={selectable}
               />
             )
           })
@@ -318,6 +319,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 row={row}
                 editing={editing}
                 saveRow={saveRow}
+                selectable={selectable}
               />
             )
           })

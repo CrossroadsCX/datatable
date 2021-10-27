@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Select, { OptionTypeBase } from 'react-select';
 
 type SelectCellProps = {
   options: OptionTypeBase[]
   handleChange: (value: any) => void
+  setFocus: boolean,
 }
 
 const customStyles = {
@@ -38,12 +39,21 @@ const customStyles = {
   }
 }
 
-export const SelectCell: React.FC<SelectCellProps> = ({ handleChange, options }) => {
+export const SelectCell: React.FC<SelectCellProps> = ({ handleChange, options, setFocus }) => {
   const onChange = (value: OptionTypeBase | null) => {
     handleChange(value);
   };
 
+  const selectRef = useRef(null)
+
+  useEffect(() => {
+    if(setFocus){
+      selectRef.current &&  selectRef.current.focus()
+    }
+  }, []);
+
   return (
+    
     <Select
       options={options}
       onChange={onChange}
@@ -51,6 +61,7 @@ export const SelectCell: React.FC<SelectCellProps> = ({ handleChange, options })
       menuPosition="fixed"
       styles={customStyles}
       className='border-0 border-b border-blue-400 border-solid'
+      ref={selectRef}
     />
   );
 };

@@ -10,7 +10,9 @@ export type EditableCellProps = {
   row: Row,
   column: Column,
   isEditable: boolean,
-  onChange: (columnId: string, value: any) => void
+  onChange: (columnId: string, value: any) => void, 
+  selectable: boolean
+  index: number,
 }
 
 const getOptionLabel = (value: any, options: OptionTypeBase[]): string => {
@@ -31,6 +33,8 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   column: { id, options },
   isEditable,
   onChange,
+  index,
+  selectable
 }) => {
   const [value, setValue] = useState(initialValue);
   const [initialRender, setInitialRender] = useState(true);
@@ -77,6 +81,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
         <SelectCell
           options={options}
           handleChange={onSelectChange}
+          setFocus={index == (selectable ? 1 : 0) ? true : false}
         />
       </div>
     );
@@ -88,6 +93,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
         className="border-b border-blue-400"
         value={value || ''}
         onChange={onLocalChange}
+        autoFocus={index == (selectable ? 1 : 0) ? true : false}
       />
     </div>
   );
