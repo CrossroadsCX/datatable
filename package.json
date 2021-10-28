@@ -1,6 +1,6 @@
 {
   "name": "@crossroadscx/datatable",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
@@ -48,8 +48,6 @@
     "eslint": "^7.32.0",
     "faker": "^5.5.3",
     "postcss": "^8.3.6",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
     "storybook": "^6.3.7",
     "tailwindcss": "^2.2.7",
     "ttypescript": "^1.5.12"

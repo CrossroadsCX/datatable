@@ -95,8 +95,6 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [incomingState, setIncomingState] = useState(data)
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
-  const initialRenderRef = useRef(true)
-  const overrideDataRef = useRef(false)
 
   /*
    *  Selectable Options
@@ -131,6 +129,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     setData(newData);
     setEditing(null);
     toggleAllRowsSelected(false);
+    handleChange(newData);
   };
 
   const handleAdd = () => {
@@ -204,28 +203,9 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   const prevPageProps = usePrevious({ pageIndex, pageSize, sortBy })
 
-  // Watch the table data for changes & report back to parent
-  useEffect(() => {
-    if (
-      !editing &&
-      !initialRenderRef.current &&
-      !overrideDataRef.current &&
-      handleChange
-    ) {
-      handleChange(tableData);
-    }
-
-    initialRenderRef.current = false;
-  }, [tableData, editing]);
-
   // If the incoming data changes, override the table data
   useEffect(() => {
-    if (!initialRenderRef.current) {
-      overrideDataRef.current = true
-      setData(data)
-    }
-
-    overrideDataRef.current = false
+    setData(data)
   }, [data])
 
   const handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200)
