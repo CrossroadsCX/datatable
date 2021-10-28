@@ -140,7 +140,6 @@ export const DataTable = <T extends Record<string, unknown>>(
     }
 
     const updatedData = [...tableData, defaultItem];
-    console.log('handleAdd')
     setData(updatedData);
     setEditing(updatedData.length - 1);
   };
@@ -161,12 +160,15 @@ export const DataTable = <T extends Record<string, unknown>>(
   };
 
   const handleCancel = () => {
-    const currentRow = tableData.length - 1
-    if( editing == currentRow){
-      const updatedData = filter(tableData, (item, index) => index != tableData.length - 1);
+    const lastRow = tableData.length - 1
+    if(data.length == tableData.length || editing != lastRow){
+      setData(tableData);
+      setEditing(tableData.length)
+    } else {
+      const updatedData = filter(tableData, (item, index) => index != lastRow);
       setData(updatedData);
       setEditing(updatedData.length);
-    } 
+    }
   }
 
   const {
