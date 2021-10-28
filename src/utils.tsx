@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { CellProps, HeaderProps, Hooks } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
+import { useHotkeys, Options } from 'react-hotkeys-hook';
 
 export const selectionHook = (hooks: Hooks<any>) => {
   hooks.allColumns.push((columns) => [
@@ -28,6 +29,11 @@ export const selectionHook = (hooks: Hooks<any>) => {
         handleSaveRow: () => void
       }) => {
         if (editing === row.index) {
+          const optionsHot: Options = {
+            enableOnTags: ['INPUT'],
+          }
+
+          useHotkeys('ctrl+enter', () => handleSaveRow(), optionsHot);
           return (
             <CheckIcon
               className="w-4 border border-green-600 bg-green-200 rounded-md cursor-pointer hover:bg-green-600"
@@ -49,6 +55,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
 
 export function usePrevious<T> (value: T): T {
   const ref = useRef(value)
+  
   useEffect(() => {
     ref.current = value
   })

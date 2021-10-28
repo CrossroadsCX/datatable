@@ -17,12 +17,11 @@ import {
 } from 'react-table';
 
 import filter from 'lodash/filter'
-import isEqual from 'lodash/isEqual'
 import { DefaultTheme } from 'styled-components'
 import { ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { useHotkeys, Options } from 'react-hotkeys-hook';
 import { TableThemeProvider } from '../Theme'
 import { StyledDataTable } from './styled'
 
@@ -140,7 +139,6 @@ export const DataTable = <T extends Record<string, unknown>>(
     }
 
     const updatedData = [...tableData, defaultItem];
-
     setData(updatedData);
     setEditing(updatedData.length - 1);
   };
@@ -159,6 +157,18 @@ export const DataTable = <T extends Record<string, unknown>>(
 
     setEditing(selectedRow.index);
   };
+
+  const handleCancel = () => {
+    const lastRow = tableData.length - 1
+    if(data.length == tableData.length || editing != lastRow){
+      setData(tableData);
+      setEditing(tableData.length)
+    } else {
+      const updatedData = filter(tableData, (item, index) => index != lastRow);
+      setData(updatedData);
+      setEditing(updatedData.length);
+    }
+  }
 
   const {
     rows,
@@ -230,7 +240,16 @@ export const DataTable = <T extends Record<string, unknown>>(
   const TableRowRender = tableRow ? tableRow : TableRow
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
-  const Table = () => (
+  const Table = () =>  {
+    useHotkeys('ctrl+n', () => handleAdd());
+    
+    const optionsHot: Options = {
+      enableOnTags: ['INPUT'],
+    }
+  
+    useHotkeys('esc', () => handleCancel(), optionsHot);
+
+    return (
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
@@ -268,6 +287,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 row={row}
                 editing={editing}
                 saveRow={saveRow}
+                selectable={selectable}
               />
             )
           })
@@ -281,6 +301,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 row={row}
                 editing={editing}
                 saveRow={saveRow}
+                selectable={selectable}
               />
             )
           })
@@ -288,6 +309,7 @@ export const DataTable = <T extends Record<string, unknown>>(
       </tbody>
     </table>
   )
+}
 
   const InfiniteScrollTable = () => (
     <InfiniteScroll

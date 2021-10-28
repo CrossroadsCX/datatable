@@ -10,10 +10,12 @@ export type EditableCellProps = {
   row: Row,
   column: Column,
   isEditable: boolean,
-  onChange: (columnId: string, value: any) => void
+  onChange: (columnId: string, value: unknown) => void, 
+  selectable: boolean
+  index: number,
 }
 
-const getOptionLabel = (value: any, options: OptionTypeBase[]): string => {
+const getOptionLabel = (value: unknown, options: OptionTypeBase[]): string => {
   const option = find(options, { value })
   return option?.label
 }
@@ -31,6 +33,8 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   column: { id, options },
   isEditable,
   onChange,
+  index,
+  selectable
 }) => {
   const [value, setValue] = useState(initialValue);
   const [initialRender, setInitialRender] = useState(true);
@@ -77,6 +81,14 @@ export const EditableCell: React.FC<EditableCellProps> = ({
         <SelectCell
           options={options}
           handleChange={onSelectChange}
+          /*
+            The focus needs to be on the first input of the Row, 
+            but datatable has two options, when the select option 
+            is activated (cell #1) and when not (cell #0), 
+            so it evaluates that with the cell index to determine 
+            if the input will be focusable.
+          */
+          setFocus={index == (selectable ? 1 : 0) ? true : false}
         />
       </div>
     );
@@ -88,6 +100,14 @@ export const EditableCell: React.FC<EditableCellProps> = ({
         className="border-b border-blue-400"
         value={value || ''}
         onChange={onLocalChange}
+        /*
+          The focus needs to be on the first input of the Row, 
+          but datatable has two options, when the select option 
+          is activated (cell #1) and when not (cell #0), 
+          so it evaluates that with the cell index to determine 
+          if the input will be focusable.
+        */
+        autoFocus={index == (selectable ? 1 : 0) ? true : false}
       />
     </div>
   );
