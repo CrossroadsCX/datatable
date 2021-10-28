@@ -18,6 +18,7 @@ export interface DataTableProps<T extends Record<string, unknown>> extends Table
     disableToolbar?: boolean;
     theme?: DefaultTheme;
     handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>;
+    stickyHeader?: boolean;
     tableRow?: <T extends Record<string, unknown>>(props: TableRowProps<T>) => ReactElement;
     tableToolbar?: (props: TableToolbarProps) => ReactElement;
 }

@@ -282,7 +282,7 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
 var StyledDataTable = styled.div.withConfig({
   displayName: "styled__StyledDataTable",
   componentId: "sc-smya6t-0"
-})(["overflow-x:auto;padding-top:.5rem;padding-bottom:.5rem;@media(min-width:", "){padding-left:1rem;padding-right:1rem;}@media(min-width:", "){padding-left:1.5rem;padding-right:1.5rem;}.sort-indicator{height:2rem;}table{padding-bottom:.5rem;vertical-align:middle;min-width:100%;", " ", " overflow:hidden;--tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));@media(min-width:", "){", "}", " th{position:sticky;}}"], function (props) {
+})(["overflow-x:auto;padding-top:.5rem;padding-bottom:.5rem;&.sticky{max-height:600px;th{position:sticky;top:-10px;z-index:1;background-color:rgb(245,245,245);}}@media(min-width:", "){padding-left:1rem;padding-right:1rem;}@media(min-width:", "){padding-left:1.5rem;padding-right:1.5rem;}.sort-indicator{height:2rem;}table{padding-bottom:.5rem;vertical-align:middle;min-width:100%;", " ", " --tw-border-opacity:1;border-color:rgba(229,231,235,var(--tw-border-opacity));@media(min-width:", "){", "}", "}"], function (props) {
   return props.theme.screens.sm;
 }, function (props) {
   return props.theme.screens.lg;
@@ -705,7 +705,9 @@ var DataTable = function DataTable(props) {
       tableRow = props.tableRow,
       tableToolbar = props.tableToolbar,
       _props$theme = props.theme,
-      theme = _props$theme === void 0 ? defaultTheme : _props$theme;
+      theme = _props$theme === void 0 ? defaultTheme : _props$theme,
+      _props$stickyHeader = props.stickyHeader,
+      stickyHeader = _props$stickyHeader === void 0 ? false : _props$stickyHeader;
   /** Table State */
 
   var _useState = useState(data),
@@ -722,15 +724,13 @@ var DataTable = function DataTable(props) {
       _useState6 = _slicedToArray(_useState5, 2),
       tableData = _useState6[0],
       setData = _useState6[1];
-
-  var initialRenderRef = useRef(true);
-  var overrideDataRef = useRef(false);
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
    *    Create the handleDelete handler. This isn't applicable without row selection
    *      It also tells the Toolbar to display the delete icon
    */
+
 
   if (selectable) {
     hooks.push(selectionHook);
@@ -764,6 +764,7 @@ var DataTable = function DataTable(props) {
     setData(newData);
     setEditing(null);
     toggleAllRowsSelected(false);
+    handleChange(newData);
   };
 
   var handleAdd = function handleAdd() {
@@ -826,23 +827,10 @@ var DataTable = function DataTable(props) {
     pageIndex: pageIndex,
     pageSize: pageSize,
     sortBy: sortBy
-  }); // Watch the table data for changes & report back to parent
+  }); // If the incoming data changes, override the table data
 
   useEffect(function () {
-    if (!editing && !initialRenderRef.current && !overrideDataRef.current && handleChange) {
-      handleChange(tableData);
-    }
-
-    initialRenderRef.current = false;
-  }, [tableData, editing]); // If the incoming data changes, override the table data
-
-  useEffect(function () {
-    if (!initialRenderRef.current) {
-      overrideDataRef.current = true;
-      setData(data);
-    }
-
-    overrideDataRef.current = false;
+    setData(data);
   }, [data]);
   var handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200); // If an handleFetchData handler is passed, use it to pull new data on page change
 
@@ -933,7 +921,9 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }) : null, /*#__PURE__*/React.createElement(StyledDataTable, null, paginated ? paginated === 'scroll' ? /*#__PURE__*/React.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React.createElement(PaginatedTable, null) : /*#__PURE__*/React.createElement(Table, null))));
+  }) : null, /*#__PURE__*/React.createElement(StyledDataTable, {
+    className: stickyHeader ? 'sticky' : ''
+  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React.createElement(PaginatedTable, null) : /*#__PURE__*/React.createElement(Table, null))));
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar };
