@@ -7,6 +7,7 @@ var reactTable = require('react-table');
 var filter = require('lodash/filter');
 var outline = require('@heroicons/react/outline');
 var InfiniteScroll = require('react-infinite-scroll-component');
+var reactHotkeysHook = require('react-hotkeys-hook');
 var styled = require('styled-components');
 var lodash = require('lodash');
 var Select = require('react-select');
@@ -358,7 +359,8 @@ var TableRow = function TableRow(props) {
   var className = props.className,
       row = props.row,
       editing = props.editing,
-      saveRow = props.saveRow;
+      saveRow = props.saveRow,
+      selectable = props.selectable;
 
   var _useState = React.useState(row),
       _useState2 = _slicedToArray(_useState, 2),
@@ -388,7 +390,9 @@ var TableRow = function TableRow(props) {
       isEditable: editing === row.index,
       editing: editing,
       onChange: onChange,
-      handleSaveRow: handleSaveRow
+      handleSaveRow: handleSaveRow,
+      index: index,
+      selectable: selectable
     }));
   }));
 };
@@ -439,19 +443,27 @@ var customStyles = {
 };
 var SelectCell = function SelectCell(_ref) {
   var handleChange = _ref.handleChange,
-      options = _ref.options;
+      options = _ref.options,
+      setFocus = _ref.setFocus;
 
   var onChange = function onChange(value) {
     handleChange(value);
   };
 
+  var selectRef = React.useRef(null);
+  React.useEffect(function () {
+    if (setFocus) {
+      selectRef.current && selectRef.current.focus();
+    }
+  }, []);
   return /*#__PURE__*/React__default['default'].createElement(Select__default['default'], {
     options: options,
     onChange: onChange,
     menuPortalTarget: document.body,
     menuPosition: "fixed",
     styles: customStyles,
-    className: "border-0 border-b border-blue-400 border-solid"
+    className: "border-0 border-b border-blue-400 border-solid",
+    ref: selectRef
   });
 };
 
@@ -468,7 +480,9 @@ var EditableCell = function EditableCell(_ref) {
       id = _ref$column.id,
       options = _ref$column.options,
       isEditable = _ref.isEditable,
-      onChange = _ref.onChange;
+      onChange = _ref.onChange,
+      index = _ref.index,
+      selectable = _ref.selectable;
 
   var _useState = React.useState(initialValue),
       _useState2 = _slicedToArray(_useState, 2),
@@ -515,6 +529,15 @@ var EditableCell = function EditableCell(_ref) {
     return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(SelectCell, {
       options: options,
       handleChange: onSelectChange
+      /*
+        The focus needs to be on the first input of the Row, 
+        but datatable has two options, when the select option 
+        is activated (cell #1) and when not (cell #0), 
+        so it evaluates that with the cell index to determine 
+        if the input will be focusable.
+      */
+      ,
+      setFocus: index == (selectable ? 1 : 0) ? true : false
     }));
   }
 
@@ -522,6 +545,15 @@ var EditableCell = function EditableCell(_ref) {
     className: "border-b border-blue-400",
     value: value || '',
     onChange: onLocalChange
+    /*
+      The focus needs to be on the first input of the Row, 
+      but datatable has two options, when the select option 
+      is activated (cell #1) and when not (cell #0), 
+      so it evaluates that with the cell index to determine 
+      if the input will be focusable.
+    */
+    ,
+    autoFocus: index == (selectable ? 1 : 0) ? true : false
   }));
 };
 
@@ -676,6 +708,12 @@ var selectionHook = function selectionHook(hooks) {
             handleSaveRow = _ref2.handleSaveRow;
 
         if (editing === row.index) {
+          var optionsHot = {
+            enableOnTags: ['INPUT']
+          };
+          reactHotkeysHook.useHotkeys('ctrl+enter', function () {
+            return handleSaveRow();
+          }, optionsHot);
           return /*#__PURE__*/React__default['default'].createElement(outline.CheckIcon, {
             className: "w-4 border border-green-600 bg-green-200 rounded-md cursor-pointer hover:bg-green-600",
             onClick: handleSaveRow
@@ -806,6 +844,21 @@ var DataTable = function DataTable(props) {
     setEditing(selectedRow.index);
   };
 
+  var handleCancel = function handleCancel() {
+    var lastRow = tableData.length - 1;
+
+    if (data.length == tableData.length || editing != lastRow) {
+      setData(tableData);
+      setEditing(tableData.length);
+    } else {
+      var updatedData = filter__default['default'](tableData, function (item, index) {
+        return index != lastRow;
+      });
+      setData(updatedData);
+      setEditing(updatedData.length);
+    }
+  };
+
   var _useTable = reactTable.useTable.apply(void 0, [_objectSpread2(_objectSpread2({}, props), {}, {
     data: tableData,
     defaultColumn: defaultColumn,
@@ -872,6 +925,15 @@ var DataTable = function DataTable(props) {
   var ToolbarRender = tableToolbar ? tableToolbar : TableToolbar;
 
   var Table = function Table() {
+    reactHotkeysHook.useHotkeys('ctrl+n', function () {
+      return handleAdd();
+    });
+    var optionsHot = {
+      enableOnTags: ['INPUT']
+    };
+    reactHotkeysHook.useHotkeys('esc', function () {
+      return handleCancel();
+    }, optionsHot);
     return /*#__PURE__*/React__default['default'].createElement("table", getTableProps(), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
       return /*#__PURE__*/React__default['default'].createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
         return /*#__PURE__*/React__default['default'].createElement("th", _extends({
@@ -890,7 +952,8 @@ var DataTable = function DataTable(props) {
         key: row.index,
         row: row,
         editing: editing,
-        saveRow: saveRow
+        saveRow: saveRow,
+        selectable: selectable
       });
     }) : page.map(function (row) {
       prepareRow(row);
@@ -898,7 +961,8 @@ var DataTable = function DataTable(props) {
         key: row.index,
         row: row,
         editing: editing,
-        saveRow: saveRow
+        saveRow: saveRow,
+        selectable: selectable
       });
     })));
   };

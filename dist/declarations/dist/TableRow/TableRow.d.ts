@@ -5,5 +5,6 @@ export declare type TableRowProps<T extends Record<string, unknown>> = {
     editing: number | null;
     saveRow: (row: Row<T>) => void;
     className?: string;
+    selectable: boolean;
 };
 export declare const TableRow: <T extends Record<string, unknown>>(props: TableRowProps<T>) => ReactElement;
