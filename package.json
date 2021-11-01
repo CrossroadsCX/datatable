@@ -1,6 +1,6 @@
 {
   "name": "@crossroadscx/datatable",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "repository": "git@github.com:crossroadscx/datatable.git",
   "author": "Chris Birk <cmbirk@gmail.com>",
   "license": "MIT",
@@ -65,7 +65,6 @@
     "react-select": "^4.3.1",
     "react-table": "^7.7.0",
     "styled-components": "^5.3.1"
-    
   },
   "scripts": {
     "build": "preconstruct build",
