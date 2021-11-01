@@ -126,6 +126,7 @@ declare module 'react-table' {
     UseSortByColumnOptions<D> {
     align?: string,
     options?: OptionTypeBase[]
+    inputType?: string,
   }
 
   export interface ColumnInstance<D extends Record<string, unknown> = Record<string, unknown>>
