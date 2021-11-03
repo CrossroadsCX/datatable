@@ -30,7 +30,7 @@ const isSelectOption = (value: OptionTypeBase | string | number): value is Optio
 export const EditableCell: React.FC<EditableCellProps> = ({
   value: initialValue,
   // row: { index },
-  column: { id, options },
+  column: { id, options, inputType },
   isEditable,
   onChange,
   index,
@@ -100,6 +100,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
         className="border-b border-blue-400"
         value={value || ''}
         onChange={onLocalChange}
+        type={inputType ? inputType : 'text'}
         /*
           The focus needs to be on the first input of the Row, 
           but datatable has two options, when the select option 
