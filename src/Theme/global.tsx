@@ -1,6 +1,6 @@
-import { css, FlattenSimpleInterpolation, createGlobalStyle,  } from 'styled-components'
+import styled from 'styled-components'
 
-export const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = styled.div`
   // Table Element Styling
   table {
     ${props => props.theme.elements?.table && props.theme.elements.table}
