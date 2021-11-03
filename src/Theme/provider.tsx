@@ -29,8 +29,7 @@ export const defaultTheme: DefaultTheme = {
       '& > * + *': {
         borderTopWidth: '1px',
         borderBottomWidth: '1px',
-        // borderColor: 'rgba(229, 231, 235)'
-        borderColor: "green",
+        borderColor: 'rgba(229, 231, 235)',
       }
     },
     thead: {
@@ -91,9 +90,10 @@ export const defaultTheme: DefaultTheme = {
   `,
 }
 
-export const TableThemeProvider= ({ children, theme = defaultTheme }: TableThemeProviderProps): JSX.Element => (
+export const TableThemeProvider = ({ children, theme = defaultTheme }: TableThemeProviderProps): JSX.Element => (
   <ThemeProvider theme={theme}>
-    <GlobalStyle />
-    {children}
+    <GlobalStyle >
+      {children}
+   </GlobalStyle>
   </ThemeProvider>
 )
