@@ -6,7 +6,7 @@ import { find } from 'lodash'
 import { SelectCell } from './SelectCell';
 
 export type EditableCellProps = {
-  value: any
+  value: string
   row: Row,
   column: Column,
   isEditable: boolean,
@@ -21,11 +21,11 @@ const getOptionLabel = (value: unknown, options: OptionTypeBase[]): string => {
 }
 
 // Select option typeguard
-const isSelectOption = (value: OptionTypeBase | string | number): value is OptionTypeBase => {
-  if (typeof value === 'object' && value?.label) return true
+// const isSelectOption = (value: OptionTypeBase | string | number): value is OptionTypeBase => {
+//   if (typeof value === 'object' && value?.label) return true
 
-  return false
-}
+//   return false
+// }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
   value: initialValue,
@@ -44,14 +44,14 @@ export const EditableCell: React.FC<EditableCellProps> = ({
     setValue(newValue);
   };
 
-  const onSelectChange = (selectOption: OptionTypeBase) => {
-    const { value: newValue } = selectOption;
-
-    setValue(newValue);
-    if (id) {
-      onChange(id, newValue)
+  const onSelectChange = (selectOption: OptionTypeBase | null) => {
+    if(selectOption){
+      const { value: newValue } = selectOption;
+      setValue(newValue);
+      if (id) {
+        onChange(id, newValue)
+      }
     }
-
   };
 
   useEffect(() => {

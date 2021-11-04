@@ -4,7 +4,7 @@ import Select, { OptionTypeBase } from 'react-select';
 
 type SelectCellProps = {
   options: OptionTypeBase[]
-  handleChange: (value: any) => void
+  handleChange: (value: OptionTypeBase | null) => void
   setFocus: boolean,
 }
 

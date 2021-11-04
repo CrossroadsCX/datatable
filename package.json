@@ -68,10 +68,13 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "lint": "eslint ./src --ext .ts,tsx",
+    "eslint": "eslint ./src --ext .ts,tsx --fix",
+    "eslint:watch": "esw -w src --ext .ts,.tsx --fix --color",
+    "lint": "yarn eslint; yarn typecheck",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build-publish": "yarn build && npm version patch && npm publish"
+    "build-publish": "yarn build && npm version patch && npm publish",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^17.0.0",

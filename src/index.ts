@@ -75,7 +75,7 @@ declare module 'react-table' {
     totalMinWidth: number
   }
 
-  export interface TableOptions<D extends Record<string, unknown>>
+  export interface TableOptions<D>
     extends UseExpandedOptions<D>,
       UseFiltersOptions<D>,
       UseFiltersOptions<D>,
@@ -88,13 +88,13 @@ declare module 'react-table' {
         saveRow?: (row: Row<D>) => void
       }
 
-  export interface Hooks<D extends Record<string, unknown>>
+  export interface Hooks<D>
     extends UseExpandedHooks<D>,
       UseGroupByHooks<D>,
       UseRowSelectHooks<D>,
       UseSortByHooks<D> {}
 
-  export interface TableInstance<D extends Record<string, unknown>>
+  export interface TableInstance<D>
     extends UseColumnOrderInstanceProps<D>,
       UseExpandedInstanceProps<D>,
       UseFiltersInstanceProps<D>,
@@ -105,7 +105,7 @@ declare module 'react-table' {
       UsePaginationInstanceProps<D>,
       UseSortByInstanceProps<D> {}
 
-  export interface TableState<D extends Record<string, unknown>>
+  export interface TableState<D>
     extends UseColumnOrderState<D>,
       UseExpandedState<D>,
       UseFiltersState<D>,
@@ -118,7 +118,7 @@ declare module 'react-table' {
     rowCount: number
   }
 
-  export interface ColumnInterface<D extends Record<string, unknown>>
+  export interface ColumnInterface<D>
     extends UseFiltersColumnOptions<D>,
       UseGroupByColumnOptions<D>,
       UseResizeColumnsColumnOptions<D>,
@@ -128,14 +128,14 @@ declare module 'react-table' {
     inputType?: string,
   }
 
-  export interface ColumnInstance<D extends Record<string, unknown>>
+  export interface ColumnInstance<D>
     extends UseFiltersColumnProps<D>,
       UseGroupByColumnProps<D>,
       UseResizeColumnsColumnProps<D>,
       UseSortByColumnProps<D> {}
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface Cell<D extends Record<string, unknown>>{}
+  export interface Cell{}
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   export interface Row<D extends object = {}>

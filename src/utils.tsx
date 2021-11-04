@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { CellProps, HeaderProps, Hooks } from 'react-table';
+import { useEffect, useRef } from 'react';
+import { Hooks } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 import { useHotkeys, Options } from 'react-hotkeys-hook';
