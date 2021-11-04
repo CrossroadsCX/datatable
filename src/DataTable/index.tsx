@@ -1,5 +1,5 @@
 import React, {
-  PropsWithChildren, ReactElement, useEffect, useMemo, useRef, useState,
+  PropsWithChildren, ReactElement, useEffect, useMemo, useState,
 } from 'react';
 
 import {
@@ -33,8 +33,9 @@ import { selectionHook, usePrevious } from '../utils';
 import { defaultTheme } from '../Theme'
 
 export interface HandleFetchDataArgs<T> {
-  pageIndex: number
+  pageIndex?: number
   pageSize: number
+  pageCount?: number
   sortBy: Array<SortingRule<T>>,
 }
 
@@ -82,7 +83,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     defaultItem,
     disableToolbar = false,
     handleChange,
-    handleFetchData = undefined,
+    handleFetchData,
     paginated = false,
     selectable = false,
     tableRow,
@@ -92,7 +93,6 @@ export const DataTable = <T extends Record<string, unknown>>(
   } = props;
 
   /** Table State */
-  const [incomingState, setIncomingState] = useState(data)
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
 
@@ -208,20 +208,20 @@ export const DataTable = <T extends Record<string, unknown>>(
     setData(data)
   }, [data])
 
-  const handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200)
-
-  // If an handleFetchData handler is passed, use it to pull new data on page change
-  useEffect(() => {
-    if (
-      handleFetchData &&
-      (
-        (pageSize !== prevPageProps?.pageSize && pageSize > 0) ||
-        pageIndex !== prevPageProps?.pageIndex
-      )
-    ) {
-      handleFetchDataDebounced({ pageIndex, pageSize, sortBy })
-    }
-  }, [useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy])
+  let handleFetchDataDebounced: (args: HandleFetchDataArgs<T>) => Promise<void>
+  if(handleFetchData){
+    handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200)
+  
+    // If an handleFetchData handler is passed, use it to pull new data on page change
+    useEffect(() => {
+      if (
+          (pageSize !== prevPageProps?.pageSize && pageSize > 0) ||
+          pageIndex !== prevPageProps?.pageIndex
+      ) {
+        handleFetchDataDebounced({ pageIndex, pageSize, sortBy })
+      }
+    }, [useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy])
+  }
 
   const paginationProps = {
     pageIndex,
@@ -252,11 +252,10 @@ export const DataTable = <T extends Record<string, unknown>>(
     return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map((headerGroup: HeaderGroup<T>, rowIndex: number) => (
+        {headerGroups.map((headerGroup: HeaderGroup<T>) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column: Column<T>) => (
+            {headerGroup.headers.map((column) => (
               <th
-                key={rowIndex}
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 scope="col"
               >

@@ -14,7 +14,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
       width: 45,
       maxWidth: 45,
       Aggregated: undefined,
-      Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
+      Header: ({ getToggleAllRowsSelectedProps }: any) => (
         <IndeterminateCheckbox
           className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-400 rounded"
           {...getToggleAllRowsSelectedProps()}
@@ -24,7 +24,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
         row,
         editing,
         handleSaveRow,
-      }: CellProps<any> & {
+      }: any & {
         editing: number | null,
         handleSaveRow: () => void
       }) => {
