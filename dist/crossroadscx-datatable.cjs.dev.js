@@ -1017,3 +1017,4 @@ exports.DataTable = DataTable;
 exports.EditableCell = EditableCell;
 exports.TableRow = TableRow;
 exports.TableToolbar = TableToolbar;
+exports.defaultTheme = defaultTheme;

@@ -3,8 +3,10 @@ import { DataTable } from './DataTable'
 import { EditableCell } from './TableCell'
 import { TableRow } from './TableRow'
 import { TableToolbar } from './TableToolbar'
+import { defaultTheme } from './Theme'
 
 export {
+  defaultTheme,
   DataTable,
   EditableCell,
   TableRow,
@@ -16,6 +18,7 @@ export type { DataTableProps } from './DataTable'
 export type { EditableCellProps } from './TableCell'
 export type { TableRowProps } from './TableRow'
 export type { TableToolbarProps } from './TableToolbar'
+export type { TableTheme } from './Theme'
 // export * from '../index.d'
 
 import { MouseEventHandler } from 'react'

@@ -1001,4 +1001,4 @@ var DataTable = function DataTable(props) {
   }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React$1.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React$1.createElement(PaginatedTable, null) : /*#__PURE__*/React$1.createElement(Table, null))));
 };
 
-export { DataTable, EditableCell, TableRow, TableToolbar };
+export { DataTable, EditableCell, TableRow, TableToolbar, defaultTheme };
