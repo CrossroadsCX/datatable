@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React$1, { useState, useRef, useEffect, useMemo } from 'react';
 import { useTable, useAsyncDebounce, useSortBy, usePagination, useRowSelect } from 'react-table';
 import filter from 'lodash/filter';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, ChevronDoubleLeftIcon, ArrowSmLeftIcon, ArrowSmRightIcon, ChevronDoubleRightIcon, CheckIcon, ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHotkeys } from 'react-hotkeys-hook';
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { find } from 'lodash';
 import Select from 'react-select';
 
@@ -159,7 +159,10 @@ styled.div.withConfig({
   componentId: "sc-1pzcc2n-0"
 })(["display:flex;flex-direction:column;"]);
 
-var GlobalStyle = createGlobalStyle(["table{", " & > * + *{", "}thead{", "}tbody{", "}tr{", "}th{", " &:first-child{", "}}td{", " &:first-child{", "}}}"], function (props) {
+var GlobalStyle = styled.div.withConfig({
+  displayName: "global__GlobalStyle",
+  componentId: "sc-1wcmw54-0"
+})(["table{", " & > * + *{", "}thead{", "}tbody{", "}tr{", "}th{", " &:first-child{", "}}td{", " &:first-child{", "}}}"], function (props) {
   var _props$theme$elements;
 
   return ((_props$theme$elements = props.theme.elements) === null || _props$theme$elements === void 0 ? void 0 : _props$theme$elements.table) && props.theme.elements.table;
@@ -218,8 +221,7 @@ var defaultTheme = {
       '& > * + *': {
         borderTopWidth: '1px',
         borderBottomWidth: '1px',
-        // borderColor: 'rgba(229, 231, 235)'
-        borderColor: "green"
+        borderColor: 'rgba(229, 231, 235)'
       }
     },
     thead: {
@@ -275,9 +277,9 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
   var children = _ref.children,
       _ref$theme = _ref.theme,
       theme = _ref$theme === void 0 ? defaultTheme : _ref$theme;
-  return /*#__PURE__*/React.createElement(ThemeProvider, {
+  return /*#__PURE__*/React$1.createElement(ThemeProvider, {
     theme: theme
-  }, /*#__PURE__*/React.createElement(GlobalStyle, null), children);
+  }, /*#__PURE__*/React$1.createElement(GlobalStyle, null, children));
 };
 
 var StyledDataTable = styled.div.withConfig({
@@ -319,24 +321,24 @@ var TableToolbar = function TableToolbar(props) {
       handleDelete = props.handleDelete,
       handleEdit = props.handleEdit,
       handleReset = props.handleReset;
-  return /*#__PURE__*/React.createElement(StyledTableToolbar, null, handleAdd && /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement(StyledTableToolbar, null, handleAdd && /*#__PURE__*/React$1.createElement("div", {
     title: "Add Row"
-  }, /*#__PURE__*/React.createElement(PlusIcon, {
+  }, /*#__PURE__*/React$1.createElement(PlusIcon, {
     className: "".concat(canAdd ? 'enabled' : ''),
     onClick: handleAdd
-  })), handleEdit && /*#__PURE__*/React.createElement("div", {
+  })), handleEdit && /*#__PURE__*/React$1.createElement("div", {
     title: "Edit Row"
-  }, /*#__PURE__*/React.createElement(PencilIcon, {
+  }, /*#__PURE__*/React$1.createElement(PencilIcon, {
     className: "".concat(canEdit ? 'enabled' : ''),
     onClick: handleEdit
-  })), handleDelete && /*#__PURE__*/React.createElement("div", {
+  })), handleDelete && /*#__PURE__*/React$1.createElement("div", {
     title: "Delete Row(s)"
-  }, /*#__PURE__*/React.createElement(TrashIcon, {
+  }, /*#__PURE__*/React$1.createElement(TrashIcon, {
     className: "".concat(canDelete ? 'enabled' : ''),
     onClick: handleDelete
-  })), handleReset && /*#__PURE__*/React.createElement("div", {
+  })), handleReset && /*#__PURE__*/React$1.createElement("div", {
     title: "Reset Table"
-  }, /*#__PURE__*/React.createElement(ReplyIcon, {
+  }, /*#__PURE__*/React$1.createElement(ReplyIcon, {
     "aria-disabled": !canReset,
     className: "".concat(canReset ? 'enabled' : ''),
     onClick: canReset ? handleReset : undefined
@@ -369,10 +371,10 @@ var TableRow = function TableRow(props) {
     setData(newData);
   };
 
-  return /*#__PURE__*/React.createElement("tr", _extends({}, row.getRowProps(), {
+  return /*#__PURE__*/React$1.createElement("tr", _extends({}, row.getRowProps(), {
     className: className
   }), row.cells.map(function (cell, index) {
-    return /*#__PURE__*/React.createElement("td", _extends({
+    return /*#__PURE__*/React$1.createElement("td", _extends({
       className: " ".concat(index === 0 && 'w-8')
     }, cell.getCellProps()), cell.render('Cell', {
       isEditable: editing === row.index,
@@ -444,7 +446,7 @@ var SelectCell = function SelectCell(_ref) {
       selectRef.current && selectRef.current.focus();
     }
   }, []);
-  return /*#__PURE__*/React.createElement(Select, {
+  return /*#__PURE__*/React$1.createElement(Select, {
     options: options,
     onChange: onChange,
     menuPortalTarget: document.body,
@@ -461,12 +463,18 @@ var getOptionLabel = function getOptionLabel(value, options) {
   });
   return option === null || option === void 0 ? void 0 : option.label;
 }; // Select option typeguard
+// const isSelectOption = (value: OptionTypeBase | string | number): value is OptionTypeBase => {
+//   if (typeof value === 'object' && value?.label) return true
+//   return false
+// }
+
 
 var EditableCell = function EditableCell(_ref) {
   var initialValue = _ref.value,
       _ref$column = _ref.column,
       id = _ref$column.id,
       options = _ref$column.options,
+      inputType = _ref$column.inputType,
       isEditable = _ref.isEditable,
       onChange = _ref.onChange,
       index = _ref.index,
@@ -488,11 +496,13 @@ var EditableCell = function EditableCell(_ref) {
   };
 
   var onSelectChange = function onSelectChange(selectOption) {
-    var newValue = selectOption.value;
-    setValue(newValue);
+    if (selectOption) {
+      var newValue = selectOption.value;
+      setValue(newValue);
 
-    if (id) {
-      onChange(id, newValue);
+      if (id) {
+        onChange(id, newValue);
+      }
     }
   };
 
@@ -507,14 +517,14 @@ var EditableCell = function EditableCell(_ref) {
   if (!isEditable) {
     // If this is a selectable cell
     if (options) {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, getOptionLabel(value, options));
+      return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, getOptionLabel(value, options));
     }
 
-    return /*#__PURE__*/React.createElement(React.Fragment, null, value);
+    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, value);
   }
 
   if (options && options.length > 0) {
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(SelectCell, {
+    return /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement(SelectCell, {
       options: options,
       handleChange: onSelectChange
       /*
@@ -529,10 +539,11 @@ var EditableCell = function EditableCell(_ref) {
     }));
   }
 
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+  return /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("input", {
     className: "border-b border-blue-400",
     value: value || '',
-    onChange: onLocalChange
+    onChange: onLocalChange,
+    type: inputType ? inputType : 'text'
     /*
       The focus needs to be on the first input of the Row, 
       but datatable has two options, when the select option 
@@ -575,9 +586,9 @@ var Pagination = function Pagination(_ref) {
       pageSize = _ref.pageSize,
       pageCount = _ref.pageCount,
       setPageSize = _ref.setPageSize;
-  return /*#__PURE__*/React.createElement(StyledPagination, {
+  return /*#__PURE__*/React$1.createElement(StyledPagination, {
     className: "pagination"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", null, "Page", ' ', /*#__PURE__*/React.createElement("strong", null, pageIndex + 1, " of ", pageOptions.length), ' '), /*#__PURE__*/React.createElement("span", null, "| Go to page:", ' ', /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("span", null, "Page", ' ', /*#__PURE__*/React$1.createElement("strong", null, pageIndex + 1, " of ", pageOptions.length), ' '), /*#__PURE__*/React$1.createElement("span", null, "| Go to page:", ' ', /*#__PURE__*/React$1.createElement("input", {
     type: "number",
     defaultValue: pageIndex + 1,
     onChange: function onChange(e) {
@@ -587,32 +598,32 @@ var Pagination = function Pagination(_ref) {
     style: {
       width: '100px'
     }
-  })), ' ', /*#__PURE__*/React.createElement("select", {
+  })), ' ', /*#__PURE__*/React$1.createElement("select", {
     value: pageSize,
     onChange: function onChange(e) {
       setPageSize(Number(e.target.value));
     }
   }, [10, 20, 30, 40, 50].map(function (pageSize) {
-    return /*#__PURE__*/React.createElement("option", {
+    return /*#__PURE__*/React$1.createElement("option", {
       key: pageSize,
       value: pageSize
     }, "Show ", pageSize);
-  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ChevronDoubleLeftIcon, {
+  }))), /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement(ChevronDoubleLeftIcon, {
     onClick: function onClick() {
       return gotoPage(0);
     },
     className: "".concat(canPreviousPage ? 'enabled' : '')
-  }), /*#__PURE__*/React.createElement(ArrowSmLeftIcon, {
+  }), /*#__PURE__*/React$1.createElement(ArrowSmLeftIcon, {
     onClick: function onClick() {
       return previousPage();
     },
     className: "".concat(canPreviousPage ? 'enabled' : '')
-  }), /*#__PURE__*/React.createElement(ArrowSmRightIcon, {
+  }), /*#__PURE__*/React$1.createElement(ArrowSmRightIcon, {
     onClick: function onClick() {
       return nextPage();
     },
     className: "".concat(canNextPage ? 'enabled' : '')
-  }), /*#__PURE__*/React.createElement(ChevronDoubleRightIcon, {
+  }), /*#__PURE__*/React$1.createElement(ChevronDoubleRightIcon, {
     onClick: function onClick() {
       return gotoPage(pageCount - 1);
     },
@@ -655,20 +666,20 @@ function _objectWithoutProperties(source, excluded) {
 }
 
 var _excluded = ["indeterminate"];
-var IndeterminateCheckbox = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
+var IndeterminateCheckbox = /*#__PURE__*/React$1.forwardRef(function (_ref, ref) {
   var indeterminate = _ref.indeterminate,
       rest = _objectWithoutProperties(_ref, _excluded);
 
-  var defaultRef = React.useRef(null);
+  var defaultRef = React$1.useRef(null);
   var resolvedRef = ref || defaultRef;
-  React.useEffect(function () {
+  React$1.useEffect(function () {
     var currentRef = resolvedRef.current;
 
     if (currentRef) {
       currentRef.indeterminate = indeterminate !== null && indeterminate !== void 0 ? indeterminate : false;
     }
   }, [resolvedRef, indeterminate]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", _extends({
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("input", _extends({
     type: "checkbox",
     ref: resolvedRef
   }, rest)));
@@ -734,10 +745,10 @@ var DataTable = function DataTable(props) {
       _props$disableToolbar = props.disableToolbar,
       disableToolbar = _props$disableToolbar === void 0 ? false : _props$disableToolbar,
       handleChange = props.handleChange,
-      _props$handleFetchDat = props.handleFetchData,
-      handleFetchData = _props$handleFetchDat === void 0 ? undefined : _props$handleFetchDat,
+      handleFetchData = props.handleFetchData,
       _props$paginated = props.paginated,
       paginated = _props$paginated === void 0 ? false : _props$paginated,
+      propsRef = props.ref,
       _props$selectable = props.selectable,
       selectable = _props$selectable === void 0 ? false : _props$selectable,
       tableRow = props.tableRow,
@@ -748,20 +759,15 @@ var DataTable = function DataTable(props) {
       stickyHeader = _props$stickyHeader === void 0 ? false : _props$stickyHeader;
   /** Table State */
 
-  var _useState = useState(data),
-      _useState2 = _slicedToArray(_useState, 2);
-      _useState2[0];
-      _useState2[1];
+  var _useState = useState(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      editing = _useState2[0],
+      setEditing = _useState2[1];
 
-  var _useState3 = useState(null),
+  var _useState3 = useState(data),
       _useState4 = _slicedToArray(_useState3, 2),
-      editing = _useState4[0],
-      setEditing = _useState4[1];
-
-  var _useState5 = useState(data),
-      _useState6 = _slicedToArray(_useState5, 2),
-      tableData = _useState6[0],
-      setData = _useState6[1];
+      tableData = _useState4[0],
+      setData = _useState4[1];
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -885,17 +891,22 @@ var DataTable = function DataTable(props) {
   useEffect(function () {
     setData(data);
   }, [data]);
-  var handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200); // If an handleFetchData handler is passed, use it to pull new data on page change
+  var handleFetchDataDebounced;
 
-  useEffect(function () {
-    if (handleFetchData && (pageSize !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageSize) && pageSize > 0 || pageIndex !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageIndex))) {
-      handleFetchDataDebounced({
-        pageIndex: pageIndex,
-        pageSize: pageSize,
-        sortBy: sortBy
-      });
-    }
-  }, [useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy]);
+  if (handleFetchData) {
+    handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200); // If an handleFetchData handler is passed, use it to pull new data on page change
+
+    useEffect(function () {
+      if (pageSize !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageSize) && pageSize > 0 || pageIndex !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageIndex)) {
+        handleFetchDataDebounced({
+          pageIndex: pageIndex,
+          pageSize: pageSize,
+          sortBy: sortBy
+        });
+      }
+    }, [useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy]);
+  }
+
   var paginationProps = {
     pageIndex: pageIndex,
     pageSize: pageSize,
@@ -922,21 +933,21 @@ var DataTable = function DataTable(props) {
     useHotkeys('esc', function () {
       return handleCancel();
     }, optionsHot);
-    return /*#__PURE__*/React.createElement("table", getTableProps(), /*#__PURE__*/React.createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
-      return /*#__PURE__*/React.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-        return /*#__PURE__*/React.createElement("th", _extends({
-          key: rowIndex
-        }, column.getHeaderProps(column.getSortByToggleProps()), {
+    return /*#__PURE__*/React$1.createElement("table", _extends({}, getTableProps(), {
+      ref: propsRef
+    }), /*#__PURE__*/React$1.createElement("thead", null, headerGroups.map(function (headerGroup) {
+      return /*#__PURE__*/React$1.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
+        return /*#__PURE__*/React$1.createElement("th", _extends({}, column.getHeaderProps(column.getSortByToggleProps()), {
           scope: "col"
-        }), column.render('Header'), /*#__PURE__*/React.createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React.createElement(ArrowSmDownIcon, {
+        }), column.render('Header'), /*#__PURE__*/React$1.createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React$1.createElement(ArrowSmDownIcon, {
           className: "sort-indicator"
-        }) : /*#__PURE__*/React.createElement(ArrowSmUpIcon, {
+        }) : /*#__PURE__*/React$1.createElement(ArrowSmUpIcon, {
           className: "sort-indicator"
         }) : ''));
       }));
-    })), /*#__PURE__*/React.createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
+    })), /*#__PURE__*/React$1.createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
       prepareRow(row);
-      return /*#__PURE__*/React.createElement(TableRowRender, {
+      return /*#__PURE__*/React$1.createElement(TableRowRender, {
         key: row.index,
         row: row,
         editing: editing,
@@ -945,7 +956,7 @@ var DataTable = function DataTable(props) {
       });
     }) : page.map(function (row) {
       prepareRow(row);
-      return /*#__PURE__*/React.createElement(TableRowRender, {
+      return /*#__PURE__*/React$1.createElement(TableRowRender, {
         key: row.index,
         row: row,
         editing: editing,
@@ -956,7 +967,7 @@ var DataTable = function DataTable(props) {
   };
 
   var InfiniteScrollTable = function InfiniteScrollTable() {
-    return /*#__PURE__*/React.createElement(InfiniteScroll, {
+    return /*#__PURE__*/React$1.createElement(InfiniteScroll, {
       dataLength: rows.length,
       next: function next() {
         return handleFetchDataDebounced({
@@ -966,17 +977,17 @@ var DataTable = function DataTable(props) {
         });
       },
       hasMore: true,
-      loader: /*#__PURE__*/React.createElement("p", null, "Loading more items...")
-    }, /*#__PURE__*/React.createElement(Table, null));
+      loader: /*#__PURE__*/React$1.createElement("p", null, "Loading more items...")
+    }, /*#__PURE__*/React$1.createElement(Table, null));
   };
 
   var PaginatedTable = function PaginatedTable() {
-    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Table, null), /*#__PURE__*/React.createElement(Pagination, paginationProps));
+    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(Table, null), /*#__PURE__*/React$1.createElement(Pagination, paginationProps));
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TableThemeProvider, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(TableThemeProvider, {
     theme: theme
-  }, !disableToolbar || tableToolbar ? /*#__PURE__*/React.createElement(ToolbarRender, {
+  }, !disableToolbar || tableToolbar ? /*#__PURE__*/React$1.createElement(ToolbarRender, {
     canAdd: editing === null,
     canDelete: selectedFlatRows.length > 0,
     canEdit: selectedFlatRows.length === 1,
@@ -985,9 +996,9 @@ var DataTable = function DataTable(props) {
     handleDelete: handleDelete,
     handleEdit: handleEdit,
     handleReset: handleReset
-  }) : null, /*#__PURE__*/React.createElement(StyledDataTable, {
+  }) : null, /*#__PURE__*/React$1.createElement(StyledDataTable, {
     className: stickyHeader ? 'sticky' : ''
-  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React.createElement(PaginatedTable, null) : /*#__PURE__*/React.createElement(Table, null))));
+  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React$1.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React$1.createElement(PaginatedTable, null) : /*#__PURE__*/React$1.createElement(Table, null))));
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar };

@@ -12,29 +12,30 @@ import { MouseEventHandler } from 'react';
 import { TableInstance } from 'react-table';
 import { OptionTypeBase } from 'react-select';
 declare module 'react-table' {
-    interface UseFlexLayoutInstanceProps<D extends Record<string, unknown>> {
+    interface UseFlexLayoutInstanceProps {
         totalColumnsMinWidth: number;
     }
-    interface UseFlexLayoutColumnProps<D extends Record<string, unknown>> {
+    interface UseFlexLayoutColumnProps {
         totalMinWidth: number;
     }
-    interface TableOptions<D extends Record<string, unknown>> extends UseExpandedOptions<D>, UseFiltersOptions<D>, UseFiltersOptions<D>, UseGlobalFiltersOptions<D>, UseGroupByOptions<D>, UsePaginationOptions<D>, UseResizeColumnsOptions<D>, UseRowSelectOptions<D>, UseSortByOptions<D> {
+    interface TableOptions<D> extends UseExpandedOptions<D>, UseFiltersOptions<D>, UseFiltersOptions<D>, UseGlobalFiltersOptions<D>, UseGroupByOptions<D>, UsePaginationOptions<D>, UseResizeColumnsOptions<D>, UseRowSelectOptions<D>, UseSortByOptions<D> {
         saveRow?: (row: Row<D>) => void;
     }
-    interface Hooks<D extends Record<string, unknown> = Record<string, unknown>> extends UseExpandedHooks<D>, UseGroupByHooks<D>, UseRowSelectHooks<D>, UseSortByHooks<D> {
+    interface Hooks<D> extends UseExpandedHooks<D>, UseGroupByHooks<D>, UseRowSelectHooks<D>, UseSortByHooks<D> {
     }
-    interface TableInstance<D extends Record<string, unknown> = Record<string, unknown>> extends UseColumnOrderInstanceProps<D>, UseExpandedInstanceProps<D>, UseFiltersInstanceProps<D>, UseGlobalFiltersInstanceProps<D>, UseGroupByInstanceProps<D>, UsePaginationInstanceProps<D>, UseRowSelectInstanceProps<D>, UseFlexLayoutInstanceProps<D>, UsePaginationInstanceProps<D>, UseSortByInstanceProps<D> {
+    interface TableInstance<D> extends UseColumnOrderInstanceProps<D>, UseExpandedInstanceProps<D>, UseFiltersInstanceProps<D>, UseGlobalFiltersInstanceProps<D>, UseGroupByInstanceProps<D>, UsePaginationInstanceProps<D>, UseRowSelectInstanceProps<D>, UseFlexLayoutInstanceProps, UsePaginationInstanceProps<D>, UseSortByInstanceProps<D> {
     }
-    interface TableState<D extends Record<string, unknown> = Record<string, unknown>> extends UseColumnOrderState<D>, UseExpandedState<D>, UseFiltersState<D>, UseGlobalFiltersState<D>, UseGroupByState<D>, UsePaginationState<D>, UseResizeColumnsState<D>, UseRowSelectState<D>, UseSortByState<D> {
+    interface TableState<D> extends UseColumnOrderState<D>, UseExpandedState<D>, UseFiltersState<D>, UseGlobalFiltersState<D>, UseGroupByState<D>, UsePaginationState<D>, UseResizeColumnsState<D>, UseRowSelectState<D>, UseSortByState<D> {
         rowCount: number;
     }
-    interface ColumnInterface<D extends Record<string, unknown> = Record<string, unknown>> extends UseFiltersColumnOptions<D>, UseGroupByColumnOptions<D>, UseResizeColumnsColumnOptions<D>, UseSortByColumnOptions<D> {
+    interface ColumnInterface<D> extends UseFiltersColumnOptions<D>, UseGroupByColumnOptions<D>, UseResizeColumnsColumnOptions<D>, UseSortByColumnOptions<D> {
         align?: string;
         options?: OptionTypeBase[];
+        inputType?: string;
     }
-    interface ColumnInstance<D extends Record<string, unknown> = Record<string, unknown>> extends UseFiltersColumnProps<D>, UseGroupByColumnProps<D>, UseResizeColumnsColumnProps<D>, UseFlexLayoutColumnProps<D>, UseSortByColumnProps<D> {
+    interface ColumnInstance<D> extends UseFiltersColumnProps<D>, UseGroupByColumnProps<D>, UseResizeColumnsColumnProps<D>, UseFlexLayoutInstanceProps, UseSortByColumnProps<D> {
     }
-    interface Cell<D extends Record<string, unknown> = Record<string, unknown>> extends UseGroupByCellProps<D> {
+    interface Cell {
     }
     interface Row<D extends object = {}> extends UseExpandedRowProps<D>, UseGroupByRowProps<D>, UseRowSelectRowProps<D> {
     }
@@ -49,4 +50,4 @@ declare module 'react-table' {
         title?: string;
     }
 }
-export declare type TableMouseEventHandler = (instance: TableInstance<T>) => MouseEventHandler;
+export declare type TableMouseEventHandler = (instance: TableInstance) => MouseEventHandler;

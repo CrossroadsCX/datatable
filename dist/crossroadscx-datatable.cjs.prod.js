@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var React = require('react');
+var React$1 = require('react');
 var reactTable = require('react-table');
 var filter = require('lodash/filter');
 var outline = require('@heroicons/react/outline');
@@ -14,7 +14,7 @@ var Select = require('react-select');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
 
-var React__default = /*#__PURE__*/_interopDefault(React);
+var React__default = /*#__PURE__*/_interopDefault(React$1);
 var filter__default = /*#__PURE__*/_interopDefault(filter);
 var InfiniteScroll__default = /*#__PURE__*/_interopDefault(InfiniteScroll);
 var styled__default = /*#__PURE__*/_interopDefault(styled);
@@ -171,7 +171,10 @@ styled__default['default'].div.withConfig({
   componentId: "sc-1pzcc2n-0"
 })(["display:flex;flex-direction:column;"]);
 
-var GlobalStyle = styled.createGlobalStyle(["table{", " & > * + *{", "}thead{", "}tbody{", "}tr{", "}th{", " &:first-child{", "}}td{", " &:first-child{", "}}}"], function (props) {
+var GlobalStyle = styled__default['default'].div.withConfig({
+  displayName: "global__GlobalStyle",
+  componentId: "sc-1wcmw54-0"
+})(["table{", " & > * + *{", "}thead{", "}tbody{", "}tr{", "}th{", " &:first-child{", "}}td{", " &:first-child{", "}}}"], function (props) {
   var _props$theme$elements;
 
   return ((_props$theme$elements = props.theme.elements) === null || _props$theme$elements === void 0 ? void 0 : _props$theme$elements.table) && props.theme.elements.table;
@@ -230,8 +233,7 @@ var defaultTheme = {
       '& > * + *': {
         borderTopWidth: '1px',
         borderBottomWidth: '1px',
-        // borderColor: 'rgba(229, 231, 235)'
-        borderColor: "green"
+        borderColor: 'rgba(229, 231, 235)'
       }
     },
     thead: {
@@ -289,7 +291,7 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
       theme = _ref$theme === void 0 ? defaultTheme : _ref$theme;
   return /*#__PURE__*/React__default['default'].createElement(styled.ThemeProvider, {
     theme: theme
-  }, /*#__PURE__*/React__default['default'].createElement(GlobalStyle, null), children);
+  }, /*#__PURE__*/React__default['default'].createElement(GlobalStyle, null, children));
 };
 
 var StyledDataTable = styled__default['default'].div.withConfig({
@@ -362,7 +364,7 @@ var TableRow = function TableRow(props) {
       saveRow = props.saveRow,
       selectable = props.selectable;
 
-  var _useState = React.useState(row),
+  var _useState = React$1.useState(row),
       _useState2 = _slicedToArray(_useState, 2),
       data = _useState2[0],
       setData = _useState2[1];
@@ -450,8 +452,8 @@ var SelectCell = function SelectCell(_ref) {
     handleChange(value);
   };
 
-  var selectRef = React.useRef(null);
-  React.useEffect(function () {
+  var selectRef = React$1.useRef(null);
+  React$1.useEffect(function () {
     if (setFocus) {
       selectRef.current && selectRef.current.focus();
     }
@@ -473,23 +475,29 @@ var getOptionLabel = function getOptionLabel(value, options) {
   });
   return option === null || option === void 0 ? void 0 : option.label;
 }; // Select option typeguard
+// const isSelectOption = (value: OptionTypeBase | string | number): value is OptionTypeBase => {
+//   if (typeof value === 'object' && value?.label) return true
+//   return false
+// }
+
 
 var EditableCell = function EditableCell(_ref) {
   var initialValue = _ref.value,
       _ref$column = _ref.column,
       id = _ref$column.id,
       options = _ref$column.options,
+      inputType = _ref$column.inputType,
       isEditable = _ref.isEditable,
       onChange = _ref.onChange,
       index = _ref.index,
       selectable = _ref.selectable;
 
-  var _useState = React.useState(initialValue),
+  var _useState = React$1.useState(initialValue),
       _useState2 = _slicedToArray(_useState, 2),
       value = _useState2[0],
       setValue = _useState2[1];
 
-  var _useState3 = React.useState(true),
+  var _useState3 = React$1.useState(true),
       _useState4 = _slicedToArray(_useState3, 2),
       initialRender = _useState4[0],
       setInitialRender = _useState4[1];
@@ -500,15 +508,17 @@ var EditableCell = function EditableCell(_ref) {
   };
 
   var onSelectChange = function onSelectChange(selectOption) {
-    var newValue = selectOption.value;
-    setValue(newValue);
+    if (selectOption) {
+      var newValue = selectOption.value;
+      setValue(newValue);
 
-    if (id) {
-      onChange(id, newValue);
+      if (id) {
+        onChange(id, newValue);
+      }
     }
   };
 
-  React.useEffect(function () {
+  React$1.useEffect(function () {
     if (id && !initialRender) {
       onChange(id, value);
     }
@@ -544,7 +554,8 @@ var EditableCell = function EditableCell(_ref) {
   return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", {
     className: "border-b border-blue-400",
     value: value || '',
-    onChange: onLocalChange
+    onChange: onLocalChange,
+    type: inputType ? inputType : 'text'
     /*
       The focus needs to be on the first input of the Row, 
       but datatable has two options, when the select option 
@@ -698,7 +709,7 @@ var selectionHook = function selectionHook(hooks) {
       Aggregated: undefined,
       Header: function Header(_ref) {
         var getToggleAllRowsSelectedProps = _ref.getToggleAllRowsSelectedProps;
-        return /*#__PURE__*/React__default['default'].createElement(IndeterminateCheckbox, _extends({
+        return /*#__PURE__*/React.createElement(IndeterminateCheckbox, _extends({
           className: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-400 rounded"
         }, getToggleAllRowsSelectedProps()));
       },
@@ -714,13 +725,13 @@ var selectionHook = function selectionHook(hooks) {
           reactHotkeysHook.useHotkeys('ctrl+enter', function () {
             return handleSaveRow();
           }, optionsHot);
-          return /*#__PURE__*/React__default['default'].createElement(outline.CheckIcon, {
+          return /*#__PURE__*/React.createElement(outline.CheckIcon, {
             className: "w-4 border border-green-600 bg-green-200 rounded-md cursor-pointer hover:bg-green-600",
             onClick: handleSaveRow
           });
         }
 
-        return /*#__PURE__*/React__default['default'].createElement(IndeterminateCheckbox, _extends({
+        return /*#__PURE__*/React.createElement(IndeterminateCheckbox, _extends({
           className: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
         }, row.getToggleRowSelectedProps()));
       }
@@ -728,8 +739,8 @@ var selectionHook = function selectionHook(hooks) {
   });
 };
 function usePrevious(value) {
-  var ref = React.useRef(value);
-  React.useEffect(function () {
+  var ref = React$1.useRef(value);
+  React$1.useEffect(function () {
     ref.current = value;
   });
   return ref.current;
@@ -746,10 +757,10 @@ var DataTable = function DataTable(props) {
       _props$disableToolbar = props.disableToolbar,
       disableToolbar = _props$disableToolbar === void 0 ? false : _props$disableToolbar,
       handleChange = props.handleChange,
-      _props$handleFetchDat = props.handleFetchData,
-      handleFetchData = _props$handleFetchDat === void 0 ? undefined : _props$handleFetchDat,
+      handleFetchData = props.handleFetchData,
       _props$paginated = props.paginated,
       paginated = _props$paginated === void 0 ? false : _props$paginated,
+      propsRef = props.ref,
       _props$selectable = props.selectable,
       selectable = _props$selectable === void 0 ? false : _props$selectable,
       tableRow = props.tableRow,
@@ -760,20 +771,15 @@ var DataTable = function DataTable(props) {
       stickyHeader = _props$stickyHeader === void 0 ? false : _props$stickyHeader;
   /** Table State */
 
-  var _useState = React.useState(data),
-      _useState2 = _slicedToArray(_useState, 2);
-      _useState2[0];
-      _useState2[1];
+  var _useState = React$1.useState(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      editing = _useState2[0],
+      setEditing = _useState2[1];
 
-  var _useState3 = React.useState(null),
+  var _useState3 = React$1.useState(data),
       _useState4 = _slicedToArray(_useState3, 2),
-      editing = _useState4[0],
-      setEditing = _useState4[1];
-
-  var _useState5 = React.useState(data),
-      _useState6 = _slicedToArray(_useState5, 2),
-      tableData = _useState6[0],
-      setData = _useState6[1];
+      tableData = _useState4[0],
+      setData = _useState4[1];
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -797,7 +803,7 @@ var DataTable = function DataTable(props) {
   } // Set up the default column for useTable
 
 
-  var defaultColumn = React.useMemo(function () {
+  var defaultColumn = React$1.useMemo(function () {
     return {
       Cell: EditableCell
     };
@@ -894,20 +900,25 @@ var DataTable = function DataTable(props) {
     sortBy: sortBy
   }); // If the incoming data changes, override the table data
 
-  React.useEffect(function () {
+  React$1.useEffect(function () {
     setData(data);
   }, [data]);
-  var handleFetchDataDebounced = reactTable.useAsyncDebounce(handleFetchData, 200); // If an handleFetchData handler is passed, use it to pull new data on page change
+  var handleFetchDataDebounced;
 
-  React.useEffect(function () {
-    if (handleFetchData && (pageSize !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageSize) && pageSize > 0 || pageIndex !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageIndex))) {
-      handleFetchDataDebounced({
-        pageIndex: pageIndex,
-        pageSize: pageSize,
-        sortBy: sortBy
-      });
-    }
-  }, [reactTable.useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy]);
+  if (handleFetchData) {
+    handleFetchDataDebounced = reactTable.useAsyncDebounce(handleFetchData, 200); // If an handleFetchData handler is passed, use it to pull new data on page change
+
+    React$1.useEffect(function () {
+      if (pageSize !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageSize) && pageSize > 0 || pageIndex !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageIndex)) {
+        handleFetchDataDebounced({
+          pageIndex: pageIndex,
+          pageSize: pageSize,
+          sortBy: sortBy
+        });
+      }
+    }, [reactTable.useAsyncDebounce, handleFetchData, pageIndex, pageSize, sortBy]);
+  }
+
   var paginationProps = {
     pageIndex: pageIndex,
     pageSize: pageSize,
@@ -934,11 +945,11 @@ var DataTable = function DataTable(props) {
     reactHotkeysHook.useHotkeys('esc', function () {
       return handleCancel();
     }, optionsHot);
-    return /*#__PURE__*/React__default['default'].createElement("table", getTableProps(), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup, rowIndex) {
+    return /*#__PURE__*/React__default['default'].createElement("table", _extends({}, getTableProps(), {
+      ref: propsRef
+    }), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup) {
       return /*#__PURE__*/React__default['default'].createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-        return /*#__PURE__*/React__default['default'].createElement("th", _extends({
-          key: rowIndex
-        }, column.getHeaderProps(column.getSortByToggleProps()), {
+        return /*#__PURE__*/React__default['default'].createElement("th", _extends({}, column.getHeaderProps(column.getSortByToggleProps()), {
           scope: "col"
         }), column.render('Header'), /*#__PURE__*/React__default['default'].createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmDownIcon, {
           className: "sort-indicator"

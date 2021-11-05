@@ -1,5 +1,5 @@
 import React, {
-  PropsWithChildren, ReactElement, useEffect, useMemo, useState,
+  PropsWithChildren, ReactElement, Ref, useEffect, useMemo, useState,
 } from 'react';
 
 import {
@@ -52,7 +52,8 @@ export interface DataTableProps<T extends Record<string, unknown>>
     defaultItem?: T
     disableToolbar?: boolean
     theme?: DefaultTheme,
-    handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
+  handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
+    ref: Ref<HTMLTableElement>
     stickyHeader?: boolean,
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
@@ -85,6 +86,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     handleChange,
     handleFetchData,
     paginated = false,
+    ref: propsRef,
     selectable = false,
     tableRow,
     tableToolbar,
@@ -211,7 +213,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   let handleFetchDataDebounced: (args: HandleFetchDataArgs<T>) => Promise<void>
   if(handleFetchData){
     handleFetchDataDebounced = useAsyncDebounce(handleFetchData, 200)
-  
+
     // If an handleFetchData handler is passed, use it to pull new data on page change
     useEffect(() => {
       if (
@@ -242,15 +244,15 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   const Table = () =>  {
     useHotkeys('ctrl+n', () => handleAdd());
-    
+
     const optionsHot: Options = {
       enableOnTags: ['INPUT'],
     }
-  
+
     useHotkeys('esc', () => handleCancel(), optionsHot);
 
     return (
-    <table {...getTableProps()}>
+    <table {...getTableProps()} ref={propsRef}>
       <thead>
         {headerGroups.map((headerGroup: HeaderGroup<T>) => (
           <tr {...headerGroup.getHeaderGroupProps()}>

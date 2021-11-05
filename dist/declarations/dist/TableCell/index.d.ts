@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Column } from 'react-table';
 export declare type EditableCellProps = {
-    value: any;
+    value: string;
     row: Row;
     column: Column;
     isEditable: boolean;

@@ -1,11 +1,12 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { PropsWithChildren, ReactElement, Ref } from 'react';
 import { Column, SortingRule, TableOptions } from 'react-table';
 import { DefaultTheme } from 'styled-components';
 import { TableToolbarProps } from '../TableToolbar';
 import { TableRowProps } from '../TableRow';
 export interface HandleFetchDataArgs<T> {
-    pageIndex: number;
+    pageIndex?: number;
     pageSize: number;
+    pageCount?: number;
     sortBy: Array<SortingRule<T>>;
 }
 export interface DataTableProps<T extends Record<string, unknown>> extends TableOptions<T> {
@@ -18,6 +19,7 @@ export interface DataTableProps<T extends Record<string, unknown>> extends Table
     disableToolbar?: boolean;
     theme?: DefaultTheme;
     handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>;
+    ref: Ref<HTMLTableElement>;
     stickyHeader?: boolean;
     tableRow?: <T extends Record<string, unknown>>(props: TableRowProps<T>) => ReactElement;
     tableToolbar?: (props: TableToolbarProps) => ReactElement;
