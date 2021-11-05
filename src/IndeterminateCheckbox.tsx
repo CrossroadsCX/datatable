@@ -1,8 +1,7 @@
 import React, { HTMLAttributes, RefObject } from 'react'
 
 export const IndeterminateCheckbox = React.forwardRef <
-  HTMLInputElement,
-  HTMLAttributes<HTMLInputElement>>(
+  HTMLInputElement>(
     (
       { indeterminate, ...rest }: HTMLAttributes<HTMLInputElement> & { indeterminate?: boolean, className?: string },
       ref,

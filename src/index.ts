@@ -102,6 +102,7 @@ declare module 'react-table' {
       UseGroupByInstanceProps<D>,
       UsePaginationInstanceProps<D>,
       UseRowSelectInstanceProps<D>,
+      UseFlexLayoutInstanceProps,
       UsePaginationInstanceProps<D>,
       UseSortByInstanceProps<D> {}
 
@@ -132,6 +133,7 @@ declare module 'react-table' {
     extends UseFiltersColumnProps<D>,
       UseGroupByColumnProps<D>,
       UseResizeColumnsColumnProps<D>,
+      UseFlexLayoutInstanceProps,
       UseSortByColumnProps<D> {}
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
