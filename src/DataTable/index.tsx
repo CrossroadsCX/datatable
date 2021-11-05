@@ -208,6 +208,9 @@ export const DataTable = <T extends Record<string, unknown>>(
   // If the incoming data changes, override the table data
   useEffect(() => {
     setData(data)
+    if(data.length < 1){
+      handleAdd()
+    }
   }, [data])
 
   let handleFetchDataDebounced: (args: HandleFetchDataArgs<T>) => Promise<void>
