@@ -1,9 +1,9 @@
-import React from 'react';
-import { Story, Meta } from '@storybook/react';
-
-import { TableThemeProvider } from '../Theme';
-
-import { TableToolbar, TableToolbarProps } from '.';
+import React from 'react'
+import { Story, Meta } from '@storybook/react'
+import { TableThemeProvider } from '../Theme'
+import { TableToolbar, TableToolbarProps } from '.'
+import { DefaultTheme } from 'styled-components'
+import { defaultTheme } from '../Theme'
 
 const handleAdd = () => {
   console.log('Handling Add');
@@ -26,7 +26,8 @@ export default {
   component: TableToolbar,
 } as Meta;
 
-const Template: Story<TableToolbarProps> = (args) => <TableThemeProvider><TableToolbar {...args} /></TableThemeProvider>;
+const theme: DefaultTheme = defaultTheme
+const Template: Story<TableToolbarProps> = (args) => <TableThemeProvider theme={theme}><TableToolbar {...args} /></TableThemeProvider>;
 
 export const Basic = Template.bind({});
 Basic.args = {

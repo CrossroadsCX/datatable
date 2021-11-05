@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { CellProps, HeaderProps, Hooks } from 'react-table';
+import { useEffect, useRef } from 'react';
+import { HeaderProps, Hooks, Cell } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 import { useHotkeys, Options } from 'react-hotkeys-hook';
 
-export const selectionHook = (hooks: Hooks<any>) => {
+export const selectionHook: <T extends Record<string, unknown>>(hooks: Hooks<T>)  => void
+= <T extends Record<string, unknown>>(hooks: Hooks<T>)  => {
   hooks.allColumns.push((columns) => [
     {
       id: '_selector',
@@ -14,17 +15,17 @@ export const selectionHook = (hooks: Hooks<any>) => {
       width: 45,
       maxWidth: 45,
       Aggregated: undefined,
-      Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
+      Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<Record<string, unknown>>) => (
         <IndeterminateCheckbox
           className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-400 rounded"
-          {...getToggleAllRowsSelectedProps()}
+         {...getToggleAllRowsSelectedProps()}
         />
       ),
       Cell: ({
         row,
         editing,
         handleSaveRow,
-      }: CellProps<any> & {
+      }: Cell & {
         editing: number | null,
         handleSaveRow: () => void
       }) => {

@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
+import StateManager, { GroupTypeBase } from 'react-select';
 import Select, { OptionTypeBase } from 'react-select';
 
 type SelectCellProps = {
   options: OptionTypeBase[]
-  handleChange: (value: any) => void
+  handleChange: (value: OptionTypeBase | null) => void
   setFocus: boolean,
 }
 
@@ -44,7 +45,7 @@ export const SelectCell: React.FC<SelectCellProps> = ({ handleChange, options, s
     handleChange(value);
   };
 
-  const selectRef = useRef(null)
+  const selectRef = useRef<StateManager<OptionTypeBase, false, GroupTypeBase<OptionTypeBase>>>(null)
 
   useEffect(() => {
     if(setFocus){

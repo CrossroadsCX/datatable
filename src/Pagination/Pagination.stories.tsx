@@ -1,7 +1,9 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import { Pagination, PaginationProps } from '.'
-import { TableThemeProvider } from '../Theme';
+import { TableThemeProvider } from '../Theme'
+import { DefaultTheme } from 'styled-components'
+import { defaultTheme } from '../Theme'
 
 export default {
   title: 'components/DataTable/Pagination',
@@ -28,7 +30,9 @@ const setPageSize = (pageSize: number) => {
   console.log('PageSize ' + pageSize)
 }
 
-const Template: Story<PaginationProps> = (args) => <TableThemeProvider> <Pagination {...args} /></TableThemeProvider>
+const theme: DefaultTheme = defaultTheme
+
+const Template: Story<PaginationProps> = (args) => <TableThemeProvider theme={theme}> <Pagination {...args} /></TableThemeProvider>
 
 export const Basic = Template.bind({})
 

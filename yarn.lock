@@ -1873,6 +1873,7 @@ __metadata:
     "@storybook/react": ^6.3.7
     "@types/faker": ^5.5.8
     "@types/lodash": ^4.14.172
+    "@types/react": ^17.0.34
     "@types/react-select": ^4.0.17
     "@types/react-table": ^7.7.6
     "@types/styled-components": ^5.1.13
@@ -4170,6 +4171,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 3f2ae9ab6f7d5c7b480cd5962fe996f0682173036a8437cfde0122bc8594e0e1482864b766dbf611daef40ed65a9fc73ec9510e12511d68c064f309f25219f67
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^17.0.34":
+  version: 17.0.34
+  resolution: "@types/react@npm:17.0.34"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 16729ad7d50922ccbf8eb93874d7781dc2f1c64edc78134b5edc7154839d41e9fe320eb1c11ad2d1c9bf28b99cb1febda344509c1fda025955a5c2b43c688c8f
   languageName: node
   linkType: hard
 

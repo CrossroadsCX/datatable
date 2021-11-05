@@ -38,6 +38,7 @@
     "@storybook/react": "^6.3.7",
     "@types/faker": "^5.5.8",
     "@types/lodash": "^4.14.172",
+    "@types/react": "^17.0.34",
     "@types/react-select": "^4.0.17",
     "@types/react-table": "^7.7.6",
     "@types/styled-components": "^5.1.13",
@@ -69,10 +70,13 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "lint": "eslint ./src --ext .ts,tsx",
+    "eslint": "eslint ./src --ext .ts,tsx --fix",
+    "eslint:watch": "esw -w src --ext .ts,.tsx --fix --color",
+    "lint": "yarn eslint; yarn typecheck",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build-publish": "yarn build && npm version patch && npm publish"
+    "build-publish": "yarn build && npm version patch && npm publish",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^17.0.0",

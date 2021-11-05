@@ -36,7 +36,7 @@ import {
   UseGlobalFiltersInstanceProps,
   UseGlobalFiltersOptions,
   UseGlobalFiltersState,
-  UseGroupByCellProps,
+  // UseGroupByCellProps,
   UseGroupByColumnOptions,
   UseGroupByColumnProps,
   UseGroupByHooks,
@@ -67,15 +67,15 @@ import {
 import { OptionTypeBase } from 'react-select'
 
 declare module 'react-table' {
-  export interface UseFlexLayoutInstanceProps<D extends Record<string, unknown>> {
+  export interface UseFlexLayoutInstanceProps {
     totalColumnsMinWidth: number
   }
 
-  export interface UseFlexLayoutColumnProps<D extends Record<string, unknown>> {
+  export interface UseFlexLayoutColumnProps {
     totalMinWidth: number
   }
 
-  export interface TableOptions<D extends Record<string, unknown>>
+  export interface TableOptions<D>
     extends UseExpandedOptions<D>,
       UseFiltersOptions<D>,
       UseFiltersOptions<D>,
@@ -88,13 +88,13 @@ declare module 'react-table' {
         saveRow?: (row: Row<D>) => void
       }
 
-  export interface Hooks<D extends Record<string, unknown> = Record<string, unknown>>
+  export interface Hooks<D>
     extends UseExpandedHooks<D>,
       UseGroupByHooks<D>,
       UseRowSelectHooks<D>,
       UseSortByHooks<D> {}
 
-  export interface TableInstance<D extends Record<string, unknown> = Record<string, unknown>>
+  export interface TableInstance<D>
     extends UseColumnOrderInstanceProps<D>,
       UseExpandedInstanceProps<D>,
       UseFiltersInstanceProps<D>,
@@ -102,11 +102,11 @@ declare module 'react-table' {
       UseGroupByInstanceProps<D>,
       UsePaginationInstanceProps<D>,
       UseRowSelectInstanceProps<D>,
-      UseFlexLayoutInstanceProps<D>,
+      UseFlexLayoutInstanceProps,
       UsePaginationInstanceProps<D>,
       UseSortByInstanceProps<D> {}
 
-  export interface TableState<D extends Record<string, unknown> = Record<string, unknown>>
+  export interface TableState<D>
     extends UseColumnOrderState<D>,
       UseExpandedState<D>,
       UseFiltersState<D>,
@@ -119,7 +119,7 @@ declare module 'react-table' {
     rowCount: number
   }
 
-  export interface ColumnInterface<D extends Record<string, unknown> = Record<string, unknown>>
+  export interface ColumnInterface<D>
     extends UseFiltersColumnOptions<D>,
       UseGroupByColumnOptions<D>,
       UseResizeColumnsColumnOptions<D>,
@@ -129,15 +129,15 @@ declare module 'react-table' {
     inputType?: string,
   }
 
-  export interface ColumnInstance<D extends Record<string, unknown> = Record<string, unknown>>
+  export interface ColumnInstance<D>
     extends UseFiltersColumnProps<D>,
       UseGroupByColumnProps<D>,
       UseResizeColumnsColumnProps<D>,
-      UseFlexLayoutColumnProps<D>,
+      UseFlexLayoutInstanceProps,
       UseSortByColumnProps<D> {}
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface Cell<D extends Record<string, unknown> = Record<string, unknown>> extends UseGroupByCellProps<D> {}
+  export interface Cell{}
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   export interface Row<D extends object = {}>
@@ -159,4 +159,4 @@ declare module 'react-table' {
   }
 }
 
-export type TableMouseEventHandler = (instance: TableInstance<T>) => MouseEventHandler
+export type TableMouseEventHandler = (instance: TableInstance) => MouseEventHandler

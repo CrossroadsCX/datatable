@@ -19,7 +19,7 @@ export const TableRow = <T extends Record<string, unknown>>(
     saveRow(data);
   };
 
-  const onChange = (id: string, value: any) => {
+  const onChange = (id: string, value: unknown) => {
     const values = { ...data.values, [id]: value };
     const newData: Row<T> = { ...data, values };
     setData(newData);
