@@ -52,9 +52,9 @@ export interface DataTableProps<T extends Record<string, unknown>>
     defaultItem?: T
     disableToolbar?: boolean
     theme?: DefaultTheme,
-  handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
-    ref: Ref<HTMLTableElement>
+    handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
     stickyHeader?: boolean,
+    tableRef?: Ref<HTMLTableElement> | null,
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
@@ -86,8 +86,8 @@ export const DataTable = <T extends Record<string, unknown>>(
     handleChange,
     handleFetchData,
     paginated = false,
-    ref: propsRef,
     selectable = false,
+    tableRef,
     tableRow,
     tableToolbar,
     theme = defaultTheme,
@@ -252,7 +252,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     useHotkeys('esc', () => handleCancel(), optionsHot);
 
     return (
-    <table {...getTableProps()} ref={propsRef}>
+    <table {...getTableProps()} ref={tableRef}>
       <thead>
         {headerGroups.map((headerGroup: HeaderGroup<T>) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
