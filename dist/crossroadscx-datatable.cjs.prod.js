@@ -760,9 +760,9 @@ var DataTable = function DataTable(props) {
       handleFetchData = props.handleFetchData,
       _props$paginated = props.paginated,
       paginated = _props$paginated === void 0 ? false : _props$paginated,
-      propsRef = props.ref,
       _props$selectable = props.selectable,
       selectable = _props$selectable === void 0 ? false : _props$selectable,
+      tableRef = props.tableRef,
       tableRow = props.tableRow,
       tableToolbar = props.tableToolbar,
       _props$theme = props.theme,
@@ -946,7 +946,7 @@ var DataTable = function DataTable(props) {
       return handleCancel();
     }, optionsHot);
     return /*#__PURE__*/React__default['default'].createElement("table", _extends({}, getTableProps(), {
-      ref: propsRef
+      ref: tableRef
     }), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup) {
       return /*#__PURE__*/React__default['default'].createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
         return /*#__PURE__*/React__default['default'].createElement("th", _extends({}, column.getHeaderProps(column.getSortByToggleProps()), {
