@@ -1,6 +1,5 @@
-import { DefaultTheme } from "styled-components";
-import { FlexColumn } from "./wrappers";
-import { TableThemeProvider } from "./provider";
+import { FlexColumn } from "./wrappers"
+import { TableThemeProvider } from "./provider"
 import { defaultTheme } from './provider'
 
 export {
@@ -9,4 +8,4 @@ export {
   defaultTheme,
 }
 
-export type { DefaultTheme }
+export type { TableTheme } from './provider'
