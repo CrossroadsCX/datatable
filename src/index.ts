@@ -3,6 +3,7 @@ import { DataTable } from './DataTable'
 import { EditableCell } from './TableCell'
 import { TableRow } from './TableRow'
 import { TableToolbar } from './TableToolbar'
+import { SelectOption } from './TableCell/SelectCell'
 import { defaultTheme } from './Theme'
 
 export {
@@ -128,8 +129,9 @@ declare module 'react-table' {
       UseResizeColumnsColumnOptions<D>,
     UseSortByColumnOptions<D> {
     align?: string,
-    options?: OptionTypeBase[]
+    options?: SelectOption<unknown>[],
     inputType?: string,
+    handleOnCreate?: (option: string) => void,
   }
 
   export interface ColumnInstance<D>

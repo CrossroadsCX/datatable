@@ -30,7 +30,7 @@ const getOptionLabel = (value: unknown, options: OptionTypeBase[]): string => {
 export const EditableCell: React.FC<EditableCellProps> = ({
   value: initialValue,
   // row: { index },
-  column: { id, options, inputType },
+  column: { id, options, inputType, handleOnCreate },
   isEditable,
   onChange,
   index,
@@ -89,6 +89,8 @@ export const EditableCell: React.FC<EditableCellProps> = ({
             if the input will be focusable.
           */
           setFocus={index == (selectable ? 1 : 0) ? true : false}
+          defaultValue={value}
+          handleOnCreate={handleOnCreate}
         />
       </div>
     );
