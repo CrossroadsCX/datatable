@@ -62,6 +62,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     tableToolbar?: (
       props: TableToolbarProps,
     ) => ReactElement,
+    editingRow?: boolean,
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -92,6 +93,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     tableToolbar,
     theme = defaultTheme,
     stickyHeader = false,
+    editingRow = false,
   } = props;
 
   /** Table State */
@@ -208,7 +210,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   // If the incoming data changes, override the table data
   useEffect(() => {
     setData(data)
-    if(data.length < 1){
+    if(editingRow){
       handleAdd()
     }
   }, [data])

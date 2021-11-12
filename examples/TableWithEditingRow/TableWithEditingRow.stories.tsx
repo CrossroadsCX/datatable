@@ -5,7 +5,7 @@ import { Column, ColumnInterface } from 'react-table'
 import { DataTable, DataTableProps } from '../../src/DataTable'
 
 export default {
-  title: 'examples/EmptyTable',
+  title: 'examples/TableWithEditingRow',
   component: DataTable,
 } as Meta
 
@@ -22,7 +22,19 @@ type CarData = Car & {
   subRows?: CarData[]
 }
 
-const carData = []
+const carDataEmpty = []
+const carData = [
+  {
+    model: '1',
+    year: 2019,
+    color: 'Red'
+  },
+  {
+    model: '3',
+    year: 2020,
+    color: 'Blue'
+  }
+]
 
 const columns: ColumnInterface<CarData>[] = [
   {
@@ -65,12 +77,24 @@ const handleChange = (newData: CarData) => {
 
 const Template: Story<DataTableProps < CarData >> = (args) => <DataTable<CarData> {...args} />
 
-export const Basic = Template.bind({})
+export const EmpyTable = Template.bind({})
 
-Basic.args = {
+EmpyTable.args = {
+  data: carDataEmpty,
+  columns,
+  defaultItem,
+  selectable: true,
+  handleChange,
+  editingRow: true,
+}
+
+export const TableWithData = Template.bind({})
+
+TableWithData.args = {
   data: carData,
   columns,
   defaultItem,
   selectable: true,
   handleChange,
+  editingRow: true,
 }
