@@ -8,7 +8,9 @@ type TableThemeProviderProps = {
   theme: DefaultTheme,
 }
 
-export const defaultTheme: DefaultTheme = {
+export interface TableTheme extends DefaultTheme, Record<string, unknown> { }
+
+export const defaultTheme: TableTheme = {
   'border-b': 'border-bottom-width: 1px;',
   colors: {
     lightGray: 'rgba(229, 231, 235, 1)',
