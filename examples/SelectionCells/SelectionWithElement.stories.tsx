@@ -5,7 +5,7 @@ import { ColumnInterface } from 'react-table'
 import { DataTable, DataTableProps } from '../../src/DataTable'
 
 export default {
-  title: 'examples/SelectionCreateCells',
+  title: 'examples/SelectionWithElementCells',
   component: DataTable,
 } as Meta
 
@@ -24,12 +24,12 @@ type CarData = Car & {
 
 const carData = [
   {
-    model: '1',
+    model: <a href='#'>Acura</a>,
     year: 2019,
     color: 'Red'
   },
   {
-    model: '3',
+    model: <a href='#'>Ford</a>,
     year: 2020,
     color: 'Blue'
   }

@@ -64,7 +64,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
 
   if (!isEditable) {
     // If this is a selectable cell
-    if (options) {
+    if (typeof value == 'string' && options) {
       return (
         <>{getOptionLabel(value, options)}</>
       )
