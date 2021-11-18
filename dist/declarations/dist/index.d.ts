@@ -2,6 +2,7 @@ import { DataTable } from './DataTable';
 import { EditableCell } from './TableCell';
 import { TableRow } from './TableRow';
 import { TableToolbar } from './TableToolbar';
+import { SelectOption } from './TableCell/SelectCell';
 import { defaultTheme } from './Theme';
 export { defaultTheme, DataTable, EditableCell, TableRow, TableToolbar, };
 export type { Column } from 'react-table';
@@ -12,7 +13,6 @@ export type { TableToolbarProps } from './TableToolbar';
 export type { TableTheme } from './Theme';
 import { MouseEventHandler } from 'react';
 import { TableInstance } from 'react-table';
-import { OptionTypeBase } from 'react-select';
 declare module 'react-table' {
     interface UseFlexLayoutInstanceProps {
         totalColumnsMinWidth: number;
@@ -32,8 +32,9 @@ declare module 'react-table' {
     }
     interface ColumnInterface<D> extends UseFiltersColumnOptions<D>, UseGroupByColumnOptions<D>, UseResizeColumnsColumnOptions<D>, UseSortByColumnOptions<D> {
         align?: string;
-        options?: OptionTypeBase[];
+        options?: SelectOption<unknown>[];
         inputType?: string;
+        handleOnCreate?: (option: string) => void;
     }
     interface ColumnInstance<D> extends UseFiltersColumnProps<D>, UseGroupByColumnProps<D>, UseResizeColumnsColumnProps<D>, UseFlexLayoutInstanceProps, UseSortByColumnProps<D> {
     }
