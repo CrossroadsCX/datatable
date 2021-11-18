@@ -80,6 +80,15 @@ The default UI uses the [TailwindCSS](https://tailwindcss.com/) library for styl
 
 Future versions will allow individual style or entire theme overrides.
 
+## Development
+
+### Publish to NPM
+1. `yarn build` - build the dist files
+1. `git add .` `git commit -m 'build dist'` - Commit new dist files
+1. `npm version patch` - create new patch version
+1. `git push` - push new version to github
+1. `npm version publish` - publish new version to NPM
+
 ## License
 
 `@crossroadscx/datatable` is released under the MIT license.
