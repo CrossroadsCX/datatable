@@ -1,31 +1,14 @@
-import React$1, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useTable, useAsyncDebounce, useSortBy, usePagination, useRowSelect } from 'react-table';
 import filter from 'lodash/filter';
 import { PlusIcon, PencilIcon, TrashIcon, ReplyIcon, ChevronDoubleLeftIcon, ArrowSmLeftIcon, ArrowSmRightIcon, ChevronDoubleRightIcon, CheckIcon, ArrowSmDownIcon, ArrowSmUpIcon } from '@heroicons/react/outline';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHotkeys } from 'react-hotkeys-hook';
 import styled, { ThemeProvider } from 'styled-components';
+import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { find } from 'lodash';
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
-
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -278,9 +261,12 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
   var children = _ref.children,
       _ref$theme = _ref.theme,
       theme = _ref$theme === void 0 ? defaultTheme : _ref$theme;
-  return /*#__PURE__*/React$1.createElement(ThemeProvider, {
-    theme: theme
-  }, /*#__PURE__*/React$1.createElement(GlobalStyle, null, children));
+  return /*#__PURE__*/jsx(ThemeProvider, {
+    theme: theme,
+    children: /*#__PURE__*/jsx(GlobalStyle, {
+      children: children
+    })
+  });
 };
 
 var StyledDataTable = styled.div.withConfig({
@@ -322,28 +308,34 @@ var TableToolbar = function TableToolbar(props) {
       handleDelete = props.handleDelete,
       handleEdit = props.handleEdit,
       handleReset = props.handleReset;
-  return /*#__PURE__*/React$1.createElement(StyledTableToolbar, null, handleAdd && /*#__PURE__*/React$1.createElement("div", {
-    title: "Add Row"
-  }, /*#__PURE__*/React$1.createElement(PlusIcon, {
-    className: "".concat(canAdd ? 'enabled' : ''),
-    onClick: handleAdd
-  })), handleEdit && /*#__PURE__*/React$1.createElement("div", {
-    title: "Edit Row"
-  }, /*#__PURE__*/React$1.createElement(PencilIcon, {
-    className: "".concat(canEdit ? 'enabled' : ''),
-    onClick: handleEdit
-  })), handleDelete && /*#__PURE__*/React$1.createElement("div", {
-    title: "Delete Row(s)"
-  }, /*#__PURE__*/React$1.createElement(TrashIcon, {
-    className: "".concat(canDelete ? 'enabled' : ''),
-    onClick: handleDelete
-  })), handleReset && /*#__PURE__*/React$1.createElement("div", {
-    title: "Reset Table"
-  }, /*#__PURE__*/React$1.createElement(ReplyIcon, {
-    "aria-disabled": !canReset,
-    className: "".concat(canReset ? 'enabled' : ''),
-    onClick: canReset ? handleReset : undefined
-  })));
+  return /*#__PURE__*/jsxs(StyledTableToolbar, {
+    children: [handleAdd && /*#__PURE__*/jsx("div", {
+      title: "Add Row",
+      children: /*#__PURE__*/jsx(PlusIcon, {
+        className: "".concat(canAdd ? 'enabled' : ''),
+        onClick: handleAdd
+      })
+    }), handleEdit && /*#__PURE__*/jsx("div", {
+      title: "Edit Row",
+      children: /*#__PURE__*/jsx(PencilIcon, {
+        className: "".concat(canEdit ? 'enabled' : ''),
+        onClick: handleEdit
+      })
+    }), handleDelete && /*#__PURE__*/jsx("div", {
+      title: "Delete Row(s)",
+      children: /*#__PURE__*/jsx(TrashIcon, {
+        className: "".concat(canDelete ? 'enabled' : ''),
+        onClick: handleDelete
+      })
+    }), handleReset && /*#__PURE__*/jsx("div", {
+      title: "Reset Table",
+      children: /*#__PURE__*/jsx(ReplyIcon, {
+        "aria-disabled": !canReset,
+        className: "".concat(canReset ? 'enabled' : ''),
+        onClick: canReset ? handleReset : undefined
+      })
+    })]
+  });
 };
 
 var TableRow = function TableRow(props) {
@@ -372,19 +364,22 @@ var TableRow = function TableRow(props) {
     setData(newData);
   };
 
-  return /*#__PURE__*/React$1.createElement("tr", _extends({}, row.getRowProps(), {
-    className: className
-  }), row.cells.map(function (cell, index) {
-    return /*#__PURE__*/React$1.createElement("td", _extends({
-      className: " ".concat(index === 0 && 'w-8')
-    }, cell.getCellProps()), cell.render('Cell', {
-      isEditable: editing === row.index,
-      editing: editing,
-      onChange: onChange,
-      handleSaveRow: handleSaveRow,
-      index: index,
-      selectable: selectable
-    }));
+  return /*#__PURE__*/jsx("tr", _objectSpread2(_objectSpread2({}, row.getRowProps()), {}, {
+    className: className,
+    children: row.cells.map(function (cell, index) {
+      return /*#__PURE__*/jsx("td", _objectSpread2(_objectSpread2({
+        className: " ".concat(index === 0 && 'w-8')
+      }, cell.getCellProps()), {}, {
+        children: cell.render('Cell', {
+          isEditable: editing === row.index,
+          editing: editing,
+          onChange: onChange,
+          handleSaveRow: handleSaveRow,
+          index: index,
+          selectable: selectable
+        })
+      }));
+    })
   }));
 };
 
@@ -483,7 +478,7 @@ var SelectCell = function SelectCell(_ref) {
   }, [defaultOption]);
 
   if (handleOnCreate) {
-    return /*#__PURE__*/React$1.createElement(CreatableSelect, {
+    return /*#__PURE__*/jsx(CreatableSelect, {
       onChange: function onChange(event) {
         handleChange(event);
         setNewDefaultValue(event === null || event === void 0 ? void 0 : event.label);
@@ -503,7 +498,7 @@ var SelectCell = function SelectCell(_ref) {
     });
   }
 
-  return /*#__PURE__*/React$1.createElement(Select, {
+  return /*#__PURE__*/jsx(Select, {
     options: options,
     onChange: onChange,
     menuPortalTarget: document.body,
@@ -576,16 +571,42 @@ var EditableCell = function EditableCell(_ref) {
   if (!isEditable) {
     // If this is a selectable cell
     if (typeof value == 'string' && options) {
-      return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, getOptionLabel(value, options));
+      return /*#__PURE__*/jsx(Fragment, {
+        children: getOptionLabel(value, options)
+      });
     }
 
-    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, value);
+    return /*#__PURE__*/jsx(Fragment, {
+      children: value
+    });
   }
 
   if (options && options.length > 0) {
-    return /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement(SelectCell, {
-      options: options,
-      handleChange: onSelectChange
+    return /*#__PURE__*/jsx("div", {
+      children: /*#__PURE__*/jsx(SelectCell, {
+        options: options,
+        handleChange: onSelectChange
+        /*
+          The focus needs to be on the first input of the Row, 
+          but datatable has two options, when the select option 
+          is activated (cell #1) and when not (cell #0), 
+          so it evaluates that with the cell index to determine 
+          if the input will be focusable.
+        */
+        ,
+        setFocus: index == (selectable ? 1 : 0) ? true : false,
+        defaultValue: value,
+        handleOnCreate: handleOnCreate
+      })
+    });
+  }
+
+  return /*#__PURE__*/jsx("div", {
+    children: /*#__PURE__*/jsx("input", {
+      className: "border-b border-blue-400",
+      value: value || '',
+      onChange: onLocalChange,
+      type: inputType ? inputType : 'text'
       /*
         The focus needs to be on the first input of the Row, 
         but datatable has two options, when the select option 
@@ -594,27 +615,9 @@ var EditableCell = function EditableCell(_ref) {
         if the input will be focusable.
       */
       ,
-      setFocus: index == (selectable ? 1 : 0) ? true : false,
-      defaultValue: value,
-      handleOnCreate: handleOnCreate
-    }));
-  }
-
-  return /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("input", {
-    className: "border-b border-blue-400",
-    value: value || '',
-    onChange: onLocalChange,
-    type: inputType ? inputType : 'text'
-    /*
-      The focus needs to be on the first input of the Row, 
-      but datatable has two options, when the select option 
-      is activated (cell #1) and when not (cell #0), 
-      so it evaluates that with the cell index to determine 
-      if the input will be focusable.
-    */
-    ,
-    autoFocus: index == (selectable ? 1 : 0) ? true : false
-  }));
+      autoFocus: index == (selectable ? 1 : 0) ? true : false
+    })
+  });
 };
 
 var StyledPagination = styled.div.withConfig({
@@ -647,49 +650,61 @@ var Pagination = function Pagination(_ref) {
       pageSize = _ref.pageSize,
       pageCount = _ref.pageCount,
       setPageSize = _ref.setPageSize;
-  return /*#__PURE__*/React$1.createElement(StyledPagination, {
-    className: "pagination"
-  }, /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("span", null, "Page", ' ', /*#__PURE__*/React$1.createElement("strong", null, pageIndex + 1, " of ", pageOptions.length), ' '), /*#__PURE__*/React$1.createElement("span", null, "| Go to page:", ' ', /*#__PURE__*/React$1.createElement("input", {
-    type: "number",
-    defaultValue: pageIndex + 1,
-    onChange: function onChange(e) {
-      var page = e.target.value ? Number(e.target.value) - 1 : 0;
-      gotoPage(page);
-    },
-    style: {
-      width: '100px'
-    }
-  })), ' ', /*#__PURE__*/React$1.createElement("select", {
-    value: pageSize,
-    onChange: function onChange(e) {
-      setPageSize(Number(e.target.value));
-    }
-  }, [10, 20, 30, 40, 50].map(function (pageSize) {
-    return /*#__PURE__*/React$1.createElement("option", {
-      key: pageSize,
-      value: pageSize
-    }, "Show ", pageSize);
-  }))), /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement(ChevronDoubleLeftIcon, {
-    onClick: function onClick() {
-      return gotoPage(0);
-    },
-    className: "".concat(canPreviousPage ? 'enabled' : '')
-  }), /*#__PURE__*/React$1.createElement(ArrowSmLeftIcon, {
-    onClick: function onClick() {
-      return previousPage();
-    },
-    className: "".concat(canPreviousPage ? 'enabled' : '')
-  }), /*#__PURE__*/React$1.createElement(ArrowSmRightIcon, {
-    onClick: function onClick() {
-      return nextPage();
-    },
-    className: "".concat(canNextPage ? 'enabled' : '')
-  }), /*#__PURE__*/React$1.createElement(ChevronDoubleRightIcon, {
-    onClick: function onClick() {
-      return gotoPage(pageCount - 1);
-    },
-    className: "".concat(canNextPage ? 'enabled' : '')
-  })));
+  return /*#__PURE__*/jsxs(StyledPagination, {
+    className: "pagination",
+    children: [/*#__PURE__*/jsxs("div", {
+      children: [/*#__PURE__*/jsxs("span", {
+        children: ["Page", ' ', /*#__PURE__*/jsxs("strong", {
+          children: [pageIndex + 1, " of ", pageOptions.length]
+        }), ' ']
+      }), /*#__PURE__*/jsxs("span", {
+        children: ["| Go to page:", ' ', /*#__PURE__*/jsx("input", {
+          type: "number",
+          defaultValue: pageIndex + 1,
+          onChange: function onChange(e) {
+            var page = e.target.value ? Number(e.target.value) - 1 : 0;
+            gotoPage(page);
+          },
+          style: {
+            width: '100px'
+          }
+        })]
+      }), ' ', /*#__PURE__*/jsx("select", {
+        value: pageSize,
+        onChange: function onChange(e) {
+          setPageSize(Number(e.target.value));
+        },
+        children: [10, 20, 30, 40, 50].map(function (pageSize) {
+          return /*#__PURE__*/jsxs("option", {
+            value: pageSize,
+            children: ["Show ", pageSize]
+          }, pageSize);
+        })
+      })]
+    }), /*#__PURE__*/jsxs("div", {
+      children: [/*#__PURE__*/jsx(ChevronDoubleLeftIcon, {
+        onClick: function onClick() {
+          return gotoPage(0);
+        },
+        className: "".concat(canPreviousPage ? 'enabled' : '')
+      }), /*#__PURE__*/jsx(ArrowSmLeftIcon, {
+        onClick: function onClick() {
+          return previousPage();
+        },
+        className: "".concat(canPreviousPage ? 'enabled' : '')
+      }), /*#__PURE__*/jsx(ArrowSmRightIcon, {
+        onClick: function onClick() {
+          return nextPage();
+        },
+        className: "".concat(canNextPage ? 'enabled' : '')
+      }), /*#__PURE__*/jsx(ChevronDoubleRightIcon, {
+        onClick: function onClick() {
+          return gotoPage(pageCount - 1);
+        },
+        className: "".concat(canNextPage ? 'enabled' : '')
+      })]
+    })]
+  });
 };
 
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -727,23 +742,25 @@ function _objectWithoutProperties(source, excluded) {
 }
 
 var _excluded = ["indeterminate"];
-var IndeterminateCheckbox = /*#__PURE__*/React$1.forwardRef(function (_ref, ref) {
+var IndeterminateCheckbox = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
   var indeterminate = _ref.indeterminate,
       rest = _objectWithoutProperties(_ref, _excluded);
 
-  var defaultRef = React$1.useRef(null);
+  var defaultRef = React.useRef(null);
   var resolvedRef = ref || defaultRef;
-  React$1.useEffect(function () {
+  React.useEffect(function () {
     var currentRef = resolvedRef.current;
 
     if (currentRef) {
       currentRef.indeterminate = indeterminate !== null && indeterminate !== void 0 ? indeterminate : false;
     }
   }, [resolvedRef, indeterminate]);
-  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("input", _extends({
-    type: "checkbox",
-    ref: resolvedRef
-  }, rest)));
+  return /*#__PURE__*/jsx(Fragment, {
+    children: /*#__PURE__*/jsx("input", _objectSpread2({
+      type: "checkbox",
+      ref: resolvedRef
+    }, rest))
+  });
 });
 
 var selectionHook = function selectionHook(hooks) {
@@ -758,7 +775,7 @@ var selectionHook = function selectionHook(hooks) {
       Aggregated: undefined,
       Header: function Header(_ref) {
         var getToggleAllRowsSelectedProps = _ref.getToggleAllRowsSelectedProps;
-        return /*#__PURE__*/React.createElement(IndeterminateCheckbox, _extends({
+        return /*#__PURE__*/jsx(IndeterminateCheckbox, _objectSpread2({
           className: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-400 rounded"
         }, getToggleAllRowsSelectedProps()));
       },
@@ -774,13 +791,13 @@ var selectionHook = function selectionHook(hooks) {
           useHotkeys('ctrl+enter', function () {
             return handleSaveRow();
           }, optionsHot);
-          return /*#__PURE__*/React.createElement(CheckIcon, {
+          return /*#__PURE__*/jsx(CheckIcon, {
             className: "w-4 border border-green-600 bg-green-200 rounded-md cursor-pointer hover:bg-green-600",
             onClick: handleSaveRow
           });
         }
 
-        return /*#__PURE__*/React.createElement(IndeterminateCheckbox, _extends({
+        return /*#__PURE__*/jsx(IndeterminateCheckbox, _objectSpread2({
           className: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
         }, row.getToggleRowSelectedProps()));
       }
@@ -994,41 +1011,49 @@ var DataTable = function DataTable(props) {
     useHotkeys('esc', function () {
       return handleCancel();
     }, optionsHot);
-    return /*#__PURE__*/React$1.createElement("table", _extends({}, getTableProps(), {
-      ref: tableRef
-    }), /*#__PURE__*/React$1.createElement("thead", null, headerGroups.map(function (headerGroup) {
-      return /*#__PURE__*/React$1.createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-        return /*#__PURE__*/React$1.createElement("th", _extends({}, column.getHeaderProps(column.getSortByToggleProps()), {
-          scope: "col"
-        }), column.render('Header'), /*#__PURE__*/React$1.createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React$1.createElement(ArrowSmDownIcon, {
-          className: "sort-indicator"
-        }) : /*#__PURE__*/React$1.createElement(ArrowSmUpIcon, {
-          className: "sort-indicator"
-        }) : ''));
-      }));
-    })), /*#__PURE__*/React$1.createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
-      prepareRow(row);
-      return /*#__PURE__*/React$1.createElement(TableRowRender, {
-        key: row.index,
-        row: row,
-        editing: editing,
-        saveRow: saveRow,
-        selectable: selectable
-      });
-    }) : page.map(function (row) {
-      prepareRow(row);
-      return /*#__PURE__*/React$1.createElement(TableRowRender, {
-        key: row.index,
-        row: row,
-        editing: editing,
-        saveRow: saveRow,
-        selectable: selectable
-      });
-    })));
+    return /*#__PURE__*/jsxs("table", _objectSpread2(_objectSpread2({}, getTableProps()), {}, {
+      ref: tableRef,
+      children: [/*#__PURE__*/jsx("thead", {
+        children: headerGroups.map(function (headerGroup) {
+          return /*#__PURE__*/jsx("tr", _objectSpread2(_objectSpread2({}, headerGroup.getHeaderGroupProps()), {}, {
+            children: headerGroup.headers.map(function (column) {
+              return /*#__PURE__*/jsxs("th", _objectSpread2(_objectSpread2({}, column.getHeaderProps(column.getSortByToggleProps())), {}, {
+                scope: "col",
+                children: [column.render('Header'), /*#__PURE__*/jsx("span", {
+                  children: column.isSorted ? column.isSortedDesc ? /*#__PURE__*/jsx(ArrowSmDownIcon, {
+                    className: "sort-indicator"
+                  }) : /*#__PURE__*/jsx(ArrowSmUpIcon, {
+                    className: "sort-indicator"
+                  }) : ''
+                })]
+              }));
+            })
+          }));
+        })
+      }), /*#__PURE__*/jsx("tbody", _objectSpread2(_objectSpread2({}, getTableBodyProps()), {}, {
+        children: !paginated ? rows.map(function (row) {
+          prepareRow(row);
+          return /*#__PURE__*/jsx(TableRowRender, {
+            row: row,
+            editing: editing,
+            saveRow: saveRow,
+            selectable: selectable
+          }, row.index);
+        }) : page.map(function (row) {
+          prepareRow(row);
+          return /*#__PURE__*/jsx(TableRowRender, {
+            row: row,
+            editing: editing,
+            saveRow: saveRow,
+            selectable: selectable
+          }, row.index);
+        })
+      }))]
+    }));
   };
 
   var InfiniteScrollTable = function InfiniteScrollTable() {
-    return /*#__PURE__*/React$1.createElement(InfiniteScroll, {
+    return /*#__PURE__*/jsx(InfiniteScroll, {
       dataLength: rows.length,
       next: function next() {
         return handleFetchDataDebounced({
@@ -1038,28 +1063,37 @@ var DataTable = function DataTable(props) {
         });
       },
       hasMore: true,
-      loader: /*#__PURE__*/React$1.createElement("p", null, "Loading more items...")
-    }, /*#__PURE__*/React$1.createElement(Table, null));
+      loader: /*#__PURE__*/jsx("p", {
+        children: "Loading more items..."
+      }),
+      children: /*#__PURE__*/jsx(Table, {})
+    });
   };
 
   var PaginatedTable = function PaginatedTable() {
-    return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(Table, null), /*#__PURE__*/React$1.createElement(Pagination, paginationProps));
+    return /*#__PURE__*/jsxs(Fragment, {
+      children: [/*#__PURE__*/jsx(Table, {}), /*#__PURE__*/jsx(Pagination, _objectSpread2({}, paginationProps))]
+    });
   };
 
-  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(TableThemeProvider, {
-    theme: theme
-  }, !disableToolbar || tableToolbar ? /*#__PURE__*/React$1.createElement(ToolbarRender, {
-    canAdd: editing === null,
-    canDelete: selectedFlatRows.length > 0,
-    canEdit: selectedFlatRows.length === 1,
-    canReset: tableData.length !== data.length,
-    handleAdd: handleAdd,
-    handleDelete: handleDelete,
-    handleEdit: handleEdit,
-    handleReset: handleReset
-  }) : null, /*#__PURE__*/React$1.createElement(StyledDataTable, {
-    className: stickyHeader ? 'sticky' : ''
-  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React$1.createElement(InfiniteScrollTable, null) : /*#__PURE__*/React$1.createElement(PaginatedTable, null) : /*#__PURE__*/React$1.createElement(Table, null))));
+  return /*#__PURE__*/jsx(Fragment, {
+    children: /*#__PURE__*/jsxs(TableThemeProvider, {
+      theme: theme,
+      children: [!disableToolbar || tableToolbar ? /*#__PURE__*/jsx(ToolbarRender, {
+        canAdd: editing === null,
+        canDelete: selectedFlatRows.length > 0,
+        canEdit: selectedFlatRows.length === 1,
+        canReset: tableData.length !== data.length,
+        handleAdd: handleAdd,
+        handleDelete: handleDelete,
+        handleEdit: handleEdit,
+        handleReset: handleReset
+      }) : null, /*#__PURE__*/jsx(StyledDataTable, {
+        className: stickyHeader ? 'sticky' : '',
+        children: paginated ? paginated === 'scroll' ? /*#__PURE__*/jsx(InfiniteScrollTable, {}) : /*#__PURE__*/jsx(PaginatedTable, {}) : /*#__PURE__*/jsx(Table, {})
+      })]
+    })
+  });
 };
 
 export { DataTable, EditableCell, TableRow, TableToolbar, defaultTheme };
