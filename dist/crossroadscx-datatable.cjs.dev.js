@@ -10,6 +10,7 @@ var InfiniteScroll = require('react-infinite-scroll-component');
 var reactHotkeysHook = require('react-hotkeys-hook');
 var styled = require('styled-components');
 var lodash = require('lodash');
+var CreatableSelect = require('react-select/creatable');
 var Select = require('react-select');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
@@ -18,6 +19,7 @@ var React__default = /*#__PURE__*/_interopDefault(React$1);
 var filter__default = /*#__PURE__*/_interopDefault(filter);
 var InfiniteScroll__default = /*#__PURE__*/_interopDefault(InfiniteScroll);
 var styled__default = /*#__PURE__*/_interopDefault(styled);
+var CreatableSelect__default = /*#__PURE__*/_interopDefault(CreatableSelect);
 var Select__default = /*#__PURE__*/_interopDefault(Select);
 
 function _extends() {
@@ -446,18 +448,74 @@ var customStyles = {
 var SelectCell = function SelectCell(_ref) {
   var handleChange = _ref.handleChange,
       options = _ref.options,
-      setFocus = _ref.setFocus;
+      setFocus = _ref.setFocus,
+      handleOnCreate = _ref.handleOnCreate,
+      defaultValue = _ref.defaultValue;
 
   var onChange = function onChange(value) {
     handleChange(value);
   };
 
+  var _useState = React$1.useState(defaultValue != null ? options.filter(function (option) {
+    return option.value === defaultValue;
+  }) : []),
+      _useState2 = _slicedToArray(_useState, 2),
+      defaultOption = _useState2[0],
+      setDefaultOption = _useState2[1];
+
   var selectRef = React$1.useRef(null);
+  var selectCreationRef = React$1.useRef(null);
+
+  var _useState3 = React$1.useState(defaultValue),
+      _useState4 = _slicedToArray(_useState3, 2),
+      newDefaultValue = _useState4[0],
+      setNewDefaultValue = _useState4[1];
+
+  var _useState5 = React$1.useState(),
+      _useState6 = _slicedToArray(_useState5, 2),
+      isLoading = _useState6[0],
+      setIsLoading = _useState6[1];
+
   React$1.useEffect(function () {
     if (setFocus) {
       selectRef.current && selectRef.current.focus();
+      selectCreationRef.current && selectCreationRef.current.focus();
     }
   }, []);
+  React$1.useEffect(function () {
+    var newOption = newDefaultValue != null ? options.filter(function (option) {
+      return option.label === newDefaultValue;
+    }) : [];
+    setDefaultOption(newOption);
+  }, [options, newDefaultValue]);
+  React$1.useEffect(function () {
+    if ((defaultOption === null || defaultOption === void 0 ? void 0 : defaultOption.length) > 0) {
+      setIsLoading(false);
+      handleChange(defaultOption[0]);
+    }
+  }, [defaultOption]);
+
+  if (handleOnCreate) {
+    return /*#__PURE__*/React__default['default'].createElement(CreatableSelect__default['default'], {
+      onChange: function onChange(event) {
+        handleChange(event);
+        setNewDefaultValue(event === null || event === void 0 ? void 0 : event.label);
+      },
+      onCreateOption: function onCreateOption(event) {
+        setIsLoading(true);
+        handleOnCreate(event);
+        setNewDefaultValue(event);
+      },
+      isDisabled: isLoading,
+      isLoading: isLoading,
+      options: options,
+      value: defaultOption,
+      className: "border-0 border-b border-blue-400 border-solid",
+      styles: customStyles,
+      ref: selectCreationRef
+    });
+  }
+
   return /*#__PURE__*/React__default['default'].createElement(Select__default['default'], {
     options: options,
     onChange: onChange,
@@ -465,7 +523,8 @@ var SelectCell = function SelectCell(_ref) {
     menuPosition: "fixed",
     styles: customStyles,
     className: "border-0 border-b border-blue-400 border-solid",
-    ref: selectRef
+    ref: selectRef,
+    defaultValue: defaultOption
   });
 };
 
@@ -487,6 +546,7 @@ var EditableCell = function EditableCell(_ref) {
       id = _ref$column.id,
       options = _ref$column.options,
       inputType = _ref$column.inputType,
+      handleOnCreate = _ref$column.handleOnCreate,
       isEditable = _ref.isEditable,
       onChange = _ref.onChange,
       index = _ref.index,
@@ -528,7 +588,7 @@ var EditableCell = function EditableCell(_ref) {
 
   if (!isEditable) {
     // If this is a selectable cell
-    if (options) {
+    if (typeof value == 'string' && options) {
       return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, getOptionLabel(value, options));
     }
 
@@ -547,7 +607,9 @@ var EditableCell = function EditableCell(_ref) {
         if the input will be focusable.
       */
       ,
-      setFocus: index == (selectable ? 1 : 0) ? true : false
+      setFocus: index == (selectable ? 1 : 0) ? true : false,
+      defaultValue: value,
+      handleOnCreate: handleOnCreate
     }));
   }
 

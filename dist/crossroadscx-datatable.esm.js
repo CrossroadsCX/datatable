@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useHotkeys } from 'react-hotkeys-hook';
 import styled, { ThemeProvider } from 'styled-components';
 import { find } from 'lodash';
+import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
 
 function _extends() {
@@ -434,18 +435,74 @@ var customStyles = {
 var SelectCell = function SelectCell(_ref) {
   var handleChange = _ref.handleChange,
       options = _ref.options,
-      setFocus = _ref.setFocus;
+      setFocus = _ref.setFocus,
+      handleOnCreate = _ref.handleOnCreate,
+      defaultValue = _ref.defaultValue;
 
   var onChange = function onChange(value) {
     handleChange(value);
   };
 
+  var _useState = useState(defaultValue != null ? options.filter(function (option) {
+    return option.value === defaultValue;
+  }) : []),
+      _useState2 = _slicedToArray(_useState, 2),
+      defaultOption = _useState2[0],
+      setDefaultOption = _useState2[1];
+
   var selectRef = useRef(null);
+  var selectCreationRef = useRef(null);
+
+  var _useState3 = useState(defaultValue),
+      _useState4 = _slicedToArray(_useState3, 2),
+      newDefaultValue = _useState4[0],
+      setNewDefaultValue = _useState4[1];
+
+  var _useState5 = useState(),
+      _useState6 = _slicedToArray(_useState5, 2),
+      isLoading = _useState6[0],
+      setIsLoading = _useState6[1];
+
   useEffect(function () {
     if (setFocus) {
       selectRef.current && selectRef.current.focus();
+      selectCreationRef.current && selectCreationRef.current.focus();
     }
   }, []);
+  useEffect(function () {
+    var newOption = newDefaultValue != null ? options.filter(function (option) {
+      return option.label === newDefaultValue;
+    }) : [];
+    setDefaultOption(newOption);
+  }, [options, newDefaultValue]);
+  useEffect(function () {
+    if ((defaultOption === null || defaultOption === void 0 ? void 0 : defaultOption.length) > 0) {
+      setIsLoading(false);
+      handleChange(defaultOption[0]);
+    }
+  }, [defaultOption]);
+
+  if (handleOnCreate) {
+    return /*#__PURE__*/React$1.createElement(CreatableSelect, {
+      onChange: function onChange(event) {
+        handleChange(event);
+        setNewDefaultValue(event === null || event === void 0 ? void 0 : event.label);
+      },
+      onCreateOption: function onCreateOption(event) {
+        setIsLoading(true);
+        handleOnCreate(event);
+        setNewDefaultValue(event);
+      },
+      isDisabled: isLoading,
+      isLoading: isLoading,
+      options: options,
+      value: defaultOption,
+      className: "border-0 border-b border-blue-400 border-solid",
+      styles: customStyles,
+      ref: selectCreationRef
+    });
+  }
+
   return /*#__PURE__*/React$1.createElement(Select, {
     options: options,
     onChange: onChange,
@@ -453,7 +510,8 @@ var SelectCell = function SelectCell(_ref) {
     menuPosition: "fixed",
     styles: customStyles,
     className: "border-0 border-b border-blue-400 border-solid",
-    ref: selectRef
+    ref: selectRef,
+    defaultValue: defaultOption
   });
 };
 
@@ -475,6 +533,7 @@ var EditableCell = function EditableCell(_ref) {
       id = _ref$column.id,
       options = _ref$column.options,
       inputType = _ref$column.inputType,
+      handleOnCreate = _ref$column.handleOnCreate,
       isEditable = _ref.isEditable,
       onChange = _ref.onChange,
       index = _ref.index,
@@ -516,7 +575,7 @@ var EditableCell = function EditableCell(_ref) {
 
   if (!isEditable) {
     // If this is a selectable cell
-    if (options) {
+    if (typeof value == 'string' && options) {
       return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, getOptionLabel(value, options));
     }
 
@@ -535,7 +594,9 @@ var EditableCell = function EditableCell(_ref) {
         if the input will be focusable.
       */
       ,
-      setFocus: index == (selectable ? 1 : 0) ? true : false
+      setFocus: index == (selectable ? 1 : 0) ? true : false,
+      defaultValue: value,
+      handleOnCreate: handleOnCreate
     }));
   }
 
