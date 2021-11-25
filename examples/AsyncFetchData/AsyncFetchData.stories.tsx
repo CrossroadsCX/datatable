@@ -29,14 +29,14 @@ const columns: Column<Person>[] = [
 ]
 
 const Template: Story<DataTableProps<Person>> = (args) => {
-  const [people, setPeople] = useState(createPeople(10))
+  const [people, setPeople] = useState(createPeople(20))
 
   const initialData = useMemo(() => people, [people])
 
   const handleFetchData = async ({ pageIndex, pageSize, sortBy: sortByInput }: HandleFetchDataArgs<Person>) => {
-    console.log('Paging:')
-    console.log(pageIndex, pageSize, sortBy)
-    const newPeople = createPeople(pageSize)
+    console.log(pageIndex)
+    console.log(pageSize)
+    const newPeople = people.concat(createPeople(5))
 
     if (!isEmpty(sortByInput)) {
       const [sortObject] = sortByInput
