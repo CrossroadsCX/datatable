@@ -2,43 +2,26 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var React$1 = require('react');
+var React = require('react');
 var reactTable = require('react-table');
 var filter = require('lodash/filter');
 var outline = require('@heroicons/react/outline');
 var InfiniteScroll = require('react-infinite-scroll-component');
 var reactHotkeysHook = require('react-hotkeys-hook');
 var styled = require('styled-components');
+var jsxRuntime = require('react/jsx-runtime');
 var lodash = require('lodash');
 var CreatableSelect = require('react-select/creatable');
 var Select = require('react-select');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
 
-var React__default = /*#__PURE__*/_interopDefault(React$1);
+var React__default = /*#__PURE__*/_interopDefault(React);
 var filter__default = /*#__PURE__*/_interopDefault(filter);
 var InfiniteScroll__default = /*#__PURE__*/_interopDefault(InfiniteScroll);
 var styled__default = /*#__PURE__*/_interopDefault(styled);
 var CreatableSelect__default = /*#__PURE__*/_interopDefault(CreatableSelect);
 var Select__default = /*#__PURE__*/_interopDefault(Select);
-
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -291,9 +274,12 @@ var TableThemeProvider = function TableThemeProvider(_ref) {
   var children = _ref.children,
       _ref$theme = _ref.theme,
       theme = _ref$theme === void 0 ? defaultTheme : _ref$theme;
-  return /*#__PURE__*/React__default['default'].createElement(styled.ThemeProvider, {
-    theme: theme
-  }, /*#__PURE__*/React__default['default'].createElement(GlobalStyle, null, children));
+  return /*#__PURE__*/jsxRuntime.jsx(styled.ThemeProvider, {
+    theme: theme,
+    children: /*#__PURE__*/jsxRuntime.jsx(GlobalStyle, {
+      children: children
+    })
+  });
 };
 
 var StyledDataTable = styled__default['default'].div.withConfig({
@@ -335,28 +321,34 @@ var TableToolbar = function TableToolbar(props) {
       handleDelete = props.handleDelete,
       handleEdit = props.handleEdit,
       handleReset = props.handleReset;
-  return /*#__PURE__*/React__default['default'].createElement(StyledTableToolbar, null, handleAdd && /*#__PURE__*/React__default['default'].createElement("div", {
-    title: "Add Row"
-  }, /*#__PURE__*/React__default['default'].createElement(outline.PlusIcon, {
-    className: "".concat(canAdd ? 'enabled' : ''),
-    onClick: handleAdd
-  })), handleEdit && /*#__PURE__*/React__default['default'].createElement("div", {
-    title: "Edit Row"
-  }, /*#__PURE__*/React__default['default'].createElement(outline.PencilIcon, {
-    className: "".concat(canEdit ? 'enabled' : ''),
-    onClick: handleEdit
-  })), handleDelete && /*#__PURE__*/React__default['default'].createElement("div", {
-    title: "Delete Row(s)"
-  }, /*#__PURE__*/React__default['default'].createElement(outline.TrashIcon, {
-    className: "".concat(canDelete ? 'enabled' : ''),
-    onClick: handleDelete
-  })), handleReset && /*#__PURE__*/React__default['default'].createElement("div", {
-    title: "Reset Table"
-  }, /*#__PURE__*/React__default['default'].createElement(outline.ReplyIcon, {
-    "aria-disabled": !canReset,
-    className: "".concat(canReset ? 'enabled' : ''),
-    onClick: canReset ? handleReset : undefined
-  })));
+  return /*#__PURE__*/jsxRuntime.jsxs(StyledTableToolbar, {
+    children: [handleAdd && /*#__PURE__*/jsxRuntime.jsx("div", {
+      title: "Add Row",
+      children: /*#__PURE__*/jsxRuntime.jsx(outline.PlusIcon, {
+        className: "".concat(canAdd ? 'enabled' : ''),
+        onClick: handleAdd
+      })
+    }), handleEdit && /*#__PURE__*/jsxRuntime.jsx("div", {
+      title: "Edit Row",
+      children: /*#__PURE__*/jsxRuntime.jsx(outline.PencilIcon, {
+        className: "".concat(canEdit ? 'enabled' : ''),
+        onClick: handleEdit
+      })
+    }), handleDelete && /*#__PURE__*/jsxRuntime.jsx("div", {
+      title: "Delete Row(s)",
+      children: /*#__PURE__*/jsxRuntime.jsx(outline.TrashIcon, {
+        className: "".concat(canDelete ? 'enabled' : ''),
+        onClick: handleDelete
+      })
+    }), handleReset && /*#__PURE__*/jsxRuntime.jsx("div", {
+      title: "Reset Table",
+      children: /*#__PURE__*/jsxRuntime.jsx(outline.ReplyIcon, {
+        "aria-disabled": !canReset,
+        className: "".concat(canReset ? 'enabled' : ''),
+        onClick: canReset ? handleReset : undefined
+      })
+    })]
+  });
 };
 
 var TableRow = function TableRow(props) {
@@ -366,7 +358,7 @@ var TableRow = function TableRow(props) {
       saveRow = props.saveRow,
       selectable = props.selectable;
 
-  var _useState = React$1.useState(row),
+  var _useState = React.useState(row),
       _useState2 = _slicedToArray(_useState, 2),
       data = _useState2[0],
       setData = _useState2[1];
@@ -385,19 +377,22 @@ var TableRow = function TableRow(props) {
     setData(newData);
   };
 
-  return /*#__PURE__*/React__default['default'].createElement("tr", _extends({}, row.getRowProps(), {
-    className: className
-  }), row.cells.map(function (cell, index) {
-    return /*#__PURE__*/React__default['default'].createElement("td", _extends({
-      className: " ".concat(index === 0 && 'w-8')
-    }, cell.getCellProps()), cell.render('Cell', {
-      isEditable: editing === row.index,
-      editing: editing,
-      onChange: onChange,
-      handleSaveRow: handleSaveRow,
-      index: index,
-      selectable: selectable
-    }));
+  return /*#__PURE__*/jsxRuntime.jsx("tr", _objectSpread2(_objectSpread2({}, row.getRowProps()), {}, {
+    className: className,
+    children: row.cells.map(function (cell, index) {
+      return /*#__PURE__*/jsxRuntime.jsx("td", _objectSpread2(_objectSpread2({
+        className: " ".concat(index === 0 && 'w-8')
+      }, cell.getCellProps()), {}, {
+        children: cell.render('Cell', {
+          isEditable: editing === row.index,
+          editing: editing,
+          onChange: onChange,
+          handleSaveRow: handleSaveRow,
+          index: index,
+          selectable: selectable
+        })
+      }));
+    })
   }));
 };
 
@@ -456,39 +451,39 @@ var SelectCell = function SelectCell(_ref) {
     handleChange(value);
   };
 
-  var _useState = React$1.useState(defaultValue != null ? options.filter(function (option) {
+  var _useState = React.useState(defaultValue != null ? options.filter(function (option) {
     return option.value === defaultValue;
   }) : []),
       _useState2 = _slicedToArray(_useState, 2),
       defaultOption = _useState2[0],
       setDefaultOption = _useState2[1];
 
-  var selectRef = React$1.useRef(null);
-  var selectCreationRef = React$1.useRef(null);
+  var selectRef = React.useRef(null);
+  var selectCreationRef = React.useRef(null);
 
-  var _useState3 = React$1.useState(defaultValue),
+  var _useState3 = React.useState(defaultValue),
       _useState4 = _slicedToArray(_useState3, 2),
       newDefaultValue = _useState4[0],
       setNewDefaultValue = _useState4[1];
 
-  var _useState5 = React$1.useState(),
+  var _useState5 = React.useState(),
       _useState6 = _slicedToArray(_useState5, 2),
       isLoading = _useState6[0],
       setIsLoading = _useState6[1];
 
-  React$1.useEffect(function () {
+  React.useEffect(function () {
     if (setFocus) {
       selectRef.current && selectRef.current.focus();
       selectCreationRef.current && selectCreationRef.current.focus();
     }
   }, []);
-  React$1.useEffect(function () {
+  React.useEffect(function () {
     var newOption = newDefaultValue != null ? options.filter(function (option) {
       return option.label === newDefaultValue;
     }) : [];
     setDefaultOption(newOption);
   }, [options, newDefaultValue]);
-  React$1.useEffect(function () {
+  React.useEffect(function () {
     if ((defaultOption === null || defaultOption === void 0 ? void 0 : defaultOption.length) > 0) {
       setIsLoading(false);
       handleChange(defaultOption[0]);
@@ -496,7 +491,7 @@ var SelectCell = function SelectCell(_ref) {
   }, [defaultOption]);
 
   if (handleOnCreate) {
-    return /*#__PURE__*/React__default['default'].createElement(CreatableSelect__default['default'], {
+    return /*#__PURE__*/jsxRuntime.jsx(CreatableSelect__default['default'], {
       onChange: function onChange(event) {
         handleChange(event);
         setNewDefaultValue(event === null || event === void 0 ? void 0 : event.label);
@@ -516,7 +511,7 @@ var SelectCell = function SelectCell(_ref) {
     });
   }
 
-  return /*#__PURE__*/React__default['default'].createElement(Select__default['default'], {
+  return /*#__PURE__*/jsxRuntime.jsx(Select__default['default'], {
     options: options,
     onChange: onChange,
     menuPortalTarget: document.body,
@@ -552,12 +547,12 @@ var EditableCell = function EditableCell(_ref) {
       index = _ref.index,
       selectable = _ref.selectable;
 
-  var _useState = React$1.useState(initialValue),
+  var _useState = React.useState(initialValue),
       _useState2 = _slicedToArray(_useState, 2),
       value = _useState2[0],
       setValue = _useState2[1];
 
-  var _useState3 = React$1.useState(true),
+  var _useState3 = React.useState(true),
       _useState4 = _slicedToArray(_useState3, 2),
       initialRender = _useState4[0],
       setInitialRender = _useState4[1];
@@ -578,7 +573,7 @@ var EditableCell = function EditableCell(_ref) {
     }
   };
 
-  React$1.useEffect(function () {
+  React.useEffect(function () {
     if (id && !initialRender) {
       onChange(id, value);
     }
@@ -589,16 +584,42 @@ var EditableCell = function EditableCell(_ref) {
   if (!isEditable) {
     // If this is a selectable cell
     if (typeof value == 'string' && options) {
-      return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, getOptionLabel(value, options));
+      return /*#__PURE__*/jsxRuntime.jsx(jsxRuntime.Fragment, {
+        children: getOptionLabel(value, options)
+      });
     }
 
-    return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, value);
+    return /*#__PURE__*/jsxRuntime.jsx(jsxRuntime.Fragment, {
+      children: value
+    });
   }
 
   if (options && options.length > 0) {
-    return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(SelectCell, {
-      options: options,
-      handleChange: onSelectChange
+    return /*#__PURE__*/jsxRuntime.jsx("div", {
+      children: /*#__PURE__*/jsxRuntime.jsx(SelectCell, {
+        options: options,
+        handleChange: onSelectChange
+        /*
+          The focus needs to be on the first input of the Row, 
+          but datatable has two options, when the select option 
+          is activated (cell #1) and when not (cell #0), 
+          so it evaluates that with the cell index to determine 
+          if the input will be focusable.
+        */
+        ,
+        setFocus: index == (selectable ? 1 : 0) ? true : false,
+        defaultValue: value,
+        handleOnCreate: handleOnCreate
+      })
+    });
+  }
+
+  return /*#__PURE__*/jsxRuntime.jsx("div", {
+    children: /*#__PURE__*/jsxRuntime.jsx("input", {
+      className: "border-b border-blue-400",
+      value: value || '',
+      onChange: onLocalChange,
+      type: inputType ? inputType : 'text'
       /*
         The focus needs to be on the first input of the Row, 
         but datatable has two options, when the select option 
@@ -607,27 +628,9 @@ var EditableCell = function EditableCell(_ref) {
         if the input will be focusable.
       */
       ,
-      setFocus: index == (selectable ? 1 : 0) ? true : false,
-      defaultValue: value,
-      handleOnCreate: handleOnCreate
-    }));
-  }
-
-  return /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("input", {
-    className: "border-b border-blue-400",
-    value: value || '',
-    onChange: onLocalChange,
-    type: inputType ? inputType : 'text'
-    /*
-      The focus needs to be on the first input of the Row, 
-      but datatable has two options, when the select option 
-      is activated (cell #1) and when not (cell #0), 
-      so it evaluates that with the cell index to determine 
-      if the input will be focusable.
-    */
-    ,
-    autoFocus: index == (selectable ? 1 : 0) ? true : false
-  }));
+      autoFocus: index == (selectable ? 1 : 0) ? true : false
+    })
+  });
 };
 
 var StyledPagination = styled__default['default'].div.withConfig({
@@ -660,49 +663,61 @@ var Pagination = function Pagination(_ref) {
       pageSize = _ref.pageSize,
       pageCount = _ref.pageCount,
       setPageSize = _ref.setPageSize;
-  return /*#__PURE__*/React__default['default'].createElement(StyledPagination, {
-    className: "pagination"
-  }, /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("span", null, "Page", ' ', /*#__PURE__*/React__default['default'].createElement("strong", null, pageIndex + 1, " of ", pageOptions.length), ' '), /*#__PURE__*/React__default['default'].createElement("span", null, "| Go to page:", ' ', /*#__PURE__*/React__default['default'].createElement("input", {
-    type: "number",
-    defaultValue: pageIndex + 1,
-    onChange: function onChange(e) {
-      var page = e.target.value ? Number(e.target.value) - 1 : 0;
-      gotoPage(page);
-    },
-    style: {
-      width: '100px'
-    }
-  })), ' ', /*#__PURE__*/React__default['default'].createElement("select", {
-    value: pageSize,
-    onChange: function onChange(e) {
-      setPageSize(Number(e.target.value));
-    }
-  }, [10, 20, 30, 40, 50].map(function (pageSize) {
-    return /*#__PURE__*/React__default['default'].createElement("option", {
-      key: pageSize,
-      value: pageSize
-    }, "Show ", pageSize);
-  }))), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement(outline.ChevronDoubleLeftIcon, {
-    onClick: function onClick() {
-      return gotoPage(0);
-    },
-    className: "".concat(canPreviousPage ? 'enabled' : '')
-  }), /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmLeftIcon, {
-    onClick: function onClick() {
-      return previousPage();
-    },
-    className: "".concat(canPreviousPage ? 'enabled' : '')
-  }), /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmRightIcon, {
-    onClick: function onClick() {
-      return nextPage();
-    },
-    className: "".concat(canNextPage ? 'enabled' : '')
-  }), /*#__PURE__*/React__default['default'].createElement(outline.ChevronDoubleRightIcon, {
-    onClick: function onClick() {
-      return gotoPage(pageCount - 1);
-    },
-    className: "".concat(canNextPage ? 'enabled' : '')
-  })));
+  return /*#__PURE__*/jsxRuntime.jsxs(StyledPagination, {
+    className: "pagination",
+    children: [/*#__PURE__*/jsxRuntime.jsxs("div", {
+      children: [/*#__PURE__*/jsxRuntime.jsxs("span", {
+        children: ["Page", ' ', /*#__PURE__*/jsxRuntime.jsxs("strong", {
+          children: [pageIndex + 1, " of ", pageOptions.length]
+        }), ' ']
+      }), /*#__PURE__*/jsxRuntime.jsxs("span", {
+        children: ["| Go to page:", ' ', /*#__PURE__*/jsxRuntime.jsx("input", {
+          type: "number",
+          defaultValue: pageIndex + 1,
+          onChange: function onChange(e) {
+            var page = e.target.value ? Number(e.target.value) - 1 : 0;
+            gotoPage(page);
+          },
+          style: {
+            width: '100px'
+          }
+        })]
+      }), ' ', /*#__PURE__*/jsxRuntime.jsx("select", {
+        value: pageSize,
+        onChange: function onChange(e) {
+          setPageSize(Number(e.target.value));
+        },
+        children: [10, 20, 30, 40, 50].map(function (pageSize) {
+          return /*#__PURE__*/jsxRuntime.jsxs("option", {
+            value: pageSize,
+            children: ["Show ", pageSize]
+          }, pageSize);
+        })
+      })]
+    }), /*#__PURE__*/jsxRuntime.jsxs("div", {
+      children: [/*#__PURE__*/jsxRuntime.jsx(outline.ChevronDoubleLeftIcon, {
+        onClick: function onClick() {
+          return gotoPage(0);
+        },
+        className: "".concat(canPreviousPage ? 'enabled' : '')
+      }), /*#__PURE__*/jsxRuntime.jsx(outline.ArrowSmLeftIcon, {
+        onClick: function onClick() {
+          return previousPage();
+        },
+        className: "".concat(canPreviousPage ? 'enabled' : '')
+      }), /*#__PURE__*/jsxRuntime.jsx(outline.ArrowSmRightIcon, {
+        onClick: function onClick() {
+          return nextPage();
+        },
+        className: "".concat(canNextPage ? 'enabled' : '')
+      }), /*#__PURE__*/jsxRuntime.jsx(outline.ChevronDoubleRightIcon, {
+        onClick: function onClick() {
+          return gotoPage(pageCount - 1);
+        },
+        className: "".concat(canNextPage ? 'enabled' : '')
+      })]
+    })]
+  });
 };
 
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -753,10 +768,12 @@ var IndeterminateCheckbox = /*#__PURE__*/React__default['default'].forwardRef(fu
       currentRef.indeterminate = indeterminate !== null && indeterminate !== void 0 ? indeterminate : false;
     }
   }, [resolvedRef, indeterminate]);
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("input", _extends({
-    type: "checkbox",
-    ref: resolvedRef
-  }, rest)));
+  return /*#__PURE__*/jsxRuntime.jsx(jsxRuntime.Fragment, {
+    children: /*#__PURE__*/jsxRuntime.jsx("input", _objectSpread2({
+      type: "checkbox",
+      ref: resolvedRef
+    }, rest))
+  });
 });
 
 var selectionHook = function selectionHook(hooks) {
@@ -771,7 +788,7 @@ var selectionHook = function selectionHook(hooks) {
       Aggregated: undefined,
       Header: function Header(_ref) {
         var getToggleAllRowsSelectedProps = _ref.getToggleAllRowsSelectedProps;
-        return /*#__PURE__*/React.createElement(IndeterminateCheckbox, _extends({
+        return /*#__PURE__*/jsxRuntime.jsx(IndeterminateCheckbox, _objectSpread2({
           className: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-400 rounded"
         }, getToggleAllRowsSelectedProps()));
       },
@@ -787,13 +804,13 @@ var selectionHook = function selectionHook(hooks) {
           reactHotkeysHook.useHotkeys('ctrl+enter', function () {
             return handleSaveRow();
           }, optionsHot);
-          return /*#__PURE__*/React.createElement(outline.CheckIcon, {
+          return /*#__PURE__*/jsxRuntime.jsx(outline.CheckIcon, {
             className: "w-4 border border-green-600 bg-green-200 rounded-md cursor-pointer hover:bg-green-600",
             onClick: handleSaveRow
           });
         }
 
-        return /*#__PURE__*/React.createElement(IndeterminateCheckbox, _extends({
+        return /*#__PURE__*/jsxRuntime.jsx(IndeterminateCheckbox, _objectSpread2({
           className: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
         }, row.getToggleRowSelectedProps()));
       }
@@ -801,8 +818,8 @@ var selectionHook = function selectionHook(hooks) {
   });
 };
 function usePrevious(value) {
-  var ref = React$1.useRef(value);
-  React$1.useEffect(function () {
+  var ref = React.useRef(value);
+  React.useEffect(function () {
     ref.current = value;
   });
   return ref.current;
@@ -833,12 +850,12 @@ var DataTable = function DataTable(props) {
       stickyHeader = _props$stickyHeader === void 0 ? false : _props$stickyHeader;
   /** Table State */
 
-  var _useState = React$1.useState(null),
+  var _useState = React.useState(null),
       _useState2 = _slicedToArray(_useState, 2),
       editing = _useState2[0],
       setEditing = _useState2[1];
 
-  var _useState3 = React$1.useState(data),
+  var _useState3 = React.useState(data),
       _useState4 = _slicedToArray(_useState3, 2),
       tableData = _useState4[0],
       setData = _useState4[1];
@@ -865,7 +882,7 @@ var DataTable = function DataTable(props) {
   } // Set up the default column for useTable
 
 
-  var defaultColumn = React$1.useMemo(function () {
+  var defaultColumn = React.useMemo(function () {
     return {
       Cell: EditableCell
     };
@@ -962,7 +979,7 @@ var DataTable = function DataTable(props) {
     sortBy: sortBy
   }); // If the incoming data changes, override the table data
 
-  React$1.useEffect(function () {
+  React.useEffect(function () {
     setData(data);
   }, [data]);
   var handleFetchDataDebounced;
@@ -970,7 +987,7 @@ var DataTable = function DataTable(props) {
   if (handleFetchData) {
     handleFetchDataDebounced = reactTable.useAsyncDebounce(handleFetchData, 200); // If an handleFetchData handler is passed, use it to pull new data on page change
 
-    React$1.useEffect(function () {
+    React.useEffect(function () {
       if (pageSize !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageSize) && pageSize > 0 || pageIndex !== (prevPageProps === null || prevPageProps === void 0 ? void 0 : prevPageProps.pageIndex)) {
         handleFetchDataDebounced({
           pageIndex: pageIndex,
@@ -1007,41 +1024,49 @@ var DataTable = function DataTable(props) {
     reactHotkeysHook.useHotkeys('esc', function () {
       return handleCancel();
     }, optionsHot);
-    return /*#__PURE__*/React__default['default'].createElement("table", _extends({}, getTableProps(), {
-      ref: tableRef
-    }), /*#__PURE__*/React__default['default'].createElement("thead", null, headerGroups.map(function (headerGroup) {
-      return /*#__PURE__*/React__default['default'].createElement("tr", headerGroup.getHeaderGroupProps(), headerGroup.headers.map(function (column) {
-        return /*#__PURE__*/React__default['default'].createElement("th", _extends({}, column.getHeaderProps(column.getSortByToggleProps()), {
-          scope: "col"
-        }), column.render('Header'), /*#__PURE__*/React__default['default'].createElement("span", null, column.isSorted ? column.isSortedDesc ? /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmDownIcon, {
-          className: "sort-indicator"
-        }) : /*#__PURE__*/React__default['default'].createElement(outline.ArrowSmUpIcon, {
-          className: "sort-indicator"
-        }) : ''));
-      }));
-    })), /*#__PURE__*/React__default['default'].createElement("tbody", getTableBodyProps(), !paginated ? rows.map(function (row) {
-      prepareRow(row);
-      return /*#__PURE__*/React__default['default'].createElement(TableRowRender, {
-        key: row.index,
-        row: row,
-        editing: editing,
-        saveRow: saveRow,
-        selectable: selectable
-      });
-    }) : page.map(function (row) {
-      prepareRow(row);
-      return /*#__PURE__*/React__default['default'].createElement(TableRowRender, {
-        key: row.index,
-        row: row,
-        editing: editing,
-        saveRow: saveRow,
-        selectable: selectable
-      });
-    })));
+    return /*#__PURE__*/jsxRuntime.jsxs("table", _objectSpread2(_objectSpread2({}, getTableProps()), {}, {
+      ref: tableRef,
+      children: [/*#__PURE__*/jsxRuntime.jsx("thead", {
+        children: headerGroups.map(function (headerGroup) {
+          return /*#__PURE__*/jsxRuntime.jsx("tr", _objectSpread2(_objectSpread2({}, headerGroup.getHeaderGroupProps()), {}, {
+            children: headerGroup.headers.map(function (column) {
+              return /*#__PURE__*/jsxRuntime.jsxs("th", _objectSpread2(_objectSpread2({}, column.getHeaderProps(column.getSortByToggleProps())), {}, {
+                scope: "col",
+                children: [column.render('Header'), /*#__PURE__*/jsxRuntime.jsx("span", {
+                  children: column.isSorted ? column.isSortedDesc ? /*#__PURE__*/jsxRuntime.jsx(outline.ArrowSmDownIcon, {
+                    className: "sort-indicator"
+                  }) : /*#__PURE__*/jsxRuntime.jsx(outline.ArrowSmUpIcon, {
+                    className: "sort-indicator"
+                  }) : ''
+                })]
+              }));
+            })
+          }));
+        })
+      }), /*#__PURE__*/jsxRuntime.jsx("tbody", _objectSpread2(_objectSpread2({}, getTableBodyProps()), {}, {
+        children: !paginated ? rows.map(function (row) {
+          prepareRow(row);
+          return /*#__PURE__*/jsxRuntime.jsx(TableRowRender, {
+            row: row,
+            editing: editing,
+            saveRow: saveRow,
+            selectable: selectable
+          }, row.index);
+        }) : page.map(function (row) {
+          prepareRow(row);
+          return /*#__PURE__*/jsxRuntime.jsx(TableRowRender, {
+            row: row,
+            editing: editing,
+            saveRow: saveRow,
+            selectable: selectable
+          }, row.index);
+        })
+      }))]
+    }));
   };
 
   var InfiniteScrollTable = function InfiniteScrollTable() {
-    return /*#__PURE__*/React__default['default'].createElement(InfiniteScroll__default['default'], {
+    return /*#__PURE__*/jsxRuntime.jsx(InfiniteScroll__default['default'], {
       dataLength: rows.length,
       next: function next() {
         return handleFetchDataDebounced({
@@ -1051,28 +1076,37 @@ var DataTable = function DataTable(props) {
         });
       },
       hasMore: true,
-      loader: /*#__PURE__*/React__default['default'].createElement("p", null, "Loading more items...")
-    }, /*#__PURE__*/React__default['default'].createElement(Table, null));
+      loader: /*#__PURE__*/jsxRuntime.jsx("p", {
+        children: "Loading more items..."
+      }),
+      children: /*#__PURE__*/jsxRuntime.jsx(Table, {})
+    });
   };
 
   var PaginatedTable = function PaginatedTable() {
-    return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(Table, null), /*#__PURE__*/React__default['default'].createElement(Pagination, paginationProps));
+    return /*#__PURE__*/jsxRuntime.jsxs(jsxRuntime.Fragment, {
+      children: [/*#__PURE__*/jsxRuntime.jsx(Table, {}), /*#__PURE__*/jsxRuntime.jsx(Pagination, _objectSpread2({}, paginationProps))]
+    });
   };
 
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(TableThemeProvider, {
-    theme: theme
-  }, !disableToolbar || tableToolbar ? /*#__PURE__*/React__default['default'].createElement(ToolbarRender, {
-    canAdd: editing === null,
-    canDelete: selectedFlatRows.length > 0,
-    canEdit: selectedFlatRows.length === 1,
-    canReset: tableData.length !== data.length,
-    handleAdd: handleAdd,
-    handleDelete: handleDelete,
-    handleEdit: handleEdit,
-    handleReset: handleReset
-  }) : null, /*#__PURE__*/React__default['default'].createElement(StyledDataTable, {
-    className: stickyHeader ? 'sticky' : ''
-  }, paginated ? paginated === 'scroll' ? /*#__PURE__*/React__default['default'].createElement(InfiniteScrollTable, null) : /*#__PURE__*/React__default['default'].createElement(PaginatedTable, null) : /*#__PURE__*/React__default['default'].createElement(Table, null))));
+  return /*#__PURE__*/jsxRuntime.jsx(jsxRuntime.Fragment, {
+    children: /*#__PURE__*/jsxRuntime.jsxs(TableThemeProvider, {
+      theme: theme,
+      children: [!disableToolbar || tableToolbar ? /*#__PURE__*/jsxRuntime.jsx(ToolbarRender, {
+        canAdd: editing === null,
+        canDelete: selectedFlatRows.length > 0,
+        canEdit: selectedFlatRows.length === 1,
+        canReset: tableData.length !== data.length,
+        handleAdd: handleAdd,
+        handleDelete: handleDelete,
+        handleEdit: handleEdit,
+        handleReset: handleReset
+      }) : null, /*#__PURE__*/jsxRuntime.jsx(StyledDataTable, {
+        className: stickyHeader ? 'sticky' : '',
+        children: paginated ? paginated === 'scroll' ? /*#__PURE__*/jsxRuntime.jsx(InfiniteScrollTable, {}) : /*#__PURE__*/jsxRuntime.jsx(PaginatedTable, {}) : /*#__PURE__*/jsxRuntime.jsx(Table, {})
+      })]
+    })
+  });
 };
 
 exports.DataTable = DataTable;
