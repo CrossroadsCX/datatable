@@ -219,10 +219,10 @@ export const DataTable = <T extends Record<string, unknown>>(
     setData(data)
     if(data.length == 0 && isEditing){
       handleAdd()
-    } else {
+    } else if(isEditing) {
       setEditing(0)
     }
-  }, [data])
+  }, [data, isEditing])
 
   let handleFetchDataDebounced: (args: HandleFetchDataArgs<T>) => Promise<void>
   if(handleFetchData){
