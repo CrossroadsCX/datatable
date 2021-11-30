@@ -85,7 +85,7 @@ EmpyTable.args = {
   defaultItem,
   selectable: true,
   handleChange,
-  editingRow: true,
+  isEditing: true,
 }
 
 export const TableWithData = Template.bind({})
@@ -96,5 +96,5 @@ TableWithData.args = {
   defaultItem,
   selectable: true,
   handleChange,
-  editingRow: true,
+  isEditing: true,
 }
