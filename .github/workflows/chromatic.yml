@@ -18,7 +18,8 @@ jobs:
           fetch-depth: 0
       - name: Install dependencies
         run: |
-          echo '\nnodeLinker: "node-modules"' >> .yarnrc.yml
+          echo "\n" >> .yarnrc.yml
+          echo 'nodeLinker: "node-modules"' >> .yarnrc.yml
           yarn install
         # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
