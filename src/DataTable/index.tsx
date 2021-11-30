@@ -217,8 +217,10 @@ export const DataTable = <T extends Record<string, unknown>>(
   // If the incoming data changes, override the table data
   useEffect(() => {
     setData(data)
-    if(editingRow){
+    if(data.length == 0 && editingRow){
       handleAdd()
+    } else {
+      setEditing(0)
     }
   }, [data])
 
