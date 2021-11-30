@@ -19,6 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo 'nodeLinker: "node-modules"' >> .yarnrc.yml
+          yarn add --dev react react-dom
           yarn install
         # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
