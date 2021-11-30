@@ -97,6 +97,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   /** Table State */
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
+  const resetTable = handleFetchData ? false : true
 
   /*
    *  Selectable Options
@@ -198,7 +199,13 @@ export const DataTable = <T extends Record<string, unknown>>(
       columns,
       saveRow,
       pageCount: -1,
-      manualPagination: handleFetchData ? true : false,
+      // manualPagination: handleFetchData ? true : false,
+      autoResetPage: resetTable,
+      autoResetExpanded: resetTable,
+      autoResetGroupBy: resetTable,
+      autoResetSelectedRows: resetTable,
+      autoResetSortBy: resetTable,
+      autoResetFilters: resetTable,
     },
     ...hooks
     )
