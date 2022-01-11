@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import StateManager, { GroupTypeBase } from 'react-select';
 import CreatableSelect, { Creatable } from 'react-select/creatable';
-import Select, { OptionTypeBase } from 'react-select';
+import Select, { OptionTypeBase, StylesConfig } from 'react-select';
 
 export type SelectOption<TValue> = {
   value: TValue,
@@ -16,7 +16,13 @@ type SelectCellProps = {
   handleOnCreate?: (option: string) => void,
 }
 
-const customStyles = {
+const customStyles: StylesConfig<OptionTypeBase, false> = {
+  container: () => ({
+    position: 'absolute',
+    marginTop: -10,
+    marginLeft: -10,
+  }),
+
   menu: () => ({
     width: 150,
     color: '#000',
@@ -94,6 +100,7 @@ export const SelectCell: React.FC<SelectCellProps> = ({ handleChange, options, s
         isDisabled={isLoading}
         isLoading={isLoading}
         options={options}
+        value={defaultOption}
         defaultValue={defaultOption}
         className='border-0 border-b border-blue-400 border-solid'
         styles={customStyles}
