@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import { Row, Column } from 'react-table';
 import { OptionTypeBase } from 'react-select';
 import { find } from 'lodash'
@@ -74,10 +74,11 @@ export const EditableCell: React.FC<EditableCellProps> = ({
       <>{value}</>
     );
   }
+  const localStyles: CSSProperties = {width: 150}
 
   if (options && options.length > 0) {
     return (
-      <div>
+      <div style={localStyles}>
         <SelectCell
           options={options}
           handleChange={onSelectChange}

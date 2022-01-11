@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
 export const GlobalStyle = styled.div`
+    & {
+      position: relative
+    }
   // Table Element Styling
   table {
     ${props => props.theme.elements?.table && props.theme.elements.table}
