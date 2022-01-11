@@ -1,5 +1,5 @@
 import React, {
-  PropsWithChildren, ReactElement, Ref, useEffect, useMemo, useState,
+  PropsWithChildren, ReactElement, useRef, useEffect, useMemo, useState
 } from 'react';
 
 import {
@@ -54,7 +54,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     theme?: DefaultTheme,
     handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
     stickyHeader?: boolean,
-    tableRef?: Ref<HTMLTableElement> | null,
+    tableRef?: React.RefObject<HTMLTableElement>,
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
@@ -88,7 +88,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     handleFetchData,
     paginated = false,
     selectable = false,
-    tableRef,
+    tableRef = useRef<HTMLTableElement>(null),
     tableRow,
     tableToolbar,
     theme = defaultTheme,
@@ -100,6 +100,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [editing, setEditing] = useState<number | null>(null)
   const [tableData, setData] = useState<T[]>(data)
   const resetTable = handleFetchData ? false : true
+  const [isNewRowAfterSave, setIsNewRowAfterSave] =  useState<boolean>(false)
 
   /*
    *  Selectable Options
@@ -135,6 +136,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     setEditing(null);
     toggleAllRowsSelected(false);
     handleChange(newData);
+    setIsNewRowAfterSave(true)
   };
 
   const handleAdd = () => {
@@ -142,7 +144,6 @@ export const DataTable = <T extends Record<string, unknown>>(
       console.error('No default item set, cannot add rows.');
       return;
     }
-
     const updatedData = [...tableData, defaultItem];
     setData(updatedData);
     setEditing(updatedData.length - 1);
@@ -214,6 +215,13 @@ export const DataTable = <T extends Record<string, unknown>>(
 
   const prevPageProps = usePrevious({ pageIndex, pageSize, sortBy })
 
+  useEffect(() => {
+    if(isNewRowAfterSave){
+      handleAdd();
+      setIsNewRowAfterSave(false)
+    }
+  }, [isNewRowAfterSave])
+
   // If the incoming data changes, override the table data
   useEffect(() => {
     setData(data)
@@ -267,6 +275,24 @@ export const DataTable = <T extends Record<string, unknown>>(
     }
 
     useHotkeys('esc', () => handleCancel(), optionsHot);
+
+    function useOutsideTable(ref: React.RefObject<HTMLTableElement> | null) {
+      useEffect(() => {
+        function handleClickOutside(event: Event) {
+          if (ref?.current && !ref.current.contains(event.target as Node)) {
+            handleCancel()
+          }
+        }
+          // Bind the event listener
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => {
+              // Unbind the event listener on clean up
+              document.removeEventListener("mousedown", handleClickOutside);
+          };
+      }, [ref]);
+    }
+
+    useOutsideTable(tableRef);
 
     return (
     <table {...getTableProps()} ref={tableRef}>
