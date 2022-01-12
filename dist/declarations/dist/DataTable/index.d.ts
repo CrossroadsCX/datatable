@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement, Ref } from 'react';
+import React, { PropsWithChildren, ReactElement } from 'react';
 import { Column, SortingRule, TableOptions } from 'react-table';
 import { DefaultTheme } from 'styled-components';
 import { TableToolbarProps } from '../TableToolbar';
@@ -20,8 +20,9 @@ export interface DataTableProps<T extends Record<string, unknown>> extends Table
     theme?: DefaultTheme;
     handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>;
     stickyHeader?: boolean;
-    tableRef?: Ref<HTMLTableElement> | null;
+    tableRef?: React.RefObject<HTMLTableElement>;
     tableRow?: <T extends Record<string, unknown>>(props: TableRowProps<T>) => ReactElement;
     tableToolbar?: (props: TableToolbarProps) => ReactElement;
+    isEditing?: boolean;
 }
 export declare const DataTable: <T extends Record<string, unknown>>(props: React.PropsWithChildren<DataTableProps<T>>) => ReactElement;
