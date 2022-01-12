@@ -146,7 +146,7 @@ styled.div.withConfig({
 var GlobalStyle = styled.div.withConfig({
   displayName: "global__GlobalStyle",
   componentId: "sc-1wcmw54-0"
-})(["table{", " & > * + *{", "}thead{", "}tbody{", "}tr{", "}th{", " &:first-child{", "}}td{", " &:first-child{", "}}}"], function (props) {
+})(["&{position:relative}table{", " & > * + *{", "}thead{", "}tbody{", "}tr{", "}th{", " &:first-child{", "}}td{", " &:first-child{", "}}}"], function (props) {
   var _props$theme$elements;
 
   return ((_props$theme$elements = props.theme.elements) === null || _props$theme$elements === void 0 ? void 0 : _props$theme$elements.table) && props.theme.elements.table;
@@ -389,6 +389,13 @@ styled(TableRow).withConfig({
 })(["td{padding-left:1.5rem;padding-right:1.5rem;padding-top:.75rem;padding-bottom:.7rem;font-size:.75rem;line-height:1rem;font-weight:500;&:first-child{}}"]);
 
 var customStyles = {
+  container: function container() {
+    return {
+      position: 'absolute',
+      marginTop: -10,
+      marginLeft: -10
+    };
+  },
   menu: function menu() {
     return {
       width: 150,
@@ -492,6 +499,7 @@ var SelectCell = function SelectCell(_ref) {
       isLoading: isLoading,
       options: options,
       value: defaultOption,
+      defaultValue: defaultOption,
       className: "border-0 border-b border-blue-400 border-solid",
       styles: customStyles,
       ref: selectCreationRef
@@ -581,8 +589,13 @@ var EditableCell = function EditableCell(_ref) {
     });
   }
 
+  var localStyles = {
+    width: 150
+  };
+
   if (options && options.length > 0) {
     return /*#__PURE__*/jsx("div", {
+      style: localStyles,
       children: /*#__PURE__*/jsx(SelectCell, {
         options: options,
         handleChange: onSelectChange
@@ -828,13 +841,16 @@ var DataTable = function DataTable(props) {
       paginated = _props$paginated === void 0 ? false : _props$paginated,
       _props$selectable = props.selectable,
       selectable = _props$selectable === void 0 ? false : _props$selectable,
-      tableRef = props.tableRef,
+      _props$tableRef = props.tableRef,
+      tableRef = _props$tableRef === void 0 ? useRef(null) : _props$tableRef,
       tableRow = props.tableRow,
       tableToolbar = props.tableToolbar,
       _props$theme = props.theme,
       theme = _props$theme === void 0 ? defaultTheme : _props$theme,
       _props$stickyHeader = props.stickyHeader,
-      stickyHeader = _props$stickyHeader === void 0 ? false : _props$stickyHeader;
+      stickyHeader = _props$stickyHeader === void 0 ? false : _props$stickyHeader,
+      _props$isEditing = props.isEditing,
+      isEditing = _props$isEditing === void 0 ? false : _props$isEditing;
   /** Table State */
 
   var _useState = useState(null),
@@ -846,6 +862,13 @@ var DataTable = function DataTable(props) {
       _useState4 = _slicedToArray(_useState3, 2),
       tableData = _useState4[0],
       setData = _useState4[1];
+
+  var resetTable = handleFetchData ? false : true;
+
+  var _useState5 = useState(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      isNewRowAfterSave = _useState6[0],
+      setIsNewRowAfterSave = _useState6[1];
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -887,6 +910,7 @@ var DataTable = function DataTable(props) {
     setEditing(null);
     toggleAllRowsSelected(false);
     handleChange(newData);
+    setIsNewRowAfterSave(true);
   };
 
   var handleAdd = function handleAdd() {
@@ -937,7 +961,13 @@ var DataTable = function DataTable(props) {
     columns: columns,
     saveRow: saveRow,
     pageCount: -1,
-    manualPagination: handleFetchData ? true : false
+    // manualPagination: handleFetchData ? true : false,
+    autoResetPage: resetTable,
+    autoResetExpanded: resetTable,
+    autoResetGroupBy: resetTable,
+    autoResetSelectedRows: resetTable,
+    autoResetSortBy: resetTable,
+    autoResetFilters: resetTable
   })].concat(hooks)),
       rows = _useTable.rows,
       headerGroups = _useTable.headerGroups,
@@ -964,11 +994,25 @@ var DataTable = function DataTable(props) {
     pageIndex: pageIndex,
     pageSize: pageSize,
     sortBy: sortBy
-  }); // If the incoming data changes, override the table data
+  });
+  useEffect(function () {
+    if (isNewRowAfterSave) {
+      handleAdd();
+      setIsNewRowAfterSave(false);
+    }
+  }, [isNewRowAfterSave]); // If the incoming data changes, override the table data
 
   useEffect(function () {
     setData(data);
-  }, [data]);
+
+    if (isEditing) {
+      if (data.length === 0) {
+        handleAdd();
+      } else {
+        setEditing(0);
+      }
+    }
+  }, [data, isEditing]);
   var handleFetchDataDebounced;
 
   if (handleFetchData) {
@@ -1011,6 +1055,25 @@ var DataTable = function DataTable(props) {
     useHotkeys('esc', function () {
       return handleCancel();
     }, optionsHot);
+
+    function useOutsideTable(ref) {
+      useEffect(function () {
+        function handleClickOutside(event) {
+          if (ref !== null && ref !== void 0 && ref.current && !ref.current.contains(event.target)) {
+            handleCancel();
+          }
+        } // Bind the event listener
+
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return function () {
+          // Unbind the event listener on clean up
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [ref]);
+    }
+
+    useOutsideTable(tableRef);
     return /*#__PURE__*/jsxs("table", _objectSpread2(_objectSpread2({}, getTableProps()), {}, {
       ref: tableRef,
       children: [/*#__PURE__*/jsx("thead", {
