@@ -4,13 +4,13 @@ export const StyledPagination = styled.div`
   display: flex;
   width:100%;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   margin-top: 10px;
+  color: ${props => props.theme.colors.gray};
   svg {
     height: 1.5rem;
     width: 1.5rem;
     padding: 5px;
-    border: 1px solid ${props => props.theme.colors.lightGray};
     color: ${props => props.theme.colors.lightGray};
 
     &.enabled {
@@ -18,8 +18,7 @@ export const StyledPagination = styled.div`
       cursor: pointer;
 
       &:hover {
-        color: ${props => props.theme.colors.lightGray};
-        background:  ${props => props.theme.colors.gray};
+        color: ${props => props.theme.colors.darkGray};
       }
     }
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyledPagination } from './styled'
 import {
-  ArrowSmRightIcon, ArrowSmLeftIcon, ChevronDoubleRightIcon, ChevronDoubleLeftIcon,
+  ArrowSmRightIcon, ArrowSmLeftIcon, ChevronRightIcon, ChevronLeftIcon,
 } from '@heroicons/react/outline';
 
 export type PaginationProps = {
@@ -32,54 +32,39 @@ export const Pagination: React.FC<PaginationProps> = ({
 
     return (
         <StyledPagination className="pagination">
+          <div>
+              <ChevronLeftIcon 
+                onClick={() => previousPage()} 
+                className={`${canPreviousPage ? 'enabled': ''}`}              
+              />
+            </div>
             <div>
               <span>
-                Page{' '}
-                <strong>
-                  {pageIndex + 1} of {pageOptions.length}
-                </strong>{' '}
+                {` Previous`}
               </span>
               <span>
-                | Go to page:{' '}
                 <input
                   type="number"
                   defaultValue={pageIndex + 1}
+                  min={1}
+                  max={pageOptions.length}
                   onChange={e => {
                       const page = e.target.value ? Number(e.target.value) - 1 : 0
                       gotoPage(page)
                     }}
-                  style={{ width: '100px' }}
+                  style={{ width: '35px', height: '15px', marginLeft:'8px', marginRight:'8px' }}
                 />
-              </span>{' '}
-              <select
-                value={pageSize}
-                onChange={e => {
-                  setPageSize(Number(e.target.value))
-                }}
-              >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
-                  </option>
-                ))}
-              </select>
-
+              </span>
+              <span>
+                out of {pageOptions.length}
+              </span>
+              <span>
+                {` Next`}
+              </span>
             </div>
             <div>
-              <ChevronDoubleLeftIcon 
-                onClick={() => gotoPage(0)} 
-                className={`${canPreviousPage ? 'enabled': ''}`}
-              />
-              <ArrowSmLeftIcon 
-                onClick={() => previousPage()} 
-                className={`${canPreviousPage ? 'enabled': ''}`}              
-              />
-              <ArrowSmRightIcon 
+              <ChevronRightIcon 
                 onClick={() => nextPage()} 
-                className={`${canNextPage ? 'enabled': ''}`}
-              />
-              <ChevronDoubleRightIcon 
-                onClick={() => gotoPage(pageCount - 1)} 
                 className={`${canNextPage ? 'enabled': ''}`}
               />
             </div>
