@@ -1,6 +1,26 @@
 import styled from 'styled-components'
 
-export const StyledPagination = styled.div`
+export const StyledPaginationTop = styled.div`
+  display: flex;
+  width:100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: ${props => props.theme.colors.gray};
+  select {
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 15px;
+    padding-top: 5px;
+    border-radius: 5px;
+    background-color: white;
+    width: 50px;
+    height: '15px'
+    border-color: ${props => props.theme.colors.lightGray};
+  }
+`
+
+export const StyledPaginationBottom = styled.div`
   display: flex;
   width:100%;
   align-items: center;
@@ -21,14 +41,6 @@ export const StyledPagination = styled.div`
         color: ${props => props.theme.colors.darkGray};
       }
     }
-  }
-  select {
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 15px;
-    padding-top: 5px;
-    border-radius: 5px;
-    border-color: ${props => props.theme.colors.lightGray};
   }
   input{
     padding: 5px;
