@@ -55,6 +55,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
     handleFetchData?: (args: HandleFetchDataArgs<T>) => Promise<void>
     stickyHeader?: boolean,
     tableRef?: React.RefObject<HTMLTableElement>,
+    totalRows : number
     // Component overrides
     tableRow?: <T extends Record<string, unknown>>(
       props: TableRowProps<T>,
@@ -89,6 +90,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     paginated = false,
     selectable = false,
     tableRef = useRef<HTMLTableElement>(null),
+    totalRows,
     tableRow,
     tableToolbar,
     theme = defaultTheme,
@@ -101,7 +103,7 @@ export const DataTable = <T extends Record<string, unknown>>(
   const [tableData, setData] = useState<T[]>(data)
   const resetTable = handleFetchData ? false : true
   const [isNewRowAfterSave, setIsNewRowAfterSave] =  useState<boolean>(false)
-  const [totalResults, setTotalResults] = useState<number>(0)
+  const [totalResults] = useState<number>(totalRows || data.length)
   /*
    *  Selectable Options
    *    Add checkbox inputs in the header / rows with selectionHook
@@ -225,7 +227,6 @@ export const DataTable = <T extends Record<string, unknown>>(
   // If the incoming data changes, override the table data
   useEffect(() => {
     setData(data)
-    setTotalResults(data.length)
     if(isEditing){
       if(data.length === 0){
         handleAdd()

@@ -1,19 +1,18 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 import { Column } from 'react-table'
 
-import { DataTable, DataTableProps } from '../../src/DataTable'
+import { createPeople } from '../utils'
+import type { Person } from '../utils'
+
+import { DataTable, DataTableProps, HandleFetchDataArgs } from '../../src/DataTable'
+import { isEmpty, sortBy } from 'lodash'
 
 export default {
   title: 'examples/TableWithPagination',
   component: DataTable,
 } as Meta;
 
-type Person = {
-  firstName: string
-  lastName: string
-  age: number
-}
 
 const data = [
   {
@@ -133,6 +132,8 @@ const columns: Column<Person>[] = [
   }
 ]
 
+const totalRows = 100
+
 const Template: Story<DataTableProps<Person>> = (args) => {
 
   return (
@@ -140,6 +141,39 @@ const Template: Story<DataTableProps<Person>> = (args) => {
       <DataTable<Person> {...args} />
     </>
   )
+}
+
+const TemplateAsync: Story<DataTableProps<Person>> = (args) => {
+  const [people, setPeople] = useState(createPeople(30))
+
+  const initialData = useMemo(() => people, [people])
+
+  const handleFetchData = async ({ pageIndex, pageSize, sortBy: sortByInput }: HandleFetchDataArgs<Person>) => {
+    console.log(pageIndex)
+    console.log(pageSize)
+    if (people.length + pageSize <= totalRows) {
+      const newPeople = people.concat(createPeople(10))
+
+      if (!isEmpty(sortByInput)) {
+        const [sortObject] = sortByInput
+        const { id: sortKey } = sortObject
+
+        sortBy(newPeople as Array<Person>, [sortKey])
+      }
+      setPeople(newPeople)
+    }
+    else { console.log('limit reached')}
+  }
+
+  return (<DataTable<Person> data={initialData} handleFetchData={handleFetchData} {...args} />)
+}
+
+export const AsyncPaginationTable = TemplateAsync.bind({})
+
+AsyncPaginationTable.args = {
+  columns,
+  totalRows,
+  paginated: true,
 }
 
 export const PaginationTable = Template.bind({})

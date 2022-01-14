@@ -32,6 +32,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   table,
 }) => {
   //Get the difference between the total results and the max results on the last page
+  console.log(totalResults)
   const difference = - totalResults - (pageCount*pageSize)
   // Fuction to get the range of the showing results
   const getActualResultsRange = () => {
