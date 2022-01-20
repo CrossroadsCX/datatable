@@ -39,6 +39,12 @@ export interface HandleFetchDataArgs<T> {
   sortBy: Array<SortingRule<T>>,
 }
 
+export type HotKeys = {
+  newItemHotKey: string,
+  saveItemHotKey: string,
+  cancelHotKey: string,
+}
+
 export interface DataTableProps<T extends Record<string, unknown>>
   extends TableOptions<T> {
     // Required props
@@ -63,6 +69,7 @@ export interface DataTableProps<T extends Record<string, unknown>>
       props: TableToolbarProps,
     ) => ReactElement,
     isEditing?: boolean,
+    hotkeys?: HotKeys
 }
 
 export const DataTable = <T extends Record<string, unknown>>(
@@ -79,6 +86,12 @@ export const DataTable = <T extends Record<string, unknown>>(
   // Only set this value if we're able to delete rows
   let handleDelete;
 
+  const defaultHotKeys: HotKeys = {
+    saveItemHotKey: 'ctrl+enter',
+    cancelHotKey: 'esc',
+    newItemHotKey: 'ctrl+n'
+  }
+
   const {
     data,
     columns,
@@ -94,6 +107,7 @@ export const DataTable = <T extends Record<string, unknown>>(
     theme = defaultTheme,
     stickyHeader = false,
     isEditing = false,
+    hotkeys = defaultHotKeys
   } = props;
 
   /** Table State */
@@ -268,13 +282,13 @@ export const DataTable = <T extends Record<string, unknown>>(
   const ToolbarRender = tableToolbar ? tableToolbar : TableToolbar
 
   const Table = () =>  {
-    useHotkeys('ctrl+n', () => handleAdd());
+    useHotkeys(hotkeys.newItemHotKey, () => handleAdd());
 
     const optionsHot: Options = {
       enableOnTags: ['INPUT'],
     }
 
-    useHotkeys('esc', () => handleCancel(), optionsHot);
+    useHotkeys(hotkeys.cancelHotKey, () => handleCancel(), optionsHot);
 
     function useOutsideTable(ref: React.RefObject<HTMLTableElement> | null) {
       useEffect(() => {
@@ -332,6 +346,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 editing={editing}
                 saveRow={saveRow}
                 selectable={selectable}
+                hotkeys={hotkeys}
               />
             )
           })
@@ -346,6 +361,7 @@ export const DataTable = <T extends Record<string, unknown>>(
                 editing={editing}
                 saveRow={saveRow}
                 selectable={selectable}
+                hotkeys={hotkeys}
               />
             )
           })

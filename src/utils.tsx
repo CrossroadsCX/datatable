@@ -3,6 +3,7 @@ import { HeaderProps, Hooks, Cell } from 'react-table';
 import { CheckIcon } from '@heroicons/react/outline';
 import { IndeterminateCheckbox } from './IndeterminateCheckbox';
 import { useHotkeys, Options } from 'react-hotkeys-hook';
+import { HotKeys } from './DataTable';
 
 export const selectionHook: <T extends Record<string, unknown>>(hooks: Hooks<T>)  => void
 = <T extends Record<string, unknown>>(hooks: Hooks<T>)  => {
@@ -25,16 +26,18 @@ export const selectionHook: <T extends Record<string, unknown>>(hooks: Hooks<T>)
         row,
         editing,
         handleSaveRow,
+        hotkeys,
       }: Cell & {
         editing: number | null,
-        handleSaveRow: () => void
+        handleSaveRow: () => void,
+        hotkeys: HotKeys,
       }) => {
         if (editing === row.index) {
           const optionsHot: Options = {
             enableOnTags: ['INPUT'],
           }
 
-          useHotkeys('ctrl+enter', () => handleSaveRow(), optionsHot);
+          useHotkeys(hotkeys.saveItemHotKey, () => handleSaveRow(), optionsHot);
           return (
             <CheckIcon
               className="w-4 border border-green-600 bg-green-200 rounded-md cursor-pointer hover:bg-green-600"
